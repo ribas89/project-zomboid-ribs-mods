@@ -1,0 +1,6 @@
+version=1
+id=3554224266
+title=Not Enough Room / No Room for Fuel Patch
+description=Removes the limit on how much fuel you can add to wood-fueled fire sources. It overrides the sandbox option to the maximum possible integer value. You can keep adding fuel until you reach the limits of the game engine.
+tags=Build 42
+visibility=public

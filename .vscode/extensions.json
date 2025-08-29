@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "github.vscode-github-actions",
+    "solomonkinard.git-blame",
+    "shardulm94.trailing-spaces",
+    "sumneko.lua"
+  ]
+}

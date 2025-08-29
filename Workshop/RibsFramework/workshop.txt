@@ -1,0 +1,9 @@
+version=1
+id=3556845588
+title=Ribs Framework
+description=A core framework for Ribs mods.
+description=
+description=Other QoL mods here:
+description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600
+tags=Build 42
+visibility=public

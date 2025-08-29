@@ -1,0 +1,17 @@
+version=1
+id=3556857572
+title=Smart Hutch
+description=Smart Hutch adds automation and quality-of-life features for your chicken hutch:
+description=
+description=- Auto Close: Closes the hutch when it gets dirty and releases chickens so they don't get sick.
+description=- Auto Clean: Automatically cleans the hutch when the door is closed and opens it once cleaning is complete.
+description=- Auto Heal: Heals chickens inside the hutch with customizable health levels.
+description=- Passive Clean: Adds a passive reduction to dirtiness for balance
+description=
+description=All features and thresholds can be customized in both the mod settings and sandbox options.
+description=Mod options simply mirror sandbox settings and cannot override multiplayer server configurations.
+description=
+description=Check out more of my QoL mods:
+description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600
+tags=Build 42;Animals
+visibility=public

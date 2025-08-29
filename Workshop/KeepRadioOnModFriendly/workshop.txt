@@ -1,0 +1,12 @@
+version=1
+id=3558422176
+title=Keep That Radio On - Mod Friendly
+description=Keep the radio on using a vanilla safe approach for better mod compatibility.
+description=
+description=Check out more of my QoL mods:
+description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600
+description=
+description=If you enjoy the mod, consider giving it a star on GitHub:
+description=https://github.com/ribas89/project-zomboid-ribs-mods/
+tags=Build 42
+visibility=public

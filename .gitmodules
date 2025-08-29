@@ -1,0 +1,3 @@
+[submodule "project-zomboid-global-stubs"]
+	path = project-zomboid-global-stubs
+	url = https://github.com/ribas89/project-zomboid-global-stubs.git

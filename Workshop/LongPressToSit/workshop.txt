@@ -1,0 +1,6 @@
+version=1
+id=3552365182
+title=Long press hold to sit
+description=Hold a key to sit. By default the key is C and it takes 500 milliseconds to activate. You can change both in the mod options.
+tags=Build 42
+visibility=public

@@ -1,0 +1,5 @@
+name=Long Press to sit
+id=LongPressToSit
+description=Hold a key to sit. By default the key is C and it takes 500 milliseconds to activate. You can change both in the mod options. Turn on the mod, start the game, go to Options, then open the last tab.
+poster=poster.png
+icon=icon.png

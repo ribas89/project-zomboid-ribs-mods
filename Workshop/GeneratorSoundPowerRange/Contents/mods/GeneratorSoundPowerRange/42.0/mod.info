@@ -1,0 +1,5 @@
+name=Generator Sound and Power Range
+id=GeneratorSoundPowerRange
+description=Change the sound and power range of generators mid-game.
+poster=poster.png
+icon=icon.png

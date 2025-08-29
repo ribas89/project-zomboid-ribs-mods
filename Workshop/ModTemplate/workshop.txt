@@ -1,0 +1,8 @@
+version=1
+title=Mod Template
+description=This is an example mod with two worlds.  You can use this as a template for your own map mods.
+description=
+description=The first world has a single 300x300-tile cell.
+description=The second world adds cells all around the first world.
+tags=
+visibility=public

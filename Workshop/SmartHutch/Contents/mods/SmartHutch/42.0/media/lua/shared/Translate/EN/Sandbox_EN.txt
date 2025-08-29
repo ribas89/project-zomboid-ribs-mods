@@ -1,0 +1,51 @@
+Sandbox_EN = {
+  Sandbox_SmartHutch = "Smart Hutch",
+
+  Sandbox_AutoClose = "Auto Close",
+  Sandbox_AutoClose_tooltip = "Automatically close the hutch when conditions are met",
+
+  Sandbox_CheckInterval = "Check Interval"
+  Sandbox_CheckInterval_tooltip = "How many seconds between checks"
+
+  Sandbox_DirtinessThreshold = "Dirtiness",
+  Sandbox_DirtinessThreshold_tooltip = "Dirtness level for closing the hutch",
+
+  Sandbox_ReleaseChickensAfterClosing = "Release chickens",
+  Sandbox_ReleaseChickensAfterClosing_tooltip = "Release the chickens after closing the hutch",
+
+  Sandbox_AutoHeal = "Auto Heal",
+  Sandbox_AutoHeal_tooltip = "Automatically heal chickens inside the hutch",
+
+  Sandbox_HealthInterval = "Healing Interval",
+  Sandbox_HealthInterval_tooltip = "Time in seconds between each healing cycle",
+
+  Sandbox_MinHealth = "Minimum Health",
+  Sandbox_MinHealth_tooltip = "Any chicken below this level will be healed to this value",
+
+  Sandbox_MaxHealth = "Maximum Health",
+  Sandbox_MaxHealth_tooltip = "Healing stops when health reaches this value",
+
+  Sandbox_HealthBoost = "Health Boost",
+  Sandbox_HealthBoost_tooltip = "Amount of health restored per healing cycle",
+
+  Sandbox_AutoClean = "Auto Clean",
+  Sandbox_AutoClean_tooltip = "Automatically clean the hutch when the door is closed",
+
+  Sandbox_CleanInterval = "Cleaning Interval",
+  Sandbox_CleanInterval_tooltip = "Time in seconds between each cleaning cycle",
+
+  Sandbox_CleanStopThreshold = "Stop Cleaning Threshold",
+  Sandbox_CleanStopThreshold_tooltip = "Cleaning stops when dirtiness falls below this level",
+
+  Sandbox_CleanAmount = "Cleaning Amount",
+  Sandbox_CleanAmount_tooltip = "Amount of dirtiness removed per cleaning cycle",
+
+  Sandbox_AutoOpenOnCleanStop = "Auto Open on Clean",
+  Sandbox_AutoOpenOnCleanStop_tooltip = "Auto opens the hutch door when auto clean finishes cleaning",
+
+  Sandbox_PassiveCleanInterval = "Passive Clean Interval",
+  Sandbox_PassiveCleanInterval_tooltip = "Time in game minutes between each passive cleaning cycle",
+
+  Sandbox_PassiveCleanMultiplier = "Passive Clean Multiplier",
+  Sandbox_PassiveCleanMultiplier_tooltip = "Percentage of dirtiness removed each cycle",
+}

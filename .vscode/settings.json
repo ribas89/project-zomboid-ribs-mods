@@ -1,0 +1,23 @@
+{
+  "editor.rulers": [
+    150
+  ],
+  "[lua]": {
+    "editor.defaultFormatter": "sumneko.lua"
+  },
+  "Lua.workspace.library": [
+    "${workspaceFolder}/project-zomboid-global-stubs/stubs"
+  ],
+  "Lua.workspace.checkThirdParty": false,
+  "Lua.workspace.ignoreDir": [
+    "project-zomboid-global-stubs"
+  ],
+  "Lua.workspace.preloadFileSize": 1000,
+  "Lua.diagnostics.disable": [
+    "assign-type-mismatch",
+    "undefined-field",
+    "need-check-nil",
+    "inject-field"
+  ],
+  "trailing-spaces.trimOnSave": true
+}

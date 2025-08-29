@@ -1,0 +1,6 @@
+version=1
+id=3554362225
+title=Generator Sound and Power Range
+description=Change the sound and power range of generators mid-game.
+tags=Build 42;Audio;Balance;Building;Interface;QoL
+visibility=public
