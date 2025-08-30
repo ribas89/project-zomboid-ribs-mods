@@ -1,0 +1,5 @@
+name=Sandbox Cap Limit Remover
+id=SandboxCapLimitRemover
+description=Removes sandbox option caps so you can set higher or lower values. Does not change hardcoded gameplay limits. To make it work, replace the ProjectZomboid\zombie\SandboxOptions.class with the file inside this mod. Check Steam Workshop page for more info.
+poster=poster.png
+icon=icon.png
