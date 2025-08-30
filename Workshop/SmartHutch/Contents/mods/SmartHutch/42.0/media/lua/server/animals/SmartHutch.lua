@@ -153,15 +153,45 @@ local function passiveClean(hutch)
 
     hutch:setHutchDirt(newDirtiness)
 end
+RibsFramework.IntervalIngame:new({
+    EveryOneMinute = (function()
+        return sandbox:getValue("PassiveCleanInterval")
+    end),
+    handlers = {(function()
+        for hutch in pairs(getHutchs()) do
+            passiveClean(hutch)
+        end
+    end)}
+})
 
-local elapsed = 0
-Events.EveryOneMinute.Add(function()
-    elapsed = elapsed + 1
+local function toggleDoor(hutch, open)
+    if not (hutch and hutch.isDoorClosed) then return end
 
-    if elapsed < sandbox:getValue("PassiveCleanInterval") then return end
-    elapsed = 0
+    if open and not hutch:isDoorClosed() then return end
 
-    for hutch in pairs(getHutchs()) do
-        passiveClean(hutch)
-    end
-end)
+    if not open and hutch:isDoorClosed() then return end
+
+    hutch:toggleDoor()
+end
+RibsFramework.IntervalIngame:new({
+    EveryHours = 1,
+    handlers = {(function()
+        if not sandbox:getValue("TimedDoorEnabled") then return end
+
+        local hour = math.floor(GameTime:getInstance():getTimeOfDay())
+
+        if hour == sandbox:getValue("TimedDoorOpenHour") then
+            for hutch in pairs(getHutchs()) do
+                toggleDoor(hutch, true)
+            end
+            return
+        end
+
+        if hour == sandbox:getValue("TimedDoorCloseHour") then
+            for hutch in pairs(getHutchs()) do
+                toggleDoor(hutch, false)
+            end
+            return
+        end
+    end)}
+})

@@ -2,96 +2,114 @@ VERSION = 1,
 
 option SmartHutch.AutoClose
 {
-	type = boolean, default = true,
-	page = SmartHutch, translation = AutoClose,
+    type = boolean, default = true,
+    page = SmartHutch, translation = SmartHutch_AutoClose,
 }
 
 option SmartHutch.CheckInterval
 {
-	type = integer, min = 1, max = 12000, default = 30,
-	page = SmartHutch, translation = CheckInterval,
+    type = integer, min = 1, max = 12000, default = 30,
+    page = SmartHutch, translation = SmartHutch_CheckInterval,
 }
 
 option SmartHutch.DirtinessThreshold
 {
-	type = integer, min = 0, max = 100, default = 20,
-	page = SmartHutch, translation = DirtinessThreshold,
+    type = integer, min = 0, max = 100, default = 20,
+    page = SmartHutch, translation = SmartHutch_DirtinessThreshold,
 }
 
 option SmartHutch.ReleaseChickensAfterClosing
 {
-	type = boolean, default = true,
-	page = SmartHutch, translation = ReleaseChickensAfterClosing,
+    type = boolean, default = true,
+    page = SmartHutch, translation = SmartHutch_ReleaseChickensAfterClosing,
 }
 
 option SmartHutch.AutoHeal
 {
     type = boolean, default = true,
-    page = SmartHutch, translation = AutoHeal,
+    page = SmartHutch, translation = SmartHutch_AutoHeal,
 }
 
 option SmartHutch.HealthInterval
 {
     type = integer, min = 1, max = 12000, default = 10,
-    page = SmartHutch, translation = HealthInterval,
+    page = SmartHutch, translation = SmartHutch_HealthInterval,
 }
 
 option SmartHutch.MinHealth
 {
     type = double, min = 0, max = 1, default = 0.3,
-    page = SmartHutch, translation = MinHealth,
+    page = SmartHutch, translation = SmartHutch_MinHealth,
 }
 
 option SmartHutch.MaxHealth
 {
     type = double, min = 0, max = 1, default = 0.7,
-    page = SmartHutch, translation = MaxHealth,
+    page = SmartHutch, translation = SmartHutch_MaxHealth,
 }
 
 option SmartHutch.HealthBoost
 {
     type = double, min = 0, max = 1, default = 0.01,
-    page = SmartHutch, translation = HealthBoost,
+    page = SmartHutch, translation = SmartHutch_HealthBoost,
 }
 
 option SmartHutch.AutoClean
 {
     type = boolean, default = true,
-    page = SmartHutch, translation = AutoClean,
+    page = SmartHutch, translation = SmartHutch_AutoClean,
 }
 
 option SmartHutch.CleanInterval
 {
     type = integer, min = 1, max = 12000, default = 10,
-    page = SmartHutch, translation = CleanInterval,
+    page = SmartHutch, translation = SmartHutch_CleanInterval,
 }
 
 option SmartHutch.CleanStopThreshold
 {
     type = integer, min = 0, max = 100, default = 0,
-    page = SmartHutch, translation = CleanStopThreshold,
+    page = SmartHutch, translation = SmartHutch_CleanStopThreshold,
 }
 
 option SmartHutch.CleanAmount
 {
     type = integer, min = 1, max = 100, default = 1,
-    page = SmartHutch, translation = CleanAmount,
+    page = SmartHutch, translation = SmartHutch_CleanAmount,
 }
 
 option SmartHutch.AutoOpenOnCleanStop
 {
     type = boolean, default = true,
-    page = SmartHutch, translation = AutoOpenOnCleanStop,
+    page = SmartHutch, translation = SmartHutch_AutoOpenOnCleanStop,
 }
 
 option SmartHutch.PassiveCleanInterval
 {
     type = integer, min = 1, max = 12000, default = 10,
-    page = SmartHutch, translation = PassiveCleanInterval,
+    page = SmartHutch, translation = SmartHutch_PassiveCleanInterval,
 }
 
 option SmartHutch.PassiveCleanMultiplier
 {
     type = double, min = 0.0, max = 1.0, default = 0.001,
-    page = SmartHutch, translation = PassiveCleanMultiplier,
+    page = SmartHutch, translation = SmartHutch_PassiveCleanMultiplier,
+}
+
+option SmartHutch.TimedDoorEnabled
+{
+    type = boolean, default = true,
+    page = SmartHutch, translation = SmartHutch_TimedDoorEnabled,
+}
+
+option SmartHutch.TimedDoorOpenHour
+{
+    type = integer, min = 0, max = 23, default = 7,
+    page = SmartHutch, translation = SmartHutch_TimedDoorOpenHour,
+}
+
+option SmartHutch.TimedDoorCloseHour
+{
+    type = integer, min = 0, max = 23, default = 21,
+    page = SmartHutch, translation = SmartHutch_TimedDoorCloseHour,
 }
