@@ -21,7 +21,6 @@ function RibsFramework.Sandbox:new(args)
 end
 
 function RibsFramework.Sandbox:getOption(optionName)
-
     local fullOptionName = optionName
     if self.ID ~= "" and not string.find(optionName, self.ID, 1, true) then
         fullOptionName = self.ID .. "." .. optionName
@@ -108,8 +107,7 @@ function RibsFramework.Sandbox:castTypeValue(optionName, value)
     end
 
     if typeString == "string" then return { forSandbox = tostring(value), forModOptions = tostring(value) } end
-    print("BP2Fmw.Sandbox: unknown type '" ..
-    tostring(typeString) .. "' for option '" .. name .. "', using sandbox value")
+    print("BP2Fmw.Sandbox: unknown type '" .. tostring(typeString) .. "' for option '" .. name .. "', using sandbox value")
 
     return { forSandbox = sandboxValue, forModOptions = configOption:getValueAsString() }
 end
@@ -157,6 +155,7 @@ function RibsFramework.Sandbox:getSandboxOptions()
                 translatedTooltip = option:getTooltip(),
                 value = option:getValue(),
                 typeString = config:getType(),
+                valueAsString = config:getValueAsString(),
                 option = option,
                 config = config
             }
@@ -202,12 +201,11 @@ function RibsFramework.Sandbox:createModOptionFromSandbox(data)
     }
 
     if textTypes[data.typeString] then
-        self.modOptions:addTextEntry(data.name, data.translatedName, data.config:getValueAsString(),
-            data.translatedTooltip)
+        self.modOptions:addTextEntry(data.name, data.translatedName, data.valueAsString, data.translatedTooltip)
     end
 
     if data.typeString == "boolean" then
-        self.modOptions:addTickBox(data.name, data.translatedName, data.config:getValue(), data.translatedTooltip)
+        self.modOptions:addTickBox(data.name, data.translatedName, data.value, data.translatedTooltip)
     end
 end
 

@@ -24,9 +24,11 @@ function RibsFramework.Interval:new(args)
 
     instance.handlers = args.handlers or {}
 
-    Events.OnTick.Add(function()
+    instance.eventOnTick = function()
         instance:onTick()
-    end)
+    end
+
+    Events.OnTick.Add(instance.eventOnTick)
 
     return instance
 end
@@ -45,7 +47,6 @@ function RibsFramework.Interval:getMultiplier()
     print("RibsFramework.Interval:getMultiplier(): unit " .. self.unit .. " not found, using seconds instead")
     return 1000
 end
-
 
 function RibsFramework.Interval:onTick()
     local nowMilliseconds = getTimestampMs()
@@ -74,4 +75,9 @@ end
 
 function RibsFramework.Interval:add(handler)
     table.insert(self.handlers, handler)
+end
+
+function RibsFramework.Interval:destroy()
+    if self.eventOnTick then Events.OnTick.Remove(self.eventOnTick) end
+    for key in pairs(self) do self[key] = nil end
 end

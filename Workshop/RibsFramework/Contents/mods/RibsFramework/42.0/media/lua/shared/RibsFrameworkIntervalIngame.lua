@@ -25,9 +25,11 @@ function RibsFramework.IntervalIngame:new(args)
 
     instance.handlers = args.handlers or {}
 
-    instance.events[instance.eventType].Add(function()
+    instance.eventFunction = function()
         instance:onTrigger()
-    end)
+    end
+
+    instance.events[instance.eventType].Add(instance.eventFunction)
 
     return instance
 end
@@ -63,4 +65,9 @@ end
 
 function RibsFramework.IntervalIngame:add(handler)
     table.insert(self.handlers, handler)
+end
+
+function RibsFramework.IntervalIngame:destroy()
+    if self.eventFunction then self.events[self.eventType].Remove(self.eventFunction) end
+    for key in pairs(self) do self[key] = nil end
 end
