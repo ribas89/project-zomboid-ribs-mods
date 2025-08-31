@@ -1,8 +1,10 @@
 require("RibsFramework")
 
-local sandbox = RibsFramework.Sandbox:new({ ID = "SmartHutch", autoModOptions = true })
+SmartHutch = SmartHutch or {}
 
-local function getHutchs()
+SmartHutch.sandbox = RibsFramework.Sandbox:new({ ID = "SmartHutch", autoModOptions = true })
+
+function SmartHutch.getHutchs()
     local allZones = DesignationZoneAnimal.getAllZones()
     if not allZones then return {} end
 
@@ -22,7 +24,7 @@ local function getHutchs()
     return hutches
 end
 
-local function autoHeal(hutch)
+function SmartHutch.autoHeal(hutch)
     local animals = transformIntoKahluaTable(hutch:getAnimalInside())
     if not animals then return end
 
@@ -33,9 +35,9 @@ local function autoHeal(hutch)
             return
         end
 
-        local minHealth = sandbox:getValue("MinHealth")
-        local maxHealth = sandbox:getValue("MaxHealth")
-        local healthBoost = sandbox:getValue("HealthBoost")
+        local minHealth = SmartHutch.sandbox:getValue("MinHealth")
+        local maxHealth = SmartHutch.sandbox:getValue("MaxHealth")
+        local healthBoost = SmartHutch.sandbox:getValue("HealthBoost")
 
         local newHealth = currentHealth
 
@@ -56,24 +58,24 @@ local function autoHeal(hutch)
     for _, animal in pairs(animals) do forEachAnimal(animal) end
 end
 
-RibsFramework.Interval:new({
+SmartHutch.AutoHealInterval = RibsFramework.Interval:new({
     seconds = (function()
-        return sandbox:getValue("HealthInterval")
+        return SmartHutch.sandbox:getValue("HealthInterval")
     end),
-    handlers = {(function()
-        if not sandbox:getValue("AutoHeal") then return end
+    handlers = { (function()
+        if not SmartHutch.sandbox:getValue("AutoHeal") then return end
 
-        for hutch in pairs(getHutchs()) do
-            autoHeal(hutch)
+        for hutch in pairs(SmartHutch.getHutchs()) do
+            SmartHutch.autoHeal(hutch)
         end
-    end)}
+    end) }
 })
 
-local function autoClose(hutch)
+function SmartHutch.autoClose(hutch)
     if not (hutch and hutch.getHutchDirt) then return end
 
     local dirtiness = hutch:getHutchDirt()
-    local threshold = sandbox:getValue("DirtinessThreshold")
+    local threshold = SmartHutch.sandbox:getValue("DirtinessThreshold")
 
     if dirtiness < threshold then return end
 
@@ -81,36 +83,36 @@ local function autoClose(hutch)
 
     hutch:toggleDoor()
 
-    if sandbox:getValue("ReleaseChickensAfterClosing") then
+    if SmartHutch.sandbox:getValue("ReleaseChickensAfterClosing") then
         hutch:releaseAllAnimals()
     end
 end
 
-RibsFramework.Interval:new({
+SmartHutch.AutoCloseInterval = RibsFramework.Interval:new({
     seconds = (function()
-        return sandbox:getValue("CheckInterval")
+        return SmartHutch.sandbox:getValue("CheckInterval")
     end),
-    handlers = {(function()
-        if not sandbox:getValue("AutoClose") then return end
+    handlers = { (function()
+        if not SmartHutch.sandbox:getValue("AutoClose") then return end
 
-        for hutch in pairs(getHutchs()) do
-            autoClose(hutch)
+        for hutch in pairs(SmartHutch.getHutchs()) do
+            SmartHutch.autoClose(hutch)
         end
-    end)}
+    end) }
 })
 
 
-local function autoClean(hutch)
+function SmartHutch.autoClean(hutch)
     if not (hutch and hutch.getHutchDirt) then return end
 
     if not hutch:isDoorClosed() then return end
 
     local dirtiness = hutch:getHutchDirt()
-    local stopThreshold = sandbox:getValue("CleanStopThreshold")
+    local stopThreshold = SmartHutch.sandbox:getValue("CleanStopThreshold")
 
     if dirtiness <= stopThreshold then return end
 
-    local amount = sandbox:getValue("CleanAmount")
+    local amount = SmartHutch.sandbox:getValue("CleanAmount")
 
     local newDirtiness = dirtiness - amount
 
@@ -118,32 +120,32 @@ local function autoClean(hutch)
 
     hutch:setHutchDirt(newDirtiness)
 
-    if newDirtiness <= stopThreshold and sandbox:getValue("AutoOpenOnCleanStop") and hutch:isDoorClosed() then
+    if newDirtiness <= stopThreshold and SmartHutch.sandbox:getValue("AutoOpenOnCleanStop") and hutch:isDoorClosed() then
         hutch:toggleDoor()
     end
 end
 
-RibsFramework.Interval:new({
+SmartHutch.CleanInterval = RibsFramework.Interval:new({
     seconds = (function()
-        return sandbox:getValue("CleanInterval")
+        return SmartHutch.sandbox:getValue("CleanInterval")
     end),
-    handlers = {(function()
-        if not sandbox:getValue("AutoClean") then return end
+    handlers = { (function()
+        if not SmartHutch.sandbox:getValue("AutoClean") then return end
 
-        for hutch in pairs(getHutchs()) do
-            autoClean(hutch)
+        for hutch in pairs(SmartHutch.getHutchs()) do
+            SmartHutch.autoClean(hutch)
         end
-    end)}
+    end) }
 })
 
-local function passiveClean(hutch)
+function SmartHutch.passiveClean(hutch)
     if not (hutch and hutch.getHutchDirt) then return end
 
     local dirtiness = hutch:getHutchDirt()
 
     if dirtiness <= 0 then return end
 
-    local multiplier = sandbox:getValue("PassiveCleanMultiplier")
+    local multiplier = SmartHutch.sandbox:getValue("PassiveCleanMultiplier")
 
     local dirtinessMultiplier = dirtiness * multiplier
 
@@ -153,18 +155,19 @@ local function passiveClean(hutch)
 
     hutch:setHutchDirt(newDirtiness)
 end
-RibsFramework.IntervalIngame:new({
+
+SmartHutch.PassiveCleanInterval = RibsFramework.IntervalIngame:new({
     EveryOneMinute = (function()
-        return sandbox:getValue("PassiveCleanInterval")
+        return SmartHutch.sandbox:getValue("PassiveCleanInterval")
     end),
-    handlers = {(function()
-        for hutch in pairs(getHutchs()) do
-            passiveClean(hutch)
+    handlers = { (function()
+        for hutch in pairs(SmartHutch.getHutchs()) do
+            SmartHutch.passiveClean(hutch)
         end
-    end)}
+    end) }
 })
 
-local function toggleDoor(hutch, open)
+function SmartHutch.toggleDoor(hutch, open)
     if not (hutch and hutch.isDoorClosed) then return end
 
     if open and not hutch:isDoorClosed() then return end
@@ -173,25 +176,26 @@ local function toggleDoor(hutch, open)
 
     hutch:toggleDoor()
 end
-RibsFramework.IntervalIngame:new({
+
+SmartHutch.TimedDoorInterval = RibsFramework.IntervalIngame:new({
     EveryHours = 1,
-    handlers = {(function()
-        if not sandbox:getValue("TimedDoorEnabled") then return end
+    handlers = { (function()
+        if not SmartHutch.sandbox:getValue("TimedDoorEnabled") then return end
 
         local hour = math.floor(GameTime:getInstance():getTimeOfDay())
 
-        if hour == sandbox:getValue("TimedDoorOpenHour") then
-            for hutch in pairs(getHutchs()) do
-                toggleDoor(hutch, true)
+        if hour == SmartHutch.sandbox:getValue("TimedDoorOpenHour") then
+            for hutch in pairs(SmartHutch.getHutchs()) do
+                SmartHutch.toggleDoor(hutch, true)
             end
             return
         end
 
-        if hour == sandbox:getValue("TimedDoorCloseHour") then
-            for hutch in pairs(getHutchs()) do
-                toggleDoor(hutch, false)
+        if hour == SmartHutch.sandbox:getValue("TimedDoorCloseHour") then
+            for hutch in pairs(SmartHutch.getHutchs()) do
+                SmartHutch.toggleDoor(hutch, false)
             end
             return
         end
-    end)}
+    end) }
 })
