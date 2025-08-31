@@ -1,8 +1,7 @@
-# Project Zomboid – RIBS Mods
+# Project Zomboid - ribs mods
 
 This repository is a **mirror** of several *Project Zomboid* mods already published on **Steam Workshop**.
 It includes **only the files provided by those mods**, exactly as they appear in the Steam Workshop release, including any modified game files if present in the original mod.
-No unmodified base game code or third-party assets are included.
 
 ## Installation
 

@@ -3,7 +3,8 @@
     150
   ],
   "[lua]": {
-    "editor.defaultFormatter": "sumneko.lua"
+    "editor.defaultFormatter": "sumneko.lua",
+    "editor.formatOnSave": true,
   },
   "Lua.workspace.library": [
     "${workspaceFolder}/project-zomboid-global-stubs/stubs"
@@ -19,5 +20,10 @@
     "need-check-nil",
     "inject-field"
   ],
+  "Lua.format.defaultConfig": {
+    "ident_style": "space",
+    "indent_size":"2",
+    "max_line_length": "150"
+  } ,
   "trailing-spaces.trimOnSave": true
 }
