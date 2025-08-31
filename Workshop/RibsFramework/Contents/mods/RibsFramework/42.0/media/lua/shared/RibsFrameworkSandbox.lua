@@ -8,8 +8,9 @@ function RibsFramework.Sandbox:new(args)
 
     instance.modOptions = args.modOptions or false
 
-    instance.modOptionApplyHandlers = {}
+    instance.customOptions = args.customOptions or ""
 
+    instance.modOptionApplyHandlers = {}
 
     Events.OnGameStart.Add(function()
         instance:autoSandboxToModOptions()
@@ -22,7 +23,7 @@ end
 
 function RibsFramework.Sandbox:getOption(optionName)
     local fullOptionName = optionName
-    if self.ID ~= "" and not string.find(optionName, self.ID, 1, true) then
+    if self.ID ~= "" and not optionName:find(self.ID, 1, true) and not self.customOptions:find(optionName, 1, true) then
         fullOptionName = self.ID .. "." .. optionName
     end
 
@@ -93,7 +94,7 @@ function RibsFramework.Sandbox:castTypeValue(optionName, value)
 
         if type(value) == "string" then
             arrayValue = {}
-            for item in string.gmatch(value, "[^,]+") do
+            for item in value:gmatch("[^,]+") do
                 table.insert(arrayValue, item:match("^%s*(.-)%s*$"))
             end
         end
@@ -137,6 +138,26 @@ function RibsFramework.Sandbox:sandboxToModOptions(optionName)
     modOption:setValue(castedValue.forModOptions)
 end
 
+function RibsFramework.Sandbox:getNewOption(option)
+    local config = option:asConfigOption()
+    local name = config:getName()
+
+    if not (name:find(self.ID, 1, true) or self.customOptions:find(name, 1, true)) then return end
+
+    local newItem = {
+        name = name,
+        translatedName = option:getTranslatedName(),
+        translatedTooltip = option:getTooltip(),
+        value = option:getValue(),
+        typeString = config:getType(),
+        valueAsString = config:getValueAsString(),
+        option = option,
+        config = config
+    }
+
+    return newItem
+end
+
 function RibsFramework.Sandbox:getSandboxOptions()
     local allSandboxOptions = getSandboxOptions()
     local sandboxOptionsMod = {}
@@ -144,21 +165,10 @@ function RibsFramework.Sandbox:getSandboxOptions()
 
     for i = 0, count - 1 do
         local option = allSandboxOptions:getOptionByIndex(i)
-        local config = option:asConfigOption()
-        local name = config:getName()
 
-        if string.find(name, self.ID, 1, true) then
-            local index = #sandboxOptionsMod + 1
-            sandboxOptionsMod[index] = {
-                name = name,
-                translatedName = option:getTranslatedName(),
-                translatedTooltip = option:getTooltip(),
-                value = option:getValue(),
-                typeString = config:getType(),
-                valueAsString = config:getValueAsString(),
-                option = option,
-                config = config
-            }
+        local newOption = self:getNewOption(option)
+        if newOption then
+            sandboxOptionsMod[#sandboxOptionsMod + 1] = newOption
         end
     end
 
