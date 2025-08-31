@@ -1,0 +1,3 @@
+Sandbox_EN = {
+  Sandbox_NotEnoughRoomPatch = "Not Enough Room Patch",
+}

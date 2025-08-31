@@ -3,3 +3,4 @@ id=NotEnoughRoomPatch
 description=Removes the limit on how much fuel you can add to wood-fueled fire sources.
 poster=poster.png
 icon=icon.png
+require=\RibsFramework,\SandboxCapLimitRemover

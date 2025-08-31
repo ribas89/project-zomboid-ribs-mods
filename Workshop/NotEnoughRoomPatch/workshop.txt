@@ -1,6 +1,18 @@
 version=1
 id=3554224266
 title=Not Enough Room / No Room for Fuel Patch
-description=Removes the limit on how much fuel you can add to wood-fueled fire sources. It overrides the sandbox option to the maximum possible integer value. You can keep adding fuel until you reach the limits of the game engine.
-tags=Build 42
+description=Removes the limit on how much fuel you can add to wood-fueled fire sources
+description=
+description=Now uses the game’s sandbox option system and vanilla functions
+description=
+description=The default sandbox option caps at 168 hours
+description=
+description=To exceed this cap, use the mod that remove sandbox caps limits https://steamcommunity.com/sharedfiles/filedetails/?id=3558592256
+description=
+description=Check out more of my QoL mods:
+description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600
+description=
+description=If you enjoy the mod, consider giving it a star on GitHub:
+description=https://github.com/ribas89/project-zomboid-ribs-mods/
+tags=Build 42;Balance;Food;WIP
 visibility=public
