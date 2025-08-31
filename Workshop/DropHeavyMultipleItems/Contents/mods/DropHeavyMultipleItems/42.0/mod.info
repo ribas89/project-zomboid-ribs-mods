@@ -1,0 +1,6 @@
+name=Drop Heavy Multiple Items
+id=DropHeavyMultipleItems
+description=Automatically drops items from your inventory after actions if their total quantity or weight exceeds set thresholds.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework

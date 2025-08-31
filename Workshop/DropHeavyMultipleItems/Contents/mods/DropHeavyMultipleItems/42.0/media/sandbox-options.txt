@@ -1,0 +1,31 @@
+VERSION = 1,
+
+option DropHeavyMultipleItems.QuantityThreshold
+{
+    type = integer, min = 1, max = 2147483647, default = 2,
+    page = DropHeavyMultipleItems, translation = DropHeavyMultipleItems_QuantityThreshold,
+}
+
+option DropHeavyMultipleItems.WeightThreshold
+{
+    type = double, min = 0, max = 100000.0, default = 5,
+    page = DropHeavyMultipleItems, translation = DropHeavyMultipleItems_WeightThreshold,
+}
+
+option DropHeavyMultipleItems.IgnoredActions
+{
+    type = string, default = ISInventoryTransferAction;ISGrabItemAction;ISGrabWallItemAction;ISPickupWorldItemAction;ISOpenCannedFood;ISOpenItemAction;ISUnloadBulletsFromMagazine;ISOpenBoxOfBullets;ISDrainableComboItemAction;ISWashClothing;ISCleanInventoryItem;ISWaitWhileGettingUp,
+    page = DropHeavyMultipleItems, translation = DropHeavyMultipleItems_IgnoredActions,
+}
+
+option DropHeavyMultipleItems.IgnoredItems
+{
+    type = string, default = Base.TinCan;Base.PopBottleEmpty,
+    page = DropHeavyMultipleItems, translation = DropHeavyMultipleItems_IgnoredItems,
+}
+
+option DropHeavyMultipleItems.AlwaysDropItems
+{
+    type = string, default = Base.Plank;Base.Log,
+    page = DropHeavyMultipleItems, translation = DropHeavyMultipleItems_AlwaysDropItems,
+}

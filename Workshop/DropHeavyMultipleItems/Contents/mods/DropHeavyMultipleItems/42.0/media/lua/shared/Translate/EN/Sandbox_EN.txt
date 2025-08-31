@@ -1,0 +1,19 @@
+Sandbox_EN = {
+  Sandbox_DropHeavyMultipleItems = "Drop Heavy Multiple Items",
+
+  Sandbox_DropHeavyMultipleItems_QuantityThreshold = "Quantity",
+  Sandbox_DropHeavyMultipleItems_QuantityThreshold_tooltip = "Minimum number of items of the same type to trigger drops",
+
+  Sandbox_DropHeavyMultipleItems_WeightThreshold = "Weight",
+  Sandbox_DropHeavyMultipleItems_WeightThreshold_tooltip = "Minimum combined weight of items of the same type to trigger drops",
+
+  Sandbox_DropHeavyMultipleItems_IgnoredActions = "Ignored Actions",
+  Sandbox_DropHeavyMultipleItems_IgnoredActions_tooltip = "Actions listed here will be ignored and no items will be dropped",
+
+  Sandbox_DropHeavyMultipleItems_IgnoredItems = "Ignored Items",
+  Sandbox_DropHeavyMultipleItems_IgnoredItems_tooltip = "Items listed here will be ignored and never dropped",
+
+  Sandbox_DropHeavyMultipleItems_AlwaysDropItems = "Always Drop",
+  Sandbox_DropHeavyMultipleItems_AlwaysDropItems_tooltip = "Items listed here will always be dropped unless the action is ignored",
+
+}
