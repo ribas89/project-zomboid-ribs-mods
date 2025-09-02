@@ -1,0 +1,9 @@
+VERSION = 1,
+
+option NotEnoughRoomPatch.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = NotEnoughRoomPatch,
+    translation = NotEnoughRoomPatch_EnableModOptions,
+}

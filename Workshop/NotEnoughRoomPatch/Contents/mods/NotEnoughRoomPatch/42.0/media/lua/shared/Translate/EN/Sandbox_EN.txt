@@ -1,3 +1,6 @@
 Sandbox_EN = {
   Sandbox_NotEnoughRoomPatch = "Not Enough Room Patch",
+
+  Sandbox_NotEnoughRoomPatch_EnableModOptions = "Enable Mod Options"
+  Sandbox_NotEnoughRoomPatch_EnableModOptions_tooltip = "Show or hide options in the mod settings."
 }
