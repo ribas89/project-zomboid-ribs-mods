@@ -1,6 +1,9 @@
 Sandbox_EN = {
   Sandbox_SmartHutch = "Smart Hutch",
 
+  Sandbox_SmartHutch_EnableModOptions = "Enable Mod Options"
+  Sandbox_SmartHutch_EnableModOptions_tooltip = "Show or hide options in the mod settings."
+
   Sandbox_SmartHutch_AutoClose = "Auto Close",
   Sandbox_SmartHutch_AutoClose_tooltip = "Automatically close the hutch when conditions are met",
 

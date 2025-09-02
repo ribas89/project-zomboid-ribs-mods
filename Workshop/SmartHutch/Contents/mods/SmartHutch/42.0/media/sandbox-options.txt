@@ -1,5 +1,13 @@
 VERSION = 1,
 
+option SmartHutch.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = SmartHutch,
+    translation = SmartHutch_EnableModOptions,
+}
+
 option SmartHutch.AutoClose
 {
     type = boolean, default = true,
