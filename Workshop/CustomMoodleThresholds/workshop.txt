@@ -1,6 +1,6 @@
 version=1
 id=3560934901
-title=Custom Mod Thresholds
+title=Custom Moodle Thresholds
 description=[b]Makes moodle thresholds sandbox configurable[/b] via Custom Moodle Thresholds.
 description=This mod only changes [i]when[/i] each moodle triggers. It does not change moodle effects or value behavior.
 description=
