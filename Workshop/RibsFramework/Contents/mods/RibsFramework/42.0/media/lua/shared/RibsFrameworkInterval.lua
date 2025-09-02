@@ -24,7 +24,7 @@ function RibsFramework.Interval:new(args)
 
     instance.handlers = args.handlers or {}
 
-    instance.eventOnTick = function()
+    instance.eventOnTick = args.eventOnTick or function()
         instance:onTick()
     end
 

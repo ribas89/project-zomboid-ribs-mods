@@ -10,13 +10,22 @@ function RibsFramework.Sandbox:new(args)
 
     instance.customOptions = args.customOptions or ""
 
+    instance.maxDescriptions = args.maxDescriptions or 10
+    instance.maxTitles = args.maxTitles or 10
+
+    instance.autoModShowOption = args.autoModShowOption or "EnableModOptions"
+
     instance.modOptionApplyHandlers = {}
 
-    Events.OnGameStart.Add(function()
+    instance.onGameStart = args.onGameStart or function()
         instance:autoSandboxToModOptions()
-    end)
+    end
+    Events.OnGameStart.Add(instance.onGameStart)
 
-    instance:generateModOptions()
+    instance.OnGameTimeLoaded = args.OnGameTimeLoaded or function()
+        instance:generateModOptions()
+    end
+    Events.OnGameTimeLoaded.Add(instance.OnGameTimeLoaded)
 
     return instance
 end
@@ -29,7 +38,8 @@ function RibsFramework.Sandbox:getOption(optionName)
 
     local option = getSandboxOptions():getOptionByName(fullOptionName)
     if not option then
-        error("BP2Fmw.Sandbox: getSandboxOptions():getOptionByName('" .. fullOptionName .. "') not found")
+        print("BP2Fmw.Sandbox: getSandboxOptions():getOptionByName('" .. fullOptionName .. "') not found")
+        return nil
     end
 
     return option
@@ -37,11 +47,13 @@ end
 
 function RibsFramework.Sandbox:getValue(optionName)
     local sandboxOption = self:getOption(optionName)
+    if not sandboxOption then return nil end
     return sandboxOption:getValue()
 end
 
 function RibsFramework.Sandbox:setValue(optionName, newValue)
     local sandboxOption = self:getOption(optionName)
+    if not sandboxOption then return nil end
     sandboxOption:setValue(newValue)
 end
 
@@ -61,6 +73,7 @@ end
 
 function RibsFramework.Sandbox:castTypeValue(optionName, value)
     local sandboxOption = self:getOption(optionName)
+    if not sandboxOption then return nil end
     local sandboxValue = sandboxOption:getValue()
 
     local configOption = sandboxOption:asConfigOption()
@@ -144,6 +157,8 @@ function RibsFramework.Sandbox:getNewOption(option)
 
     if not (name:find(self.ID, 1, true) or self.customOptions:find(name, 1, true)) then return end
 
+    if name:find(self.autoModShowOption, 1, true) then return end
+
     local newItem = {
         name = name,
         translatedName = option:getTranslatedName(),
@@ -176,8 +191,7 @@ function RibsFramework.Sandbox:getSandboxOptions()
 end
 
 function RibsFramework.Sandbox:autoSandboxToModOptions()
-    if not (PZAPI and PZAPI.ModOptions) then return {} end
-    if not self.autoModOptions then return end
+    if not self:isModOptionsEnabled() then return end
 
     local options = self:getSandboxOptions()
     for i = 1, #options do
@@ -191,7 +205,7 @@ function RibsFramework.Sandbox:sendToServer()
 end
 
 function RibsFramework.Sandbox:autoModOptionsToSandbox()
-    if not (PZAPI and PZAPI.ModOptions) then return {} end
+    if not self:isModOptionsEnabled() then return end
 
     local options = self:getSandboxOptions()
     for i = 1, #options do
@@ -199,6 +213,16 @@ function RibsFramework.Sandbox:autoModOptionsToSandbox()
     end
 
     self:sendToServer()
+end
+
+function RibsFramework.Sandbox:translationFromName(name, suffix)
+    local option = name:match("^[^.]+%.(.+)$")
+
+    if not option then return nil end
+
+    local translationKey = "Sandbox_" .. self.ID .. "_" .. option .. suffix
+
+    return getTextOrNull(translationKey)
 end
 
 function RibsFramework.Sandbox:createModOptionFromSandbox(data)
@@ -209,6 +233,16 @@ function RibsFramework.Sandbox:createModOptionFromSandbox(data)
         float = true,
         enum = true,
     }
+
+    for i = 1, self.maxTitles do
+        local title = self:translationFromName(data.name, "_mtitle" .. i)
+        if title then self.modOptions:addTitle(title) end
+    end
+
+    for i = 1, self.maxDescriptions do
+        local desc = self:translationFromName(data.name, "_mdesc" .. i)
+        if desc then self.modOptions:addDescription(desc) end
+    end
 
     if textTypes[data.typeString] then
         self.modOptions:addTextEntry(data.name, data.translatedName, data.valueAsString, data.translatedTooltip)
@@ -223,6 +257,7 @@ function RibsFramework.Sandbox:isModOptionsEnabled()
     if (isClient() and not getCore():isDedicated()) then return false end
     if getCore():isDedicated() then return false end
     if not (PZAPI and PZAPI.ModOptions) then return false end
+    if not self:getValue(self.autoModShowOption) then return false end
     return true
 end
 

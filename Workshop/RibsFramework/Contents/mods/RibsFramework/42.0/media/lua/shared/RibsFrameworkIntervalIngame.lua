@@ -25,7 +25,7 @@ function RibsFramework.IntervalIngame:new(args)
 
     instance.handlers = args.handlers or {}
 
-    instance.eventFunction = function()
+    instance.eventFunction = args.eventFunction or function()
         instance:onTrigger()
     end
 
@@ -40,7 +40,6 @@ function RibsFramework.IntervalIngame:argsMultiplier(args, eventType)
     self.interval = args[eventType]
     self.eventType = eventType
 end
-
 
 function RibsFramework.IntervalIngame:onTrigger()
     self.triggerCount = self.triggerCount + 1
