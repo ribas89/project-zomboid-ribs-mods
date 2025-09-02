@@ -1,5 +1,13 @@
 VERSION = 1,
 
+option DropHeavyMultipleItems.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = DropHeavyMultipleItems,
+    translation = DropHeavyMultipleItems_EnableModOptions,
+}
+
 option DropHeavyMultipleItems.QuantityThreshold
 {
     type = integer, min = 1, max = 2147483647, default = 2,

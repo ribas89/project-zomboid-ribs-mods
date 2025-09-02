@@ -1,6 +1,9 @@
 Sandbox_EN = {
   Sandbox_DropHeavyMultipleItems = "Drop Heavy Multiple Items",
 
+  Sandbox_DropHeavyMultipleItems_EnableModOptions = "Enable Mod Options"
+  Sandbox_DropHeavyMultipleItems_EnableModOptions_tooltip = "Show or hide options in the mod settings."
+
   Sandbox_DropHeavyMultipleItems_QuantityThreshold = "Quantity",
   Sandbox_DropHeavyMultipleItems_QuantityThreshold_tooltip = "Minimum number of items of the same type to trigger drops",
 
