@@ -1,0 +1,337 @@
+Sandbox_EN = {
+  Sandbox_CustomMoodleThresholds = "Custom Moodle Thresholds",
+
+  Sandbox_CustomMoodleThresholds_EnableModOptions = "Enable Mod Options"
+  Sandbox_CustomMoodleThresholds_EnableModOptions_tooltip = "Show or hide options in the mod settings."
+
+
+  Sandbox_CustomMoodleThresholds_OutOfBreath_mtitle1 = "Endurance Thresholds"
+  Sandbox_CustomMoodleThresholds_OutOfBreath = "Out of Breath"
+  Sandbox_CustomMoodleThresholds_OutOfBreath_tooltip = "Endurance threshold for Out of Breath"
+
+  Sandbox_CustomMoodleThresholds_HighExertion = "High Exertion"
+  Sandbox_CustomMoodleThresholds_HighExertion_tooltip = "Endurance threshold for High Exertion"
+
+  Sandbox_CustomMoodleThresholds_ExcessiveExertion = "Excessive Exertion"
+  Sandbox_CustomMoodleThresholds_ExcessiveExertion_tooltip = "Endurance threshold for Excessive Exertion"
+
+  Sandbox_CustomMoodleThresholds_Exhausted = "Exhausted"
+  Sandbox_CustomMoodleThresholds_Exhausted_tooltip = "Endurance threshold for Exhausted"
+
+
+  Sandbox_CustomMoodleThresholds_Irritated_mtitle1 = "Anger Thresholds",
+  Sandbox_CustomMoodleThresholds_Irritated = "Irritated",
+  Sandbox_CustomMoodleThresholds_Irritated_tooltip = "Anger threshold for Irritated",
+
+  Sandbox_CustomMoodleThresholds_Annoyed = "Annoyed",
+  Sandbox_CustomMoodleThresholds_Annoyed_tooltip = "Anger threshold for Annoyed",
+
+  Sandbox_CustomMoodleThresholds_Angry = "Angry",
+  Sandbox_CustomMoodleThresholds_Angry_tooltip = "Anger threshold for Angry",
+
+  Sandbox_CustomMoodleThresholds_Furious = "Furious",
+  Sandbox_CustomMoodleThresholds_Furious_tooltip = "Anger threshold for Furious",
+
+
+  Sandbox_CustomMoodleThresholds_Drowsy_mtitle1 = "Fatigue Thresholds",
+  Sandbox_CustomMoodleThresholds_Drowsy = "Drowsy",
+  Sandbox_CustomMoodleThresholds_Drowsy_tooltip = "Fatigue threshold for Drowsy",
+
+  Sandbox_CustomMoodleThresholds_Tired = "Tired",
+  Sandbox_CustomMoodleThresholds_Tired_tooltip = "Fatigue threshold for Tired",
+
+  Sandbox_CustomMoodleThresholds_VeryTired = "Very Tired",
+  Sandbox_CustomMoodleThresholds_VeryTired_tooltip = "Fatigue threshold for Very Tired",
+
+  Sandbox_CustomMoodleThresholds_RidiculouslyTired = "Ridiculously Tired",
+  Sandbox_CustomMoodleThresholds_RidiculouslyTired_tooltip = "Fatigue threshold for Ridiculously Tired"
+
+
+  Sandbox_CustomMoodleThresholds_Peckish_mtitle1 = "Hunger Thresholds"
+  Sandbox_CustomMoodleThresholds_Peckish = "Peckish"
+  Sandbox_CustomMoodleThresholds_Peckish_tooltip = "Hunger threshold for Peckish"
+
+  Sandbox_CustomMoodleThresholds_Hungry = "Hungry"
+  Sandbox_CustomMoodleThresholds_Hungry_tooltip = "Hunger threshold for Hungry"
+
+  Sandbox_CustomMoodleThresholds_VeryHungry = "Very Hungry"
+  Sandbox_CustomMoodleThresholds_VeryHungry_tooltip = "Hunger threshold for Very Hungry"
+
+  Sandbox_CustomMoodleThresholds_StarvingToDeath = "Starving to Death"
+  Sandbox_CustomMoodleThresholds_StarvingToDeath_tooltip = "Hunger threshold for Starving to Death"
+
+
+  Sandbox_CustomMoodleThresholds_Nervous_mtitle1 = "Panic Thresholds",
+  Sandbox_CustomMoodleThresholds_Nervous = "Nervous",
+  Sandbox_CustomMoodleThresholds_Nervous_tooltip = "Panic threshold for Nervous",
+
+  Sandbox_CustomMoodleThresholds_Alarmed = "Alarmed",
+  Sandbox_CustomMoodleThresholds_Alarmed_tooltip = "Panic threshold for Alarmed",
+
+  Sandbox_CustomMoodleThresholds_Frightened = "Frightened",
+  Sandbox_CustomMoodleThresholds_Frightened_tooltip = "Panic threshold for Frightened",
+
+  Sandbox_CustomMoodleThresholds_Terrified = "Terrified",
+  Sandbox_CustomMoodleThresholds_Terrified_tooltip = "Panic threshold for Terrified",
+
+
+  Sandbox_CustomMoodleThresholds_Queasy_mtitle1 = "Sickness Thresholds",
+  Sandbox_CustomMoodleThresholds_Queasy = "Queasy",
+  Sandbox_CustomMoodleThresholds_Queasy_tooltip = "Sickness threshold for Queasy",
+
+  Sandbox_CustomMoodleThresholds_Sick = "Sick",
+  Sandbox_CustomMoodleThresholds_Sick_tooltip = "Sickness threshold for Sick",
+
+  Sandbox_CustomMoodleThresholds_VerySick = "Very Sick",
+  Sandbox_CustomMoodleThresholds_VerySick_tooltip = "Sickness threshold for Very Sick",
+
+  Sandbox_CustomMoodleThresholds_SeverelySick = "Severely Sick",
+  Sandbox_CustomMoodleThresholds_SeverelySick_tooltip = "Sickness threshold for Severely Sick",
+
+
+  Sandbox_CustomMoodleThresholds_GettingBored_mtitle1 = "Boredom Thresholds"
+  Sandbox_CustomMoodleThresholds_GettingBored = "Getting Bored"
+  Sandbox_CustomMoodleThresholds_GettingBored_tooltip = "Boredom threshold for Getting Bored"
+
+  Sandbox_CustomMoodleThresholds_Bored = "Bored"
+  Sandbox_CustomMoodleThresholds_Bored_tooltip = "Boredom threshold for Bored"
+
+  Sandbox_CustomMoodleThresholds_VeryBored = "Very Bored"
+  Sandbox_CustomMoodleThresholds_VeryBored_tooltip = "Boredom threshold for Very Bored"
+
+  Sandbox_CustomMoodleThresholds_ExtremelyBored = "Extremely Bored"
+  Sandbox_CustomMoodleThresholds_ExtremelyBored_tooltip = "Boredom threshold for Extremely Bored"
+
+
+  Sandbox_CustomMoodleThresholds_Sad_mtitle1 = "Unhappiness Thresholds"
+  Sandbox_CustomMoodleThresholds_Sad = "Sad"
+  Sandbox_CustomMoodleThresholds_Sad_tooltip = "Unhappiness threshold for Sad"
+
+  Sandbox_CustomMoodleThresholds_Weepy = "Weepy"
+  Sandbox_CustomMoodleThresholds_Weepy_tooltip = "Unhappiness threshold for Weepy"
+
+  Sandbox_CustomMoodleThresholds_Miserable = "Miserable"
+  Sandbox_CustomMoodleThresholds_Miserable_tooltip = "Unhappiness threshold for Miserable"
+
+  Sandbox_CustomMoodleThresholds_Hopeless = "Hopeless"
+  Sandbox_CustomMoodleThresholds_Hopeless_tooltip = "Unhappiness threshold for Hopeless"
+
+
+  Sandbox_CustomMoodleThresholds_Tense_mtitle1 = "Stress Thresholds",
+  Sandbox_CustomMoodleThresholds_Tense = "Tense",
+  Sandbox_CustomMoodleThresholds_Tense_tooltip = "Stress threshold for Tense",
+
+  Sandbox_CustomMoodleThresholds_Agitated = "Agitated",
+  Sandbox_CustomMoodleThresholds_Agitated_tooltip = "Stress threshold for Agitated",
+
+  Sandbox_CustomMoodleThresholds_StressedOut = "Stressed Out",
+  Sandbox_CustomMoodleThresholds_StressedOut_tooltip = "Stress threshold for Stressed Out",
+
+  Sandbox_CustomMoodleThresholds_AtBreakingPoint = "At Breaking Point",
+  Sandbox_CustomMoodleThresholds_AtBreakingPoint_tooltip = "Stress threshold for At Breaking Point",
+
+
+  Sandbox_CustomMoodleThresholds_SlightlyThirsty_mtitle1 = "Thirst Thresholds"
+  Sandbox_CustomMoodleThresholds_SlightlyThirsty = "Slightly Thirsty"
+  Sandbox_CustomMoodleThresholds_SlightlyThirsty_tooltip = "Thirst threshold for Slightly Thirsty"
+
+  Sandbox_CustomMoodleThresholds_Thirsty = "Thirsty"
+  Sandbox_CustomMoodleThresholds_Thirsty_tooltip = "Thirst threshold for Thirsty"
+
+  Sandbox_CustomMoodleThresholds_Parched = "Parched"
+  Sandbox_CustomMoodleThresholds_Parched_tooltip = "Thirst threshold for Parched"
+
+  Sandbox_CustomMoodleThresholds_DyingOfThirst = "Dying of Thirst"
+  Sandbox_CustomMoodleThresholds_DyingOfThirst_tooltip = "Thirst threshold for Dying of Thirst"
+
+
+  Sandbox_CustomMoodleThresholds_NeckBleedingSeverity_mtitle1 = "Bleeding thresholds",
+  Sandbox_CustomMoodleThresholds_NeckBleedingSeverity = "Neck Bleeding Severity",
+  Sandbox_CustomMoodleThresholds_NeckBleedingSeverity_tooltip = "Severity when the neck is bleeding",
+
+  Sandbox_CustomMoodleThresholds_MinorBleeding_mdesc1 = "Each bleeding body part counts as 1",
+
+  Sandbox_CustomMoodleThresholds_MinorBleeding = "Minor Bleeding",
+  Sandbox_CustomMoodleThresholds_MinorBleeding_tooltip = "Number of bleeding body parts to trigger Minor Bleeding",
+
+  Sandbox_CustomMoodleThresholds_Bleeding = "Bleeding",
+  Sandbox_CustomMoodleThresholds_Bleeding_tooltip = "Number of bleeding body parts to trigger Bleeding",
+
+  Sandbox_CustomMoodleThresholds_SevereBleeding = "Severe Bleeding",
+  Sandbox_CustomMoodleThresholds_SevereBleeding_tooltip = "Number of bleeding body parts to trigger Severe Bleeding",
+
+  Sandbox_CustomMoodleThresholds_MassiveBloodLoss = "Massive Blood Loss",
+  Sandbox_CustomMoodleThresholds_MassiveBloodLoss_tooltip = "Number of bleeding body parts to trigger Massive Blood Loss",
+
+
+  Sandbox_CustomMoodleThresholds_Moist_mtitle1 = "Wetness Thresholds",
+  Sandbox_CustomMoodleThresholds_Moist = "Moist",
+  Sandbox_CustomMoodleThresholds_Moist_tooltip = "Wetness threshold for Moist",
+
+  Sandbox_CustomMoodleThresholds_Wet = "Wet",
+  Sandbox_CustomMoodleThresholds_Wet_tooltip = "Wetness threshold for Wet",
+
+  Sandbox_CustomMoodleThresholds_Soaking = "Soaking",
+  Sandbox_CustomMoodleThresholds_Soaking_tooltip = "Wetness threshold for Soaking",
+
+  Sandbox_CustomMoodleThresholds_Drenched = "Drenched",
+  Sandbox_CustomMoodleThresholds_Drenched_tooltip = "Wetness threshold for Drenched",
+
+
+  Sandbox_CustomMoodleThresholds_RunnyNose_mtitle1 = "Cold Thresholds",
+  Sandbox_CustomMoodleThresholds_RunnyNose = "Runny Nose",
+  Sandbox_CustomMoodleThresholds_RunnyNose_tooltip = "Cold illness threshold for Runny Nose",
+
+  Sandbox_CustomMoodleThresholds_TheSniffles = "The Sniffles",
+  Sandbox_CustomMoodleThresholds_TheSniffles_tooltip = "Cold illness threshold for The Sniffles",
+
+  Sandbox_CustomMoodleThresholds_HeadCold = "Head Cold",
+  Sandbox_CustomMoodleThresholds_HeadCold_tooltip = "Cold illness threshold for Head Cold",
+
+  Sandbox_CustomMoodleThresholds_NastyCold = "Nasty Cold",
+  Sandbox_CustomMoodleThresholds_NastyCold_tooltip = "Cold illness threshold for Nasty Cold",
+
+
+  Sandbox_CustomMoodleThresholds_ALittleHurt_mtitle1 = "Health Thresholds"
+  Sandbox_CustomMoodleThresholds_ALittleHurt = "A Little Hurt"
+  Sandbox_CustomMoodleThresholds_ALittleHurt_tooltip = "Injury threshold for A Little Hurt"
+
+  Sandbox_CustomMoodleThresholds_Injured = "Injured"
+  Sandbox_CustomMoodleThresholds_Injured_tooltip = "Injury threshold for Injured"
+
+  Sandbox_CustomMoodleThresholds_SevereInjuries = "Severe Injuries"
+  Sandbox_CustomMoodleThresholds_SevereInjuries_tooltip = "Injury threshold for Severe Injuries"
+
+  Sandbox_CustomMoodleThresholds_CriticalInjuries = "Critical Injuries"
+  Sandbox_CustomMoodleThresholds_CriticalInjuries_tooltip = "Injury threshold for Critical Injuries"
+
+
+  Sandbox_CustomMoodleThresholds_MinorPain_mtitle1 = "Pain Thresholds",
+  Sandbox_CustomMoodleThresholds_MinorPain = "Minor Pain",
+  Sandbox_CustomMoodleThresholds_MinorPain_tooltip = "Pain threshold for Minor Pain",
+
+  Sandbox_CustomMoodleThresholds_Pain = "Pain",
+  Sandbox_CustomMoodleThresholds_Pain_tooltip = "Pain threshold for Pain",
+
+  Sandbox_CustomMoodleThresholds_SeverePain = "Severe Pain",
+  Sandbox_CustomMoodleThresholds_SeverePain_tooltip = "Pain threshold for Severe Pain",
+
+  Sandbox_CustomMoodleThresholds_Agony = "Agony",
+  Sandbox_CustomMoodleThresholds_Agony_tooltip = "Pain threshold for Agony",
+
+
+  Sandbox_CustomMoodleThresholds_WeighedDown_mtitle1 = "Heavy Load Thresholds",
+  Sandbox_CustomMoodleThresholds_WeighedDown = "Weighed Down",
+  Sandbox_CustomMoodleThresholds_WeighedDown_tooltip = "Heavy load threshold for Weighed Down",
+
+  Sandbox_CustomMoodleThresholds_Overloaded = "Overloaded",
+  Sandbox_CustomMoodleThresholds_Overloaded_tooltip = "Heavy load threshold for Overloaded",
+
+  Sandbox_CustomMoodleThresholds_VeryOverloaded = "Very Overloaded",
+  Sandbox_CustomMoodleThresholds_VeryOverloaded_tooltip = "Heavy load threshold for Very Overloaded",
+
+  Sandbox_CustomMoodleThresholds_ExtremelyOverloaded = "Extremely Overloaded",
+  Sandbox_CustomMoodleThresholds_ExtremelyOverloaded_tooltip = "Heavy load threshold for Extremely Overloaded",
+
+
+  Sandbox_CustomMoodleThresholds_Tipsy_mtitle1 = "Drunk Thresholds",
+  Sandbox_CustomMoodleThresholds_Tipsy = "Tipsy",
+  Sandbox_CustomMoodleThresholds_Tipsy_tooltip = "Drunkenness threshold for Tipsy",
+
+  Sandbox_CustomMoodleThresholds_Inebriated = "Inebriated",
+  Sandbox_CustomMoodleThresholds_Inebriated_tooltip = "Drunkenness threshold for Inebriated",
+
+  Sandbox_CustomMoodleThresholds_Plasttered = "Plastered",
+  Sandbox_CustomMoodleThresholds_Plasttered_tooltip = "Drunkenness threshold for Plastered",
+
+  Sandbox_CustomMoodleThresholds_UtterlyShitfaced = "Utterly Shit-faced",
+  Sandbox_CustomMoodleThresholds_UtterlyShitfaced_tooltip = "Drunkenness threshold for Utterly Shit-faced",
+
+
+  Sandbox_CustomMoodleThresholds_Satiated_mtitle1 = "Food Bonus Thresholds",
+  Sandbox_CustomMoodleThresholds_Satiated_mdesc1 = "Extra hunger time X multiplier",
+  Sandbox_CustomMoodleThresholds_Satiated = "Satiated",
+  Sandbox_CustomMoodleThresholds_Satiated_tooltip = "Food bonus time X multiplier for Satiated",
+
+  Sandbox_CustomMoodleThresholds_WellFed = "Well Fed",
+  Sandbox_CustomMoodleThresholds_WellFed_tooltip = "Food bonus time X multiplier for Well Fed",
+
+  Sandbox_CustomMoodleThresholds_Stuffed = "Stuffed",
+  Sandbox_CustomMoodleThresholds_Stuffed_tooltip = "Food bonus time X multiplier for Stuffed",
+
+  Sandbox_CustomMoodleThresholds_FullToBursting = "Full to Bursting",
+  Sandbox_CustomMoodleThresholds_FullToBursting_tooltip = "Food bonus time X multiplier for Full to Bursting",
+
+
+  Sandbox_CustomMoodleThresholds_UnpleasantlyHot_mtitle1 = "Hyperthermia Thresholds",
+  Sandbox_CustomMoodleThresholds_UnpleasantlyHot = "Unpleasantly Hot",
+  Sandbox_CustomMoodleThresholds_UnpleasantlyHot_tooltip = "Hyperthermia threshold for Unpleasantly Hot",
+
+  Sandbox_CustomMoodleThresholds_Overheated = "Overheated",
+  Sandbox_CustomMoodleThresholds_Overheated_tooltip = "Hyperthermia threshold for Overheated",
+
+  Sandbox_CustomMoodleThresholds_Sunstruck = "Sunstruck",
+  Sandbox_CustomMoodleThresholds_Sunstruck_tooltip = "Hyperthermia threshold for Sunstruck",
+
+  Sandbox_CustomMoodleThresholds_Hyperthermia = "Hyperthermia",
+  Sandbox_CustomMoodleThresholds_Hyperthermia_tooltip = "Hyperthermia threshold for Hyperthermia",
+
+
+  Sandbox_CustomMoodleThresholds_Chilly_mtitle1 = "Hypothermia Thresholds",
+  Sandbox_CustomMoodleThresholds_Chilly = "Chilly",
+  Sandbox_CustomMoodleThresholds_Chilly_tooltip = "Hypothermia threshold for Chilly",
+
+  Sandbox_CustomMoodleThresholds_Cold = "Cold",
+  Sandbox_CustomMoodleThresholds_Cold_tooltip = "Hypothermia threshold for Cold",
+
+  Sandbox_CustomMoodleThresholds_Freezing = "Freezing",
+  Sandbox_CustomMoodleThresholds_Freezing_tooltip = "Hypothermia threshold for Freezing",
+
+  Sandbox_CustomMoodleThresholds_Hypothermia = "Hypothermia",
+  Sandbox_CustomMoodleThresholds_Hypothermia_tooltip = "Hypothermia threshold for Hypothermia",
+
+
+  Sandbox_CustomMoodleThresholds_SlightWindchill_mtitle1 = "Windchill Thresholds",
+  Sandbox_CustomMoodleThresholds_SlightWindchill = "Slight Windchill",
+  Sandbox_CustomMoodleThresholds_SlightWindchill_tooltip = "Windchill threshold for Slight Windchill",
+
+  Sandbox_CustomMoodleThresholds_UncomfortableWindchill = "Uncomfortable Windchill",
+  Sandbox_CustomMoodleThresholds_UncomfortableWindchill_tooltip = "Windchill threshold for Uncomfortable Windchill",
+
+  Sandbox_CustomMoodleThresholds_FreezingWindchill = "Freezing Windchill",
+  Sandbox_CustomMoodleThresholds_FreezingWindchill_tooltip = "Windchill threshold for Freezing Windchill",
+
+  Sandbox_CustomMoodleThresholds_HorrificWindchill = "Horrific Windchill",
+  Sandbox_CustomMoodleThresholds_HorrificWindchill_tooltip = "Windchill threshold for Horrific Windchill",
+
+
+
+  Sandbox_CustomMoodleThresholds_SlightlyUncomfortable_mtitle1 = "Discomfort Thresholds",
+  Sandbox_CustomMoodleThresholds_SlightlyUncomfortable = "Slightly Uncomfortable",
+  Sandbox_CustomMoodleThresholds_SlightlyUncomfortable_tooltip = "Discomfort threshold for Slightly Uncomfortable",
+
+  Sandbox_CustomMoodleThresholds_Uncomfortable = "Uncomfortable",
+  Sandbox_CustomMoodleThresholds_Uncomfortable_tooltip = "Discomfort threshold for Uncomfortable",
+
+  Sandbox_CustomMoodleThresholds_VeryUncomfortable = "Very Uncomfortable",
+  Sandbox_CustomMoodleThresholds_VeryUncomfortable_tooltip = "Discomfort threshold for Very Uncomfortable",
+
+  Sandbox_CustomMoodleThresholds_ExtremelyUncomfortable = "Extremely Uncomfortable",
+  Sandbox_CustomMoodleThresholds_ExtremelyUncomfortable_tooltip = "Discomfort threshold for Extremely Uncomfortable",
+
+
+
+  Sandbox_CustomMoodleThresholds_ToxicityInsideBuilding_mtitle1 = "Toxicity Thresholds",
+  Sandbox_CustomMoodleThresholds_ToxicityInsideBuilding = "Toxicity Inside Building",
+  Sandbox_CustomMoodleThresholds_ToxicityInsideBuilding_tooltip = "Toxicity level when inside a toxic building (0 = Off, 1 = Low, 2 = Moderate, 3 = Max)",
+
+  Sandbox_CustomMoodleThresholds_SlightlyToxic = "Slightly Toxic",
+  Sandbox_CustomMoodleThresholds_SlightlyToxic_tooltip = "Toxicity threshold for Slightly Toxic",
+
+  Sandbox_CustomMoodleThresholds_Toxic = "Toxic",
+  Sandbox_CustomMoodleThresholds_Toxic_tooltip = "Toxicity threshold for Toxic",
+
+  Sandbox_CustomMoodleThresholds_VeryToxic = "Very Toxic",
+  Sandbox_CustomMoodleThresholds_VeryToxic_tooltip = "Toxicity threshold for Very Toxic"
+
+}

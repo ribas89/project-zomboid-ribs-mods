@@ -1,0 +1,585 @@
+VERSION = 1,
+
+option CustomMoodleThresholds.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = CustomMoodleThresholds,
+    translation = CustomMoodleThresholds_EnableModOptions,
+}
+
+
+option CustomMoodleThresholds.OutOfBreath
+{
+    type = double, min = 0.0, max = 2.0, default = 0.75,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_OutOfBreath,
+}
+
+option CustomMoodleThresholds.HighExertion
+{
+    type = double, min = 0.0, max = 2.0, default = 0.5,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_HighExertion,
+}
+
+option CustomMoodleThresholds.ExcessiveExertion
+{
+    type = double, min = 0.0, max = 2.0, default = 0.25,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_ExcessiveExertion,
+}
+
+option CustomMoodleThresholds.Exhausted
+{
+    type = double, min = 0.0, max = 2.0, default = 0.1,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Exhausted,
+}
+
+
+
+option CustomMoodleThresholds.Irritated
+{
+    type = double, min = 0.0, max = 1.0, default = 0.1,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Irritated,
+}
+
+option CustomMoodleThresholds.Annoyed
+{
+    type = double, min = 0.0, max = 1.0, default = 0.25,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Annoyed,
+}
+
+option CustomMoodleThresholds.Angry
+{
+    type = double, min = 0.0, max = 1.0, default = 0.5,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Angry,
+}
+
+option CustomMoodleThresholds.Furious
+{
+    type = double, min = 0.0, max = 1.0, default = 0.75,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Furious,
+}
+
+
+
+option CustomMoodleThresholds.Drowsy
+{
+    type = double, min = 0.0, max = 2.0, default = 0.6,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Drowsy,
+}
+
+option CustomMoodleThresholds.Tired
+{
+    type = double, min = 0.0, max = 2.0, default = 0.7,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Tired,
+}
+
+option CustomMoodleThresholds.VeryTired
+{
+    type = double, min = 0.0, max = 2.0, default = 0.8,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_VeryTired,
+}
+
+option CustomMoodleThresholds.RidiculouslyTired
+{
+    type = double, min = 0.0, max = 2.0, default = 0.9,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_RidiculouslyTired,
+}
+
+
+
+option CustomMoodleThresholds.Peckish
+{
+    type = double, min = 0.0, max = 2.0, default = 0.15,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Peckish,
+}
+
+option CustomMoodleThresholds.Hungry
+{
+    type = double, min = 0.0, max = 2.0, default = 0.25,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Hungry,
+}
+
+option CustomMoodleThresholds.VeryHungry
+{
+    type = double, min = 0.0, max = 2.0, default = 0.45,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_VeryHungry,
+}
+
+option CustomMoodleThresholds.StarvingToDeath
+{
+    type = double, min = 0.0, max = 2.0, default = 0.7,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_StarvingToDeath,
+}
+
+
+
+option CustomMoodleThresholds.Nervous
+{
+    type = double, min = 0.0, max = 100.0, default = 6.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Nervous,
+}
+
+option CustomMoodleThresholds.Alarmed
+{
+    type = double, min = 0.0, max = 100.0, default = 30.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Alarmed,
+}
+
+option CustomMoodleThresholds.Frightened
+{
+    type = double, min = 0.0, max = 100.0, default = 65.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Frightened,
+}
+
+option CustomMoodleThresholds.Terrified
+{
+    type = double, min = 0.0, max = 100.0, default = 80.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Terrified,
+}
+
+
+
+option CustomMoodleThresholds.Queasy
+{
+    type = double, min = 0.0, max = 2.0, default = 0.25,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Queasy,
+}
+
+option CustomMoodleThresholds.Sick
+{
+    type = double, min = 0.0, max = 2.0, default = 0.50,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Sick,
+}
+
+option CustomMoodleThresholds.VerySick
+{
+    type = double, min = 0.0, max = 2.0, default = 0.75,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_VerySick,
+}
+
+option CustomMoodleThresholds.SeverelySick
+{
+    type = double, min = 0.0, max = 2.0, default = 0.90,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_SeverelySick,
+}
+
+
+
+option CustomMoodleThresholds.GettingBored
+{
+    type = double, min = 0.0, max = 2.0, default = 0.25,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_GettingBored,
+}
+
+option CustomMoodleThresholds.Bored
+{
+    type = double, min = 0.0, max = 2.0, default = 0.5,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Bored,
+}
+
+option CustomMoodleThresholds.VeryBored
+{
+    type = double, min = 0.0, max = 2.0, default = 0.75,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_VeryBored,
+}
+
+option CustomMoodleThresholds.ExtremelyBored
+{
+    type = double, min = 0.0, max = 2.0, default = 0.9,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_ExtremelyBored,
+}
+
+
+
+option CustomMoodleThresholds.Sad
+{
+    type = double, min = 0.0, max = 2.0, default = 0.2,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Sad,
+}
+
+option CustomMoodleThresholds.Weepy
+{
+    type = double, min = 0.0, max = 2.0, default = 0.45,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Weepy,
+}
+
+option CustomMoodleThresholds.Miserable
+{
+    type = double, min = 0.0, max = 2.0, default = 0.6,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Miserable,
+}
+
+option CustomMoodleThresholds.Hopeless
+{
+    type = double, min = 0.0, max = 2.0, default = 0.8,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Hopeless,
+}
+
+
+option CustomMoodleThresholds.Tense
+{
+    type = double, min = 0.0, max = 1.0, default = 0.25,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Tense,
+}
+
+option CustomMoodleThresholds.Agitated
+{
+    type = double, min = 0.0, max = 1.0, default = 0.5,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Agitated,
+}
+
+option CustomMoodleThresholds.StressedOut
+{
+    type = double, min = 0.0, max = 1.0, default = 0.75,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_StressedOut,
+}
+
+option CustomMoodleThresholds.AtBreakingPoint
+{
+    type = double, min = 0.0, max = 1.0, default = 0.9,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_AtBreakingPoint,
+}
+
+
+
+option CustomMoodleThresholds.SlightlyThirsty
+{
+    type = double, min = 0.0, max = 2.0, default = 0.12,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_SlightlyThirsty,
+}
+
+option CustomMoodleThresholds.Thirsty
+{
+    type = double, min = 0.0, max = 2.0, default = 0.25,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Thirsty,
+}
+
+option CustomMoodleThresholds.Parched
+{
+    type = double, min = 0.0, max = 2.0, default = 0.7,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Parched,
+}
+
+option CustomMoodleThresholds.DyingOfThirst
+{
+    type = double, min = 0.0, max = 2.0, default = 0.84,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_DyingOfThirst,
+}
+
+
+
+option CustomMoodleThresholds.NeckBleedingSeverity
+{
+    type = double, min = 0.0, max = 4.0, default = 4.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_NeckBleedingSeverity,
+}
+
+option CustomMoodleThresholds.MinorBleeding
+{
+    type = double, min = 0.0, max = 10.0, default = 1.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_MinorBleeding,
+}
+
+option CustomMoodleThresholds.Bleeding
+{
+    type = double, min = 0.0, max = 10.0, default = 2.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Bleeding,
+}
+
+option CustomMoodleThresholds.SevereBleeding
+{
+    type = double, min = 0.0, max = 10.0, default = 3.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_SevereBleeding,
+}
+
+option CustomMoodleThresholds.MassiveBloodLoss
+{
+    type = double, min = 0.0, max = 10.0, default = 4.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_MassiveBloodLoss,
+}
+
+
+
+option CustomMoodleThresholds.Moist
+{
+    type = double, min = 0.0, max = 100.0, default = 15.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Moist,
+}
+
+option CustomMoodleThresholds.Wet
+{
+    type = double, min = 0.0, max = 100.0, default = 40.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Wet,
+}
+
+option CustomMoodleThresholds.Soaking
+{
+    type = double, min = 0.0, max = 100.0, default = 70.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Soaking,
+}
+
+option CustomMoodleThresholds.Drenched
+{
+    type = double, min = 0.0, max = 100.0, default = 90.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Drenched,
+}
+
+
+
+option CustomMoodleThresholds.RunnyNose
+{
+    type = double, min = 0.0, max = 100.0, default = 20.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_RunnyNose,
+}
+
+option CustomMoodleThresholds.TheSniffles
+{
+    type = double, min = 0.0, max = 100.0, default = 40.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_TheSniffles,
+}
+
+option CustomMoodleThresholds.HeadCold
+{
+    type = double, min = 0.0, max = 100.0, default = 60.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_HeadCold,
+}
+
+option CustomMoodleThresholds.NastyCold
+{
+    type = double, min = 0.0, max = 100.0, default = 75.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_NastyCold,
+}
+
+
+
+option CustomMoodleThresholds.ALittleHurt
+{
+    type = double, min = 0.0, max = 2.0, default = 0.2,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_ALittleHurt,
+}
+
+option CustomMoodleThresholds.Injured
+{
+    type = double, min = 0.0, max = 2.0, default = 0.4,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Injured,
+}
+
+option CustomMoodleThresholds.SevereInjuries
+{
+    type = double, min = 0.0, max = 2.0, default = 0.6,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_SevereInjuries,
+}
+
+option CustomMoodleThresholds.CriticalInjuries
+{
+    type = double, min = 0.0, max = 2.0, default = 0.75,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_CriticalInjuries,
+}
+
+
+
+option CustomMoodleThresholds.MinorPain
+{
+    type = double, min = 0.0, max = 100.0, default = 10.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_MinorPain,
+}
+
+option CustomMoodleThresholds.Pain
+{
+    type = double, min = 0.0, max = 100.0, default = 20.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Pain,
+}
+
+option CustomMoodleThresholds.SeverePain
+{
+    type = double, min = 0.0, max = 100.0, default = 50.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_SeverePain,
+}
+
+option CustomMoodleThresholds.Agony
+{
+    type = double, min = 0.0, max = 100.0, default = 75.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Agony,
+}
+
+
+
+option CustomMoodleThresholds.WeighedDown
+{
+    type = double, min = 0.0, max = 100.0, default = 1.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_WeighedDown,
+}
+
+option CustomMoodleThresholds.Overloaded
+{
+    type = double, min = 0.0, max = 100.0, default = 1.25,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Overloaded,
+}
+
+option CustomMoodleThresholds.VeryOverloaded
+{
+    type = double, min = 0.0, max = 100.0, default = 1.5,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_VeryOverloaded,
+}
+
+option CustomMoodleThresholds.ExtremelyOverloaded
+{
+    type = double, min = 0.0, max = 100.0, default = 1.75,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_ExtremelyOverloaded,
+}
+
+
+
+option CustomMoodleThresholds.Satiated
+{
+    type = double, min = 0.0, max = 100.0, default = 0.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Satiated,
+}
+
+option CustomMoodleThresholds.WellFed
+{
+    type = double, min = 0.0, max = 100.0, default = 1.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_WellFed,
+}
+
+option CustomMoodleThresholds.Stuffed
+{
+    type = double, min = 0.0, max = 100.0, default = 2.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Stuffed,
+}
+
+option CustomMoodleThresholds.FullToBursting
+{
+    type = double, min = 0.0, max = 100.0, default = 3.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_FullToBursting,
+}
+
+
+option CustomMoodleThresholds.UnpleasantlyHot
+{
+    type = double, min = 0.0, max = 100.0, default = 37.5,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_UnpleasantlyHot,
+}
+
+option CustomMoodleThresholds.Overheated
+{
+    type = double, min = 0.0, max = 100.0, default = 39.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Overheated,
+}
+
+option CustomMoodleThresholds.Sunstruck
+{
+    type = double, min = 0.0, max = 100.0, default = 40.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Sunstruck,
+}
+
+option CustomMoodleThresholds.Hyperthermia
+{
+    type = double, min = 0.0, max = 100.0, default = 41.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Hyperthermia,
+}
+
+
+
+option CustomMoodleThresholds.Chilly
+{
+    type = double, min = 0.0, max = 100.0, default = 36.5,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Chilly,
+}
+
+option CustomMoodleThresholds.Cold
+{
+    type = double, min = 0.0, max = 100.0, default = 35.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Cold,
+}
+
+option CustomMoodleThresholds.Freezing
+{
+    type = double, min = 0.0, max = 100.0, default = 30.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Freezing,
+}
+
+option CustomMoodleThresholds.Hypothermia
+{
+    type = double, min = 0.0, max = 100.0, default = 25.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Hypothermia,
+}
+
+
+
+option CustomMoodleThresholds.SlightWindchill
+{
+    type = double, min = 0.0, max = 100.0, default = 5.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_SlightWindchill,
+}
+
+option CustomMoodleThresholds.UncomfortableWindchill
+{
+    type = double, min = 0.0, max = 100.0, default = 10.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_UncomfortableWindchill,
+}
+
+option CustomMoodleThresholds.FreezingWindchill
+{
+    type = double, min = 0.0, max = 100.0, default = 15.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_FreezingWindchill,
+}
+
+option CustomMoodleThresholds.HorrificWindchill
+{
+    type = double, min = 0.0, max = 100.0, default = 20.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_HorrificWindchill,
+}
+
+
+
+option CustomMoodleThresholds.SlightlyUncomfortable
+{
+    type = double, min = 0.0, max = 2.0, default = 0.2,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_SlightlyUncomfortable,
+}
+
+option CustomMoodleThresholds.Uncomfortable
+{
+    type = double, min = 0.0, max = 2.0, default = 0.4,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Uncomfortable,
+}
+
+option CustomMoodleThresholds.VeryUncomfortable
+{
+    type = double, min = 0.0, max = 2.0, default = 0.6,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_VeryUncomfortable,
+}
+
+option CustomMoodleThresholds.ExtremelyUncomfortable
+{
+    type = double, min = 0.0, max = 2.0, default = 0.8,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_ExtremelyUncomfortable,
+}
+
+
+
+option CustomMoodleThresholds.ToxicityInsideBuilding
+{
+    type = double, min = 0.0, max = 3.0, default = 3.0,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_ToxicityInsideBuilding,
+}
+
+option CustomMoodleThresholds.SlightlyToxic
+{
+    type = double, min = 0.0, max = 1.0, default = 0.000,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_SlightlyToxic,
+}
+
+option CustomMoodleThresholds.Toxic
+{
+    type = double, min = 0.0, max = 1.0, default = 0.001,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_Toxic,
+}
+
+option CustomMoodleThresholds.VeryToxic
+{
+    type = double, min = 0.0, max = 1.0, default = 0.002,
+    page = CustomMoodleThresholds, translation = CustomMoodleThresholds_VeryToxic,
+}
+

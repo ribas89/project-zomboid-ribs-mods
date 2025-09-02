@@ -1,0 +1,6 @@
+name=Custom Moodle Thresholds
+id=CustomMoodleThresholds
+description=Requires replacing the Moodle.class file in your Project Zomboid installation. See the Steam Workshop page for full instructions.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework
