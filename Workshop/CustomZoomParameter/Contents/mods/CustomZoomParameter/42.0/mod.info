@@ -1,0 +1,5 @@
+name=Custom Zoom Parameter
+id=CustomZoomParameter
+description=Sets custom camera zoom levels from Mod Options and ignores the vanilla zoom settings. The game will use your values from the mod options instead of the menu.
+poster=poster.png
+icon=icon.png
