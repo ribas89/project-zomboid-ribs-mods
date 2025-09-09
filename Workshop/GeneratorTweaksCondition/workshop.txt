@@ -1,0 +1,22 @@
+version=1
+id=3565384224
+title=Generator Tweaks - Condition
+description=Generator Tweaks - Condition gives you full control over how generators degrade and fail:  
+description=
+description=- Condition Loss: Set intervals, probabilities, and min/max values for condition reduction.  
+description=- Backfire: Define when backfires start, how loud they are, and their chance to occur at zero condition.  
+description=- Catastrophic Failure: Configure thresholds and probabilities for fire or explosion when condition is critical.  
+description=- FIX GENERATOR NOCAP: Adds a new repair option that lets you fix generators beyond the vanilla limit and even while they are running.  
+description=- Allowed Repair Items: Choose which items can be used with FIX GENERATOR NOCAP for flexible repair options.  
+description=- Max Condition: Set the maximum possible condition value for generators.  
+description=
+description=All features can be customized in the sandbox options.  
+description=Mod options simply mirror sandbox settings and cannot override multiplayer server configurations.  
+description=
+description=Check out more of my QoL mods:  
+description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600  
+description=
+description=If you enjoy the mod, consider giving it a star on GitHub:  
+description=https://github.com/ribas89/project-zomboid-ribs-mods/
+tags=Build 42;Balance;Misc;QoL
+visibility=public

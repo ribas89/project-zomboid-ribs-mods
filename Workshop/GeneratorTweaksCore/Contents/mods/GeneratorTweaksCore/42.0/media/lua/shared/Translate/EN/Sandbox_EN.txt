@@ -1,0 +1,7 @@
+Sandbox_EN = {
+  Sandbox_GeneratorTweaksCore = "Generator Tweaks - Core"
+
+  Sandbox_GeneratorTweaksCore_EnableModOptions = "Enable Mod Options"
+  Sandbox_GeneratorTweaksCore_EnableModOptions_tooltip = "Show or hide options in the mod settings."
+
+}

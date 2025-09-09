@@ -1,0 +1,71 @@
+Sandbox_EN = {
+  Sandbox_GeneratorTweaksFuel = "Generator Tweaks - Fuel",
+
+  Sandbox_GeneratorTweaksFuel_EnableModOptions = "Enable Mod Options"
+  Sandbox_GeneratorTweaksFuel_EnableModOptions_tooltip = "Show or hide options in the mod settings."
+
+  Sandbox_GeneratorTweaksFuel_FuelConsumptionInterval = "Fuel Consumption Interval"
+  Sandbox_GeneratorTweaksFuel_FuelConsumptionInterval_tooltip = "Fuel is consumed once every N in-game hours."
+
+  Sandbox_GeneratorTweaksFuel_ClothingDryerConsumption_mtitle1 = "Appliance Consumption"
+  Sandbox_GeneratorTweaksFuel_ClothingDryerConsumption = "Clothing Dryer"
+  Sandbox_GeneratorTweaksFuel_ClothingDryerConsumption_tooltip = "Fuel per hour used by an active clothing dryer."
+
+  Sandbox_GeneratorTweaksFuel_ClothingWasherConsumption = "Clothing Washer"
+  Sandbox_GeneratorTweaksFuel_ClothingWasherConsumption_tooltip = "Fuel per hour used by an active clothing washer."
+
+  Sandbox_GeneratorTweaksFuel_ComboWasherDryerConsumption = "Combo Washer Dryer"
+  Sandbox_GeneratorTweaksFuel_ComboWasherDryerConsumption_tooltip = "Fuel per hour used by an active combo washer dryer."
+
+  Sandbox_GeneratorTweaksFuel_StackedDryerConsumption = "Stacked Dryer"
+  Sandbox_GeneratorTweaksFuel_StackedDryerConsumption_tooltip = "Fuel per hour used by the dryer in a stacked unit."
+
+  Sandbox_GeneratorTweaksFuel_StackedWasherConsumption = "Stacked Washer"
+  Sandbox_GeneratorTweaksFuel_StackedWasherConsumption_tooltip = "Fuel per hour used by the washer in a stacked unit."
+
+  Sandbox_GeneratorTweaksFuel_TelevisionConsumption = "Television"
+  Sandbox_GeneratorTweaksFuel_TelevisionConsumption_tooltip = "Fuel per hour used by a powered television."
+
+  Sandbox_GeneratorTweaksFuel_RadioConsumption = "Radio"
+  Sandbox_GeneratorTweaksFuel_RadioConsumption_tooltip = "Fuel per hour used by a powered radio without batteries."
+
+  Sandbox_GeneratorTweaksFuel_StoveConsumption = "Stove"
+  Sandbox_GeneratorTweaksFuel_StoveConsumption_tooltip = "Fuel per hour used by an active electric stove."
+
+  Sandbox_GeneratorTweaksFuel_FridgeFreezerComboConsumption = "Fridge Freezer Combo"
+  Sandbox_GeneratorTweaksFuel_FridgeFreezerComboConsumption_tooltip = "Fuel per hour used by an object with both fridge and freezer."
+
+  Sandbox_GeneratorTweaksFuel_SingleFridgeOrFreezerConsumption = "Single Fridge Or Freezer"
+  Sandbox_GeneratorTweaksFuel_SingleFridgeOrFreezerConsumption_tooltip = "Fuel per hour used by a single fridge or a single freezer."
+
+  Sandbox_GeneratorTweaksFuel_LightSwitchConsumption = "Light Switch"
+  Sandbox_GeneratorTweaksFuel_LightSwitchConsumption_tooltip = "Fuel per hour used by indoor lights."
+
+  Sandbox_GeneratorTweaksFuel_FuelPumpConsumption = "Fuel Pump"
+  Sandbox_GeneratorTweaksFuel_FuelPumpConsumption_tooltip = "Fuel per hour used by connected fuel pumps."
+
+  Sandbox_GeneratorTweaksFuel_LowFuelSoundEnabled_mtitle1 = "Low Fuel Sound Alarm"
+  Sandbox_GeneratorTweaksFuel_LowFuelSoundEnabled_mdesc1 = "This sound does not attract zombies"
+  Sandbox_GeneratorTweaksFuel_LowFuelSoundEnabled = "Enable Low Fuel Sound"
+  Sandbox_GeneratorTweaksFuel_LowFuelSoundEnabled_tooltip = "If enabled, the generator plays a alarm when fuel is below the threshold."
+
+  Sandbox_GeneratorTweaksFuel_LowFuelSoundThreshold = "Low Fuel Sound Threshold"
+  Sandbox_GeneratorTweaksFuel_LowFuelSoundThreshold_tooltip = "If fuel is at or below this percentage, the generator will use the low-fuel sound (when enabled)."
+
+  Sandbox_GeneratorTweaksFuel_LowFuelSoundVolume = "Low Fuel Sound Volume"
+  Sandbox_GeneratorTweaksFuel_LowFuelSoundVolume_tooltip = "Volume of the sound alarm."
+
+  Sandbox_GeneratorTweaksFuel_LowFuelSoundFile = "Low Fuel Sound File"
+  Sandbox_GeneratorTweaksFuel_LowFuelSoundFile_tooltip = "FMOD sound name."
+
+  Sandbox_GeneratorTweaksFuel_EnableAddFuelNoCap_mtitle1 = "ADD FUEL NOCAP"
+  Sandbox_GeneratorTweaksFuel_EnableAddFuelNoCap = "Enable ADD FUEL NOCAP option"
+  Sandbox_GeneratorTweaksFuel_EnableAddFuelNoCap_tooltip = "Show the ADD FUEL NOCAP option at the end of the menu."
+  Sandbox_GeneratorTweaksFuel_EnableAddFuelNoCapLabel = "ADD FUEL NOCAP"
+
+  Sandbox_GeneratorTweaksFuel_AllowedFluids = "Allowed Fluids"
+  Sandbox_GeneratorTweaksFuel_AllowedFluids_tooltip = "Fluids permitted for the ADD FUEL NOCAP option."
+
+  Sandbox_GeneratorTweaksFuel_MaxFuel = "Max Fuel"
+  Sandbox_GeneratorTweaksFuel_MaxFuel_tooltip = "Maximum generator fuel capacity in percent."
+}

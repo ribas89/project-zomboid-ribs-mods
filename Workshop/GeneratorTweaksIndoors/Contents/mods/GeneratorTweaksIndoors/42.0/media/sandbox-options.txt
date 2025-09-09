@@ -1,0 +1,48 @@
+VERSION = 1,
+
+option GeneratorTweaksIndoors.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = GeneratorTweaksIndoors,
+    translation = GeneratorTweaksIndoors_EnableModOptions,
+}
+
+option GeneratorTweaksIndoors.Enabled
+{
+    type = boolean,
+    default = false,
+    page = GeneratorTweaksIndoors,
+    translation = GeneratorTweaksIndoors_Enabled,
+}
+
+option GeneratorTweaksIndoors.ScanForWindowsDoors
+{
+    type = boolean,
+    default = true,
+    page = GeneratorTweaksIndoors,
+    translation = GeneratorTweaksIndoors_ScanForWindowsDoors,
+}
+
+option GeneratorTweaksIndoors.Range
+{
+    type = integer, min = 1, max = 200, default = 1,
+    page = GeneratorTweaksIndoors,
+    translation = GeneratorTweaksIndoors_Range,
+}
+
+option GeneratorTweaksIndoors.CheckSameRoom
+{
+    type = boolean,
+    default = true,
+    page = GeneratorTweaksIndoors,
+    translation = GeneratorTweaksIndoors_CheckSameRoom,
+}
+
+option GeneratorTweaksIndoors.CheckFacingOutside
+{
+    type = boolean,
+    default = true,
+    page = GeneratorTweaksIndoors,
+    translation = GeneratorTweaksIndoors_CheckFacingOutside,
+}

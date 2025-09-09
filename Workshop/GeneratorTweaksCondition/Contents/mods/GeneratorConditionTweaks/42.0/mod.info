@@ -1,0 +1,6 @@
+name=Generator Tweaks - Condition
+id=GeneratorTweaksCondition
+description=Adds customizable settings for generator condition loss, backfires, catastrophic failures, repair options, and maximum condition limits.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework,\GeneratorTweaksCore

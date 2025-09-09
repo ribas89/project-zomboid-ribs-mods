@@ -1,0 +1,36 @@
+Sandbox_EN = {
+  Sandbox_GeneratorTweaksSound = "Generator Tweaks - Sound",
+
+  Sandbox_GeneratorTweaksSound_EnableModOptions = "Enable Mod Options"
+  Sandbox_GeneratorTweaksSound_EnableModOptions_tooltip = "Show or hide options in the mod settings."
+
+  Sandbox_GeneratorTweaksSound_BaseVolume_mtitle1 = "Player heard sounds"
+  Sandbox_GeneratorTweaksSound_BaseVolume_mdesc1 = "These sounds do not attract zombies"
+  Sandbox_GeneratorTweaksSound_BaseVolume = "Base Volume"
+  Sandbox_GeneratorTweaksSound_BaseVolume_tooltip = "Controls how loud generator sounds like starting, stopping, or failed start.
+
+  Sandbox_GeneratorTweaksSound_RunningVolume = "Running Volume"
+  Sandbox_GeneratorTweaksSound_RunningVolume_tooltip = "How loud the generator sounds while running."
+
+  Sandbox_GeneratorTweaksSound_RunningSoundFile = "Running Sound File"
+  Sandbox_GeneratorTweaksSound_RunningSoundFile_tooltip = "FMOD sound name for the generator running loop."
+
+  Sandbox_GeneratorTweaksSound_BackfireVolume = "Backfire Volume"
+  Sandbox_GeneratorTweaksSound_BackfireVolume_tooltip = "Controls how loud the generator backfire is heard by the player."
+
+  Sandbox_GeneratorTweaksSound_BackfireSoundFile = "Backfire Sound File"
+  Sandbox_GeneratorTweaksSound_BackfireSoundFile_tooltip = "FMOD sound name used for generator backfire."
+
+  Sandbox_GeneratorTweaksSound_RunningZombieRadius_mtitle1 = "Zombie attraction sounds"
+  Sandbox_GeneratorTweaksSound_RunningZombieRadius = "Running Zombie Radius"
+  Sandbox_GeneratorTweaksSound_RunningZombieRadius_tooltip = "Distance zombies can hear the generator while running."
+
+  Sandbox_GeneratorTweaksSound_RunningZombieVolume = "Running Zombie Volume"
+  Sandbox_GeneratorTweaksSound_RunningZombieVolume_tooltip = "Loudness of the generator to zombies while running."
+
+  Sandbox_GeneratorTweaksSound_BackfireZombieRadius = "Backfire Zombie Radius"
+  Sandbox_GeneratorTweaksSound_BackfireZombieRadius_tooltip = "Distance zombies can hear the generator when it backfires."
+
+  Sandbox_GeneratorTweaksSound_BackfireZombieVolume = "Backfire Zombie Volume"
+  Sandbox_GeneratorTweaksSound_BackfireZombieVolume_tooltip = "Loudness of the generator to zombies when it backfires."
+}

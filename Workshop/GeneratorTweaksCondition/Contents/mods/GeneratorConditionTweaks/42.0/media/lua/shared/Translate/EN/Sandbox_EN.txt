@@ -1,0 +1,50 @@
+Sandbox_EN = {
+  Sandbox_GeneratorTweaksCondition = "Generator Tweaks - Condition",
+
+  Sandbox_GeneratorTweaksCondition_EnableModOptions = "Enable Mod Options"
+  Sandbox_GeneratorTweaksCondition_EnableModOptions_tooltip = "Show or hide options in the mod settings."
+
+  Sandbox_GeneratorTweaksCondition_ConditionLossInterval_mtitle = "Condition Loss"
+  Sandbox_GeneratorTweaksCondition_ConditionLossInterval = "Condition Loss Interval"
+  Sandbox_GeneratorTweaksCondition_ConditionLossInterval_tooltip = "Condition is reduced once every N in-game hours."
+
+  Sandbox_GeneratorTweaksCondition_ConditionLossProbability = "Condition loss probability"
+  Sandbox_GeneratorTweaksCondition_ConditionLossProbability_tooltip = "Probability between 0.0 (0%) and 1.0 (100%) of a chance that the generator loses condition."
+
+  Sandbox_GeneratorTweaksCondition_ConditionLossMin = "Condition Loss Minimum"
+  Sandbox_GeneratorTweaksCondition_ConditionLossMin_tooltip = "Minimum condition loss applied when the generator degrades."
+
+  Sandbox_GeneratorTweaksCondition_ConditionLossMax = "Condition Loss Maximum"
+  Sandbox_GeneratorTweaksCondition_ConditionLossMax_tooltip = "Maximum condition loss applied when the generator degrades."
+
+  Sandbox_GeneratorTweaksCondition_BackfireThreshold_mtitle1 = "Backfire"
+  Sandbox_GeneratorTweaksCondition_BackfireThreshold_mdesc1 = "Backfire is a loud attracting zombie noise the generator does when its condition is low."
+  Sandbox_GeneratorTweaksCondition_BackfireThreshold = "Backfire threshold"
+  Sandbox_GeneratorTweaksCondition_BackfireThreshold_tooltip = "Backfire begins when the condition is below this value."
+
+  Sandbox_GeneratorTweaksCondition_BackfireMaxChance = "Backfire probability"
+  Sandbox_GeneratorTweaksCondition_BackfireMaxChance_tooltip = "Probability between 0.0 (0%) and 1.0 (100%) of a backfire when the condition reaches 0."
+
+  Sandbox_GeneratorTweaksCondition_FailureThreshold_mtitle1 = "Catastrophic Failure"
+  Sandbox_GeneratorTweaksCondition_FailureThreshold_mdesc1 = "Event when the generator catches fire or explodes if its condition is critically low."
+  Sandbox_GeneratorTweaksCondition_FailureThreshold = "Failure Threshold"
+  Sandbox_GeneratorTweaksCondition_FailureThreshold_tooltip = "Below this condition the generator risks catastrophic failure."
+
+  Sandbox_GeneratorTweaksCondition_FireMaxChance = "Fire Chance at Zero Condition"
+  Sandbox_GeneratorTweaksCondition_FireMaxChance_tooltip = "Probability between 0.0 (0%) and 1.0 (100%) of the generator catching fire when its condition reaches 0."
+
+  Sandbox_GeneratorTweaksCondition_ExplodeMaxChance_mdesc1 = "The generator only explodes if it does not catch fire first."
+  Sandbox_GeneratorTweaksCondition_ExplodeMaxChance = "Explosion Chance at Zero Condition"
+  Sandbox_GeneratorTweaksCondition_ExplodeMaxChance_tooltip = "Probability between 0.0 (0%) and 1.0 (100%) of the generator exploding when its condition reaches 0."
+
+  Sandbox_GeneratorTweaksCondition_EnableFixGeneratorNoCap_mtitle1 = "FIX GENERATOR NOCAP"
+  Sandbox_GeneratorTweaksCondition_EnableFixGeneratorNoCap = "Enable FIX GENERATOR NOCAP option"
+  Sandbox_GeneratorTweaksCondition_EnableFixGeneratorNoCap_tooltip = "Show the FIX GENERATOR NOCAP option at the end of the menu."
+  Sandbox_GeneratorTweaksCondition_EnableFixGeneratorNoCapLabel = "FIX GENERATOR NOCAP"
+
+  Sandbox_GeneratorTweaksCondition_AllowedItems = "Allowed Repair Items"
+  Sandbox_GeneratorTweaksCondition_AllowedItems_tooltip = "Items permitted for the FIX GENERATOR NOCAP option."
+
+  Sandbox_GeneratorTweaksCondition_MaxCondition = "Max Condition"
+  Sandbox_GeneratorTweaksCondition_MaxCondition_tooltip = "Maximum generator condition value in percent."
+}

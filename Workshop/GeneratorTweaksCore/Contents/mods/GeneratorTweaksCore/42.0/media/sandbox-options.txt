@@ -1,0 +1,10 @@
+VERSION = 1,
+
+option GeneratorTweaksCore.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = GeneratorTweaksCore,
+    translation = GeneratorTweaksCore_EnableModOptions,
+}
+

@@ -1,0 +1,6 @@
+name=Generator Tweaks - Indoors
+id=GeneratorTweaksIndoors
+description=Allows safe indoor generator use with customizable checks for windows, doors, rooms, and scan ranges.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework,\GeneratorTweaksCore

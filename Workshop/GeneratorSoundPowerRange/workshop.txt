@@ -1,6 +1,27 @@
 version=1
 id=3554362225
-title=Generator Sound and Power Range
-description=Change the sound and power range of generators mid-game.
+title=[OUTDATED] Generator Sound and Power Range
+description=[h1]Important Notice[/h1]
+description=This mod will no longer be updated or maintained. It has been replaced by the new [b]Generator Tweaks - Core[/b] system.
+description=
+description=[h2]Why?[/h2]
+description=The old mod only changed generator sound and power range. With the new system, all generator tweaks have been split into separate modules, making them easier to configure and maintain.
+description=
+description=[h2]Generator Tweaks - Core[/h2]
+description=Base mod required for all Generator Tweaks modules. From here, you can install only the features you want.
+description=Link: https://steamcommunity.com/sharedfiles/filedetails/?id=3565376571
+description=
+description=[h2]What the new system provides[/h2]
+description=- [b]Condition[/b]: Control degradation, backfires, catastrophic failures, and repair options.
+description=- [b]Fuel[/b]: Adjust fuel consumption, appliance usage, alarms, and capacity.
+description=- [b]Indoors[/b]: Safely allow generators inside buildings with ventilation checks.
+description=- [b]Power[/b]: Customize horizontal and vertical power ranges.
+description=- [b]Sound[/b]: Change generator sound volume, sound files, and zombie attraction.
+description=
+description=Check out more QoL mods:
+description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600
+description=
+description=If you enjoy the mod, consider giving it a star on GitHub:
+description=https://github.com/ribas89/project-zomboid-ribs-mods/
 tags=Build 42;Audio;Balance;Building;Interface;QoL
 visibility=public

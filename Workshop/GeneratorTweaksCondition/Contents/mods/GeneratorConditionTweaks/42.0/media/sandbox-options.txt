@@ -1,0 +1,92 @@
+VERSION = 1,
+
+option GeneratorTweaksCondition.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = GeneratorTweaksCondition,
+    translation = GeneratorTweaksCondition_EnableModOptions,
+}
+
+option GeneratorTweaksCondition.ConditionLossInterval
+{
+    type = integer, min = 1, max = 2147483647, default = 1,
+    page = GeneratorTweaksCondition,
+    translation = GeneratorTweaksCondition_ConditionLossInterval,
+}
+
+option GeneratorTweaksCondition.ConditionLossProbability
+{
+    type = double, min = 0.0, max = 1.0, default = 0.033,
+    page = GeneratorTweaksCondition, translation = GeneratorTweaksCondition_ConditionLossProbability,
+}
+
+option GeneratorTweaksCondition.ConditionLossMin
+{
+    type = integer, min = 0, max = 2147483647, default = 1,
+    page = GeneratorTweaksCondition,
+    translation = GeneratorTweaksCondition_ConditionLossMin,
+}
+
+option GeneratorTweaksCondition.ConditionLossMax
+{
+    type = integer, min = 0, max = 2147483647, default = 2,
+    page = GeneratorTweaksCondition,
+    translation = GeneratorTweaksCondition_ConditionLossMax,
+}
+
+option GeneratorTweaksCondition.BackfireThreshold
+{
+    type = integer, min = 0, max = 2147483647, default = 40,
+    page = GeneratorTweaksCondition,
+    translation = GeneratorTweaksCondition_BackfireThreshold,
+}
+
+option GeneratorTweaksCondition.BackfireMaxChance
+{
+    type = double, min = 0.0, max = 1000000000.0, default = 0.2,
+    page = GeneratorTweaksCondition,
+    translation = GeneratorTweaksCondition_BackfireMaxChance,
+}
+
+option GeneratorTweaksCondition.FailureThreshold
+{
+    type = integer, min = 0, max = 2147483647, default = 20,
+    page = GeneratorTweaksCondition,
+    translation = GeneratorTweaksCondition_FailureThreshold,
+}
+
+option GeneratorTweaksCondition.FireMaxChance
+{
+    type = double, min = 0.0, max = 1000000000, default = 0.1,
+    page = GeneratorTweaksCondition,
+    translation = GeneratorTweaksCondition_FireMaxChance,
+}
+
+option GeneratorTweaksCondition.ExplodeMaxChance
+{
+    type = double, min = 0.0, max = 1000000000, default = 0.05,
+    page = GeneratorTweaksCondition,
+    translation = GeneratorTweaksCondition_ExplodeMaxChance,
+}
+
+option GeneratorTweaksCondition.EnableFixGeneratorNoCap
+{
+    type = boolean,
+    default = true,
+    page = GeneratorTweaksCondition,
+    translation = GeneratorTweaksCondition_EnableFixGeneratorNoCap,
+}
+
+option GeneratorTweaksCondition.AllowedItems
+{
+    type = string, default = AluminumScrap;BarbedWire;BarbedWireStack;BrassScrap;CopperScrap;ElectricWire;ElectronicsScrap;GoldScrap;NutsBolts;IronScrap;Screws;ScrapMetal;SilverScrap;SteelScrap;UnusableMetal;Wire,
+    page = GeneratorTweaksCondition, translation = GeneratorTweaksCondition_AllowedItems,
+}
+
+option GeneratorTweaksCondition.MaxCondition
+{
+    type = integer, min = 1, max = 2147483647, default = 100,
+    page = GeneratorTweaksCondition,
+    translation = GeneratorTweaksCondition_MaxCondition,
+}

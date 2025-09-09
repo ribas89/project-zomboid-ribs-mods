@@ -1,0 +1,16 @@
+Sandbox_EN = {
+
+  Sandbox_RibsFramework_Custom_Vanilla_Options_title = "Vanilla/Other Mods Sandbox Options"
+  Sandbox_RibsFramework_Custom_Vanilla_Options_desc = "These options come from the base game or other mods. Their values may be changed by other mods."
+
+  Sandbox_RibsFramework_Custom_CurrentMod_Options_title = "Current Mod Options"
+
+  Sandbox_RibsFramework_Installation_Status_Installed = "Installation Status: Installed"
+  Sandbox_RibsFramework_Installed_Version = "Installed Version: "
+
+  Sandbox_RibsFramework_Installation_Status_Not_Installed = "Installation Status: Not installed"
+  Sandbox_RibsFramework_Not_Installed1 = "The modified java class is not installed"
+  Sandbox_RibsFramework_Not_Installed2 = "Any mods that depend on it will not function"
+  Sandbox_RibsFramework_Not_Installed3 = "Follow the instructions on the Steam Workshop page to install it"
+
+}

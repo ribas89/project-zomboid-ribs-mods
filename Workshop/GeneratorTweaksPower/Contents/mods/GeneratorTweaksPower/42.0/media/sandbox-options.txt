@@ -1,0 +1,23 @@
+VERSION = 1,
+
+option GeneratorTweaksPower.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = GeneratorTweaksPower,
+    translation = GeneratorTweaksPower_EnableModOptions,
+}
+
+option GeneratorTweaksPower.GeneratorTileRange
+{
+    type = integer, min = 0, max = 2147483647, default = 20,
+    page = GeneratorTweaksPower,
+    translation = GeneratorTweaksPower_GeneratorTileRange,
+}
+
+option GeneratorTweaksPower.GeneratorVerticalPowerRange
+{
+    type = integer, min = 0, max = 2147483647, default = 2,
+    page = GeneratorTweaksPower,
+    translation = GeneratorTweaksPower_GeneratorVerticalPowerRange,
+}

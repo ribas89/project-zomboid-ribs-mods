@@ -1,0 +1,6 @@
+name=Generator Tweaks - Sound Silent
+id=GeneratorTweaksSound
+description=Adds customizable settings for generator audio volume, sound files, and zombie attraction ranges.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework,\GeneratorTweaksCore

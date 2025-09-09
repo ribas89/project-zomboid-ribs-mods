@@ -1,0 +1,6 @@
+name=Generator Tweaks - Power
+id=GeneratorTweaksPower
+description=Adds customizable settings for generator horizontal and vertical power supply ranges.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework,\GeneratorTweaksCore

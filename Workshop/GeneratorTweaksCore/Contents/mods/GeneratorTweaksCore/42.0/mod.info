@@ -1,0 +1,6 @@
+name=Generator Tweaks - Core
+id=GeneratorTweaksCore
+description=Core mod for all Generator Tweaks modules. Check the Steam Workshop page for setup instructions.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework

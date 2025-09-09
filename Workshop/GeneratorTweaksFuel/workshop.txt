@@ -1,0 +1,20 @@
+version=1
+id=3565386560
+title=Generator Tweaks - Fuel
+description=Generator Tweaks - Fuel lets you fine-tune fuel usage, capacity, and alerts for generators:  
+description=
+description=- Fuel Consumption: Set how often fuel is consumed and adjust usage per appliance like washers, dryers, stoves, fridges, lights, pumps, and more.  
+description=- Low Fuel Alarm: Enable a warning sound when fuel drops below a set threshold, with customizable volume and sound file.  
+description=- ADD FUEL NOCAP: Adds a new option to refuel generators beyond the vanilla limit, using allowed fluid types you define.  
+description=- Max Fuel: Set the maximum fuel capacity percentage for generators.  
+description=
+description=All features can be customized in the sandbox options.  
+description=Mod options simply mirror sandbox settings and cannot override multiplayer server configurations.  
+description=
+description=Check out more of my QoL mods:  
+description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600  
+description=
+description=If you enjoy the mod, consider giving it a star on GitHub:  
+description=https://github.com/ribas89/project-zomboid-ribs-mods/
+tags=Build 42;Balance;Misc;QoL
+visibility=public

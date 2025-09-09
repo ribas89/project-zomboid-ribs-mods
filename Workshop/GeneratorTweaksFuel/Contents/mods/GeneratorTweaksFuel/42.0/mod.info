@@ -1,0 +1,6 @@
+name=Generator Tweaks - Fuel
+id=GeneratorTweaksFuel
+description=Adds customizable settings for fuel consumption, appliance usage, low-fuel alarms, allowed fuel types, and maximum fuel capacity.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework,\GeneratorTweaksCore

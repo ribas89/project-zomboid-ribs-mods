@@ -1,0 +1,23 @@
+Sandbox_EN = {
+  Sandbox_GeneratorTweaksIndoors = "Generator Tweaks - Indoors",
+
+  Sandbox_GeneratorTweaksIndoors_EnableModOptions = "Enable Mod Options"
+  Sandbox_GeneratorTweaksIndoors_EnableModOptions_tooltip = "Show or hide options in the mod settings."
+
+  Sandbox_GeneratorTweaksIndoors_Enabled_mdesc1 = "Restart the generator for changes to take effect."
+  Sandbox_GeneratorTweaksIndoors_Enabled = "Allow Generators Indoors"
+  Sandbox_GeneratorTweaksIndoors_Enabled_tooltip = "If enabled, generators can be placed and used inside buildings without making them toxic."
+
+  Sandbox_GeneratorTweaksIndoors_ScanForWindowsDoors = "Scan For Windows/Doors"
+  Sandbox_GeneratorTweaksIndoors_ScanForWindowsDoors_tooltip = "If disabled, generators are allowed indoors without needing an open window or door nearby."
+
+  Sandbox_GeneratorTweaksIndoors_Range = "Generator Scan Range"
+  Sandbox_GeneratorTweaksIndoors_Range_tooltip = "Defines how many tiles around the generator will be scanned."
+
+  Sandbox_GeneratorTweaksIndoors_CheckSameRoom = "Check Same Room"
+  Sandbox_GeneratorTweaksIndoors_CheckSameRoom_tooltip = "Check if the window or door is located in the same room as the generator."
+
+  Sandbox_GeneratorTweaksIndoors_CheckFacingOutside = "Check Facing Outside"
+  Sandbox_GeneratorTweaksIndoors_CheckFacingOutside_tooltip = "Check if the door or window leads directly outside."
+
+}

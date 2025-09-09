@@ -1,0 +1,14 @@
+Sandbox_EN = {
+  Sandbox_GeneratorTweaksPower = "Generator Tweaks - Power",
+
+  Sandbox_GeneratorTweaksPower_EnableModOptions = "Enable Mod Options"
+  Sandbox_GeneratorTweaksPower_EnableModOptions_tooltip = "Show or hide options in the mod settings."
+
+  Sandbox_GeneratorTweaksPower_GeneratorTileRange_mtitle1 = "Override vanilla range settings"
+  Sandbox_GeneratorTweaksPower_GeneratorTileRange_mdesc1 = "Use these settings to replace the default sandbox limits."
+  Sandbox_GeneratorTweaksPower_GeneratorTileRange = "Generator horizontal range"
+  Sandbox_GeneratorTweaksPower_GeneratorTileRange_tooltip = "Defines how far the generator supplies power horizontally, measured in tiles."
+
+  Sandbox_GeneratorTweaksPower_GeneratorVerticalPowerRange = "Generator vertical range"
+  Sandbox_GeneratorTweaksPower_GeneratorVerticalPowerRange_tooltip = "Defines how many floors above and below the generator receive power."
+}

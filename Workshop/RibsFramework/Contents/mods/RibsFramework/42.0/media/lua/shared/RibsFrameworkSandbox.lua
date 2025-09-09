@@ -15,6 +15,8 @@ function RibsFramework.Sandbox:new(args)
 
     instance.autoModShowOption = args.autoModShowOption or "EnableModOptions"
 
+    instance.javaClassVersion = args.javaClassVersion or false
+
     instance.modOptionApplyHandlers = {}
 
     instance.onGameStart = args.onGameStart or function()
@@ -261,6 +263,46 @@ function RibsFramework.Sandbox:isModOptionsEnabled()
     return true
 end
 
+function RibsFramework.Sandbox:checkJavaClassVersion()
+    if self.javaClassVersion == false then return end
+    local ribsVersion = self.javaClassVersion.ribsVersion
+
+    if not ribsVersion then
+        self.modOptions:addTitle("Sandbox_RibsFramework_Installation_Status_Not_Installed")
+        self.modOptions:addDescription("Sandbox_RibsFramework_Not_Installed1")
+        self.modOptions:addDescription("Sandbox_RibsFramework_Not_Installed2")
+        self.modOptions:addDescription("Sandbox_RibsFramework_Not_Installed3")
+        return
+    end
+
+    self.modOptions:addTitle("Sandbox_RibsFramework_Installation_Status_Installed")
+    self.modOptions:addDescription(getText("Sandbox_RibsFramework_Installed_Version") .. ribsVersion)
+end
+
+function RibsFramework.Sandbox:generateMixModOptions(options)
+    local customOptions = {}
+    local currentModOptions = {}
+    for i = 1, #options do
+        local option = options[i]
+        if self.customOptions:find(option.name, 1, true) then
+            table.insert(customOptions, option)
+        else
+            table.insert(currentModOptions, option)
+        end
+    end
+
+    self.modOptions:addTitle("Sandbox_RibsFramework_Custom_Vanilla_Options_title")
+    self.modOptions:addDescription("Sandbox_RibsFramework_Custom_Vanilla_Options_desc")
+    for i = 1, #customOptions do
+        self:createModOptionFromSandbox(customOptions[i])
+    end
+
+    self.modOptions:addTitle("Sandbox_RibsFramework_Custom_CurrentMod_Options_title")
+    for i = 1, #currentModOptions do
+        self:createModOptionFromSandbox(currentModOptions[i])
+    end
+end
+
 function RibsFramework.Sandbox:generateModOptions()
     if not self:isModOptionsEnabled() then return nil end
 
@@ -270,10 +312,16 @@ function RibsFramework.Sandbox:generateModOptions()
         self.modOptions = PZAPI.ModOptions:create(self.ID, getText("Sandbox_" .. self.ID))
     end
 
+    self:checkJavaClassVersion()
+
     local options = self:getSandboxOptions()
 
-    for i = 1, #options do
-        self:createModOptionFromSandbox(options[i])
+    if self.customOptions ~= "" then
+        self:generateMixModOptions(options)
+    else
+        for i = 1, #options do
+            self:createModOptionFromSandbox(options[i])
+        end
     end
 
     self.modOptions.apply = (function() self:autoModOptionsToSandbox() end)

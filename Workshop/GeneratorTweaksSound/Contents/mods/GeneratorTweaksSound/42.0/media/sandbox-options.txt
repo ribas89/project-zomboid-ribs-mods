@@ -1,0 +1,71 @@
+VERSION = 1,
+
+option GeneratorTweaksSound.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = GeneratorTweaksSound,
+    translation = GeneratorTweaksSound_EnableModOptions,
+}
+
+option GeneratorTweaksSound.BaseVolume
+{
+    type = double, min = 0.0, max = 100.0, default = 1.0,
+    page = GeneratorTweaksSound,
+    translation = GeneratorTweaksSound_BaseVolume,
+}
+
+option GeneratorTweaksSound.RunningVolume
+{
+    type = double, min = 0.0, max = 100.0, default = 0.3,
+    page = GeneratorTweaksSound, translation = GeneratorTweaksSound_RunningVolume,
+}
+
+option GeneratorTweaksSound.RunningSoundFile
+{
+    type = string, default = GeneratorLoop,
+    page = GeneratorTweaksSound,
+    translation = GeneratorTweaksSound_RunningSoundFile,
+}
+
+option GeneratorTweaksSound.BackfireVolume
+{
+    type = double, min = 0.0, max = 100.0, default = 1.0,
+    page = GeneratorTweaksSound,
+    translation = GeneratorTweaksSound_BackfireVolume,
+}
+
+option GeneratorTweaksSound.BackfireSoundFile
+{
+    type = string, default = GeneratorBackfire,
+    page = GeneratorTweaksSound,
+    translation = GeneratorTweaksSound_BackfireSoundFile,
+}
+
+option GeneratorTweaksSound.RunningZombieRadius
+{
+    type = integer, min = 1, max = 2147483647, default = 5,
+    page = GeneratorTweaksSound,
+    translation = GeneratorTweaksSound_RunningZombieRadius,
+}
+
+option GeneratorTweaksSound.RunningZombieVolume
+{
+    type = integer, min = 1, max = 2147483647, default = 5,
+    page = GeneratorTweaksSound,
+    translation = GeneratorTweaksSound_RunningZombieVolume,
+}
+
+option GeneratorTweaksSound.BackfireZombieRadius
+{
+    type = integer, min = 1, max = 2147483647, default = 20,
+    page = GeneratorTweaksSound,
+    translation = GeneratorTweaksSound_BackfireZombieRadius,
+}
+
+option GeneratorTweaksSound.BackfireZombieVolume
+{
+    type = integer, min = 1, max = 2147483647, default = 30,
+    page = GeneratorTweaksSound,
+    translation = GeneratorTweaksSound_BackfireZombieVolume,
+}

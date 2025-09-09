@@ -1,0 +1,140 @@
+VERSION = 1,
+
+option GeneratorTweaksFuel.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = GeneratorTweaksFuel,
+    translation = GeneratorTweaksFuel_EnableModOptions,
+}
+
+
+option GeneratorTweaksFuel.FuelConsumptionInterval
+{
+    type = integer, min = 1, max = 2147483647, default = 1,
+    page = GeneratorTweaksFuel,
+    translation = GeneratorTweaksFuel_FuelConsumptionInterval,
+}
+
+
+option GeneratorTweaksFuel.ClothingDryerConsumption
+{
+    type = double, min = 0.0, max = 1000000000.0, default = 0.09,
+    page = GeneratorTweaksFuel, translation = GeneratorTweaksFuel_ClothingDryerConsumption,
+}
+
+option GeneratorTweaksFuel.ClothingWasherConsumption
+{
+    type = double, min = 0.0, max = 1000000000.0, default = 0.09,
+    page = GeneratorTweaksFuel, translation = GeneratorTweaksFuel_ClothingWasherConsumption,
+}
+
+option GeneratorTweaksFuel.ComboWasherDryerConsumption
+{
+    type = double, min = 0.0, max = 1000000000.0, default = 0.09,
+    page = GeneratorTweaksFuel, translation = GeneratorTweaksFuel_ComboWasherDryerConsumption,
+}
+
+option GeneratorTweaksFuel.StackedDryerConsumption
+{
+    type = double, min = 0.0, max = 1000000000.0, default = 0.9,
+    page = GeneratorTweaksFuel, translation = GeneratorTweaksFuel_StackedDryerConsumption,
+}
+
+option GeneratorTweaksFuel.StackedWasherConsumption
+{
+    type = double, min = 0.0, max = 1000000000.0, default = 0.9,
+    page = GeneratorTweaksFuel, translation = GeneratorTweaksFuel_StackedWasherConsumption,
+}
+
+option GeneratorTweaksFuel.TelevisionConsumption
+{
+    type = double, min = 0.0, max = 1000000000.0, default = 0.03,
+    page = GeneratorTweaksFuel, translation = GeneratorTweaksFuel_TelevisionConsumption,
+}
+
+option GeneratorTweaksFuel.RadioConsumption
+{
+    type = double, min = 0.0, max = 1000000000.0, default = 0.01,
+    page = GeneratorTweaksFuel, translation = GeneratorTweaksFuel_RadioConsumption,
+}
+
+option GeneratorTweaksFuel.StoveConsumption
+{
+    type = double, min = 0.0, max = 1000000000.0, default = 0.09,
+    page = GeneratorTweaksFuel, translation = GeneratorTweaksFuel_StoveConsumption,
+}
+
+option GeneratorTweaksFuel.FridgeFreezerComboConsumption
+{
+    type = double, min = 0.0, max = 1000000000.0, default = 0.13,
+    page = GeneratorTweaksFuel, translation = GeneratorTweaksFuel_FridgeFreezerComboConsumption,
+}
+
+option GeneratorTweaksFuel.SingleFridgeOrFreezerConsumption
+{
+    type = double, min = 0.0, max = 1000000000.0, default = 0.08,
+    page = GeneratorTweaksFuel, translation = GeneratorTweaksFuel_SingleFridgeOrFreezerConsumption,
+}
+
+option GeneratorTweaksFuel.LightSwitchConsumption
+{
+    type = double, min = 0.0, max = 1000000000.0, default = 0.002,
+    page = GeneratorTweaksFuel, translation = GeneratorTweaksFuel_LightSwitchConsumption,
+}
+
+option GeneratorTweaksFuel.FuelPumpConsumption
+{
+    type = double, min = 0.0, max = 1000000000.0, default = 0.03,
+    page = GeneratorTweaksFuel, translation = GeneratorTweaksFuel_FuelPumpConsumption,
+}
+
+option GeneratorTweaksFuel.LowFuelSoundEnabled
+{
+    type = boolean,
+    default = true,
+    page = GeneratorTweaksFuel,
+    translation = GeneratorTweaksFuel_LowFuelSoundEnabled,
+}
+
+option GeneratorTweaksFuel.LowFuelSoundThreshold
+{
+    type = double, min = 0.0, max = 1000000000.0, default = 10.0,
+    page = GeneratorTweaksFuel,
+    translation = GeneratorTweaksFuel_LowFuelSoundThreshold,
+}
+
+option GeneratorTweaksFuel.LowFuelSoundVolume
+{
+    type = double, min = 0.0, max = 100.0, default = 3.0,
+    page = GeneratorTweaksFuel,
+    translation = GeneratorTweaksFuel_LowFuelSoundVolume,
+}
+
+option GeneratorTweaksFuel.LowFuelSoundFile
+{
+    type = string, default = MicrowaveTimerExpired,
+    page = GeneratorTweaksFuel,
+    translation = GeneratorTweaksFuel_LowFuelSoundFile,
+}
+
+option GeneratorTweaksFuel.EnableAddFuelNoCap
+{
+    type = boolean,
+    default = true,
+    page = GeneratorTweaksFuel,
+    translation = GeneratorTweaksFuel_EnableAddFuelNoCap,
+}
+
+option GeneratorTweaksFuel.AllowedFluids
+{
+    type = string, default = Alcohol;Beer;Brandy;Champagne;Cider;Cologne;Coffee;CoffeeLiqueur;Curacao;Gin;Mead;Perfume;Petrol;Port;Rum;Scotch;Sherry;Tequila;Vermouth;Vodka;Whiskey;Wine,
+    page = GeneratorTweaksFuel, translation = GeneratorTweaksFuel_AllowedFluids,
+}
+
+option GeneratorTweaksFuel.MaxFuel
+{
+    type = integer, min = 100, max = 2147483647, default = 100,
+    page = GeneratorTweaksFuel,
+    translation = GeneratorTweaksFuel_MaxFuel,
+}
