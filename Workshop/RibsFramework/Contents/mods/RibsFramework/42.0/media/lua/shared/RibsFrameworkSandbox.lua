@@ -15,7 +15,7 @@ function RibsFramework.Sandbox:new(args)
 
     instance.autoModShowOption = args.autoModShowOption or "EnableModOptions"
 
-    instance.javaClassVersion = args.javaClassVersion or false
+    instance.javaClassVersion = args.javaClassVersion
 
     instance.modOptionApplyHandlers = {}
 
@@ -264,9 +264,14 @@ function RibsFramework.Sandbox:isModOptionsEnabled()
 end
 
 function RibsFramework.Sandbox:checkJavaClassVersion()
-    if self.javaClassVersion == false then return end
-    local ribsVersion = self.javaClassVersion.ribsVersion
+    if not self.javaClassVersion then return end
 
+    local classTable = self.javaClassVersion
+    if type(self.javaClassVersion) == "string" then
+        classTable = _G[self.javaClassVersion] or {}
+    end
+
+    local ribsVersion = classTable.ribsVersion
     if not ribsVersion then
         self.modOptions:addTitle("Sandbox_RibsFramework_Installation_Status_Not_Installed")
         self.modOptions:addDescription("Sandbox_RibsFramework_Not_Installed1")

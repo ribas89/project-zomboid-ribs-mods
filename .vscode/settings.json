@@ -2,13 +2,13 @@
   "editor.rulers": [
     150
   ],
-  "[java]":{
-      "editor.insertSpaces": true,
-      "editor.detectIndentation": true,
-      "editor.tabSize": 4,
-      "editor.wordWrapColumn": 150,
-      "editor.defaultFormatter": "redhat.java",
-      "editor.formatOnSave": true,
+  "[java]": {
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": true,
+    "editor.tabSize": 4,
+    "editor.wordWrapColumn": 150,
+    "editor.defaultFormatter": "redhat.java",
+    "editor.formatOnSave": true,
   },
   "[lua]": {
     "editor.defaultFormatter": "sumneko.lua",
@@ -30,9 +30,10 @@
   ],
   "Lua.format.defaultConfig": {
     "ident_style": "space",
-    "indent_size":"2",
+    "indent_size": "2",
     "max_line_length": "150"
-  } ,
+  },
   "trailing-spaces.trimOnSave": true,
   "java.format.settings.url": "eclipse-formatter.xml",
+  "java.project.sourcePaths": [],
 }

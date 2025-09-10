@@ -1,0 +1,15 @@
+VERSION = 1,
+
+option CustomZoomParameter.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = CustomZoomParameter,
+    translation = CustomZoomParameter_EnableModOptions,
+}
+
+option CustomZoomParameter.CustomZooms
+{
+    type = string, default = 2.5;2.25;2.0;1.75;1.5;1.25;1.0;0.75;0.5;0.25,
+    page = CustomZoomParameter, translation = CustomZoomParameter_CustomZooms,
+}

@@ -1,0 +1,12 @@
+Sandbox_EN = {
+  Sandbox_CustomZoomParameter = "Custom Zoom Parameter"
+
+  Sandbox_CustomZoomParameter_EnableModOptions = "Enable Mod Options"
+  Sandbox_CustomZoomParameter_EnableModOptions_tooltip = "Show or hide options in the mod settings."
+
+  Sandbox_CustomZoomParameter_CustomZooms_mtitle = "Reload your save for changes to take effect."
+  Sandbox_CustomZoomParameter_CustomZooms_mdesc1 = "Each value ×100 gives the zoom percent (e.g. 3.5 = 350%)"
+  Sandbox_CustomZoomParameter_CustomZooms_mdesc2 = "Separated by semicolons in descending order (e.g. 3.5;2.5;1.5)."
+  Sandbox_CustomZoomParameter_CustomZooms = "Custom Zoom"
+  Sandbox_CustomZoomParameter_CustomZooms_tooltip = "Each value ×100 gives the zoom percent (e.g. 3.5 = 350%). Separated by semicolons in descending order (e.g. 3.5;2.5;1.5)."
+}
