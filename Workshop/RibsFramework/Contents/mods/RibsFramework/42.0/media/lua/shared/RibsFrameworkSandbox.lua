@@ -4,18 +4,24 @@ function RibsFramework.Sandbox:new(args)
     local instance = setmetatable({}, self)
 
     instance.ID = args.ID or ""
-    instance.autoModOptions = args.autoModOptions or false
-
-    instance.modOptions = args.modOptions or false
+    instance.autoModOptions = args.instances and true or args.autoModOptions or false
 
     instance.customOptions = args.customOptions or ""
 
-    instance.maxDescriptions = args.maxDescriptions or 10
-    instance.maxTitles = args.maxTitles or 10
-
     instance.autoModShowOption = args.autoModShowOption or "EnableModOptions"
 
+    instance.instances = args.instances or {}
+    instance.modOptions = instance.instances.modOptions or RibsFramework.ModOptions:new(args)
+    instance.classVersion = instance.instances.classVersion or RibsFramework.ClassVersion:new({
+        ID = instance.ID,
+        instances = {
+            modOptions = instance.modOptions
+        }
+    })
+
     instance.javaClassVersion = args.javaClassVersion
+
+    instance.javaClassesVersions = args.javaClassesVersions or {}
 
     instance.modOptionApplyHandlers = {}
 
@@ -57,20 +63,6 @@ function RibsFramework.Sandbox:setValue(optionName, newValue)
     local sandboxOption = self:getOption(optionName)
     if not sandboxOption then return nil end
     sandboxOption:setValue(newValue)
-end
-
-function RibsFramework.Sandbox:getModOption(optionName)
-    local options = PZAPI.ModOptions:getOptions(self.ID)
-    if not options then
-        error("BP2Fmw.Sandbox: PZAPI.ModOptions:getOptions('" .. self.ID .. "') not found")
-    end
-
-    local modOption = options:getOption(optionName)
-    if not modOption then
-        error("BP2Fmw.Sandbox: options:getOption('" .. optionName .. "') not found")
-    end
-
-    return modOption
 end
 
 function RibsFramework.Sandbox:castTypeValue(optionName, value)
@@ -128,11 +120,21 @@ function RibsFramework.Sandbox:castTypeValue(optionName, value)
     return { forSandbox = sandboxValue, forModOptions = configOption:getValueAsString() }
 end
 
-function RibsFramework.Sandbox:checkChange(optionName)
-    if not (PZAPI and PZAPI.ModOptions) then return { isChanged = false } end
+function RibsFramework.Sandbox:isAutoModOptions()
+    if not self.autoModOptions then return false end
 
+    if not self.modOptions:isModOptionsAvailable() then return false end
+
+    if not self:getValue(self.autoModShowOption) then return false end
+
+    if not self.classVersion:isInstalled() then return false end
+
+    return true
+end
+
+function RibsFramework.Sandbox:checkChange(optionName)
     local sandboxValue = self:getValue(optionName)
-    local modOptionsValue = self:getModOption(optionName):getValue()
+    local modOptionsValue = self.modOptions:getModOption(optionName):getValue()
 
     local isChanged = tostring(sandboxValue) ~= tostring(modOptionsValue)
 
@@ -140,14 +142,14 @@ function RibsFramework.Sandbox:checkChange(optionName)
 end
 
 function RibsFramework.Sandbox:modOptionsToSandbox(optionName)
-    local modOption = self:getModOption(optionName)
+    local modOption = self.modOptions:getModOption(optionName)
 
     local castedValue = self:castTypeValue(optionName, modOption:getValue())
     self:setValue(optionName, castedValue.forSandbox)
 end
 
 function RibsFramework.Sandbox:sandboxToModOptions(optionName)
-    local modOption = self:getModOption(optionName)
+    local modOption = self.modOptions:getModOption(optionName)
 
     local castedValue = self:castTypeValue(optionName, self:getValue(optionName))
     modOption:setValue(castedValue.forModOptions)
@@ -193,7 +195,7 @@ function RibsFramework.Sandbox:getSandboxOptions()
 end
 
 function RibsFramework.Sandbox:autoSandboxToModOptions()
-    if not self:isModOptionsEnabled() then return end
+    if not self:isAutoModOptions() then return end
 
     local options = self:getSandboxOptions()
     for i = 1, #options do
@@ -207,7 +209,7 @@ function RibsFramework.Sandbox:sendToServer()
 end
 
 function RibsFramework.Sandbox:autoModOptionsToSandbox()
-    if not self:isModOptionsEnabled() then return end
+    if not self:isAutoModOptions() then return end
 
     local options = self:getSandboxOptions()
     for i = 1, #options do
@@ -227,109 +229,24 @@ function RibsFramework.Sandbox:translationFromName(name, suffix)
     return getTextOrNull(translationKey)
 end
 
-function RibsFramework.Sandbox:createModOptionFromSandbox(data)
-    local textTypes = {
-        integer = true,
-        double = true,
-        string = true,
-        float = true,
-        enum = true,
-    }
-
-    for i = 1, self.maxTitles do
-        local title = self:translationFromName(data.name, "_mtitle" .. i)
-        if title then self.modOptions:addTitle(title) end
-    end
-
-    for i = 1, self.maxDescriptions do
-        local desc = self:translationFromName(data.name, "_mdesc" .. i)
-        if desc then self.modOptions:addDescription(desc) end
-    end
-
-    if textTypes[data.typeString] then
-        self.modOptions:addTextEntry(data.name, data.translatedName, data.valueAsString, data.translatedTooltip)
-    end
-
-    if data.typeString == "boolean" then
-        self.modOptions:addTickBox(data.name, data.translatedName, data.value, data.translatedTooltip)
-    end
-end
-
-function RibsFramework.Sandbox:isModOptionsEnabled()
-    if (isClient() and not getCore():isDedicated()) then return false end
-    if getCore():isDedicated() then return false end
-    if not (PZAPI and PZAPI.ModOptions) then return false end
-    if not self:getValue(self.autoModShowOption) then return false end
-    return true
-end
-
-function RibsFramework.Sandbox:checkJavaClassVersion()
-    if not self.javaClassVersion then return end
-
-    local classTable = self.javaClassVersion
-    if type(self.javaClassVersion) == "string" then
-        classTable = _G[self.javaClassVersion] or {}
-    end
-
-    local ribsVersion = classTable.ribsVersion
-    if not ribsVersion then
-        self.modOptions:addTitle("Sandbox_RibsFramework_Installation_Status_Not_Installed")
-        self.modOptions:addDescription("Sandbox_RibsFramework_Not_Installed1")
-        self.modOptions:addDescription("Sandbox_RibsFramework_Not_Installed2")
-        self.modOptions:addDescription("Sandbox_RibsFramework_Not_Installed3")
-        return
-    end
-
-    self.modOptions:addTitle("Sandbox_RibsFramework_Installation_Status_Installed")
-    self.modOptions:addDescription(getText("Sandbox_RibsFramework_Installed_Version") .. ribsVersion)
-end
-
-function RibsFramework.Sandbox:generateMixModOptions(options)
-    local customOptions = {}
-    local currentModOptions = {}
-    for i = 1, #options do
-        local option = options[i]
-        if self.customOptions:find(option.name, 1, true) then
-            table.insert(customOptions, option)
-        else
-            table.insert(currentModOptions, option)
-        end
-    end
-
-    self.modOptions:addTitle("Sandbox_RibsFramework_Custom_Vanilla_Options_title")
-    self.modOptions:addDescription("Sandbox_RibsFramework_Custom_Vanilla_Options_desc")
-    for i = 1, #customOptions do
-        self:createModOptionFromSandbox(customOptions[i])
-    end
-
-    self.modOptions:addTitle("Sandbox_RibsFramework_Custom_CurrentMod_Options_title")
-    for i = 1, #currentModOptions do
-        self:createModOptionFromSandbox(currentModOptions[i])
-    end
-end
-
 function RibsFramework.Sandbox:generateModOptions()
-    if not self:isModOptionsEnabled() then return nil end
+    if not self.classVersion:modOptionsCheckDependencies(self.modOptions, self.ID) then return end
 
-    if not self.autoModOptions then return nil end
+    if not self:isAutoModOptions() then return end
 
-    if not self.modOptions then
-        self.modOptions = PZAPI.ModOptions:create(self.ID, getText("Sandbox_" .. self.ID))
-    end
-
-    self:checkJavaClassVersion()
+    if self.javaClassVersion and not self.classVersion:modOptionsVersionCheck(self.javaClassVersion) then return end
 
     local options = self:getSandboxOptions()
 
     if self.customOptions ~= "" then
-        self:generateMixModOptions(options)
+        self.modOptions:generateMixModOptions(options)
     else
         for i = 1, #options do
-            self:createModOptionFromSandbox(options[i])
+            self.modOptions:createModOptionFromSandbox(options[i])
         end
     end
 
-    self.modOptions.apply = (function() self:autoModOptionsToSandbox() end)
+    self.modOptions:addApplyHandler(function() self:autoModOptionsToSandbox() end)
 
     return self.modOptions
 end
