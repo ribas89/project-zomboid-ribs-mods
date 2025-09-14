@@ -1,0 +1,17 @@
+VERSION = 1,
+
+option EasyFrequencyPreset.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = EasyFrequencyPreset,
+    translation = EasyFrequencyPreset_EnableModOptions,
+}
+
+
+option EasyFrequencyPreset.ListRadios
+{
+    type = string, default = Radio;Amateur;Emergency;Military,
+    page = EasyFrequencyPreset, translation = EasyFrequencyPreset_ListRadios,
+}
+

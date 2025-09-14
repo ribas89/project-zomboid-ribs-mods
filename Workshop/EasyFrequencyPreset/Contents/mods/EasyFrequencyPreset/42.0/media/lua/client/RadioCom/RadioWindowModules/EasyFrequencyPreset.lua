@@ -1,3 +1,10 @@
+EasyFrequencyPreset = {}
+
+EasyFrequencyPreset.sandbox = RibsFramework.Sandbox:new({
+    ID = "EasyFrequencyPreset",
+    autoModOptions = true,
+})
+
 Events.OnGameStart.Add(function()
     if not (RWMSubEditPreset and RWMSubEditPreset.createChildren) then return end
 
@@ -7,7 +14,7 @@ Events.OnGameStart.Add(function()
 
     local zomboidRadio = getZomboidRadio()
     local unknownChannel = getText("IGUI_RadioUknownChannel")
-    local stations = transformIntoKahluaTable(zomboidRadio:getFullChannelList())
+    local fullChannelList = transformIntoKahluaTable(zomboidRadio:getFullChannelList())
 
     function RWMSubEditPreset:channelNameFromText(textValue)
         if not textValue then return end
@@ -22,19 +29,28 @@ Events.OnGameStart.Add(function()
         self.comboBoxFrequency = ISComboBox:new(0, UI_BORDER_SPACING + 1, self.width, BUTTON_HGT, self, RWMSubEditPreset.comboChange)
         self.comboBoxFrequency:initialise()
         self:addChild(self.comboBoxFrequency)
-        self:addLinePair(nil, self.comboBoxFrequency)
+        self:addLinePair(getText("IGUI_RadioSelectChannel"), self.comboBoxFrequency)
 
-        local function forEachStation(station)
-            for key, value in pairs(transformIntoKahluaTable(station)) do
-                local numberFrequency = tonumber(tostring(key))
-                local mhzFrequency = numberFrequency / 1000
-                local optionLabel = string.format("%.1f %s", mhzFrequency, value)
-                self.comboBoxFrequency:addOptionWithData(optionLabel, mhzFrequency)
+        local allowedStations = EasyFrequencyPreset.sandbox:getValue("ListRadios")
+
+        local stations = {}
+        for stationName in string.gmatch(allowedStations, "([^;]+)") do
+            local station = fullChannelList[stationName]
+
+            if station then
+                for key, value in pairs(transformIntoKahluaTable(station)) do
+                    local numberFrequency = tonumber(tostring(key))
+                    local freq = numberFrequency / 1000
+                    local label = string.format("%.1f %s", freq, value)
+                    table.insert(stations, { label = label, freq = freq })
+                end
             end
         end
-        forEachStation(stations.Amateur)
-        forEachStation(stations.Radio)
 
+        table.sort(stations, function(a, b) return a.freq < b.freq end)
+        for _, station in ipairs(stations) do
+            self.comboBoxFrequency:addOptionWithData(station.label, station.freq)
+        end
 
         self.frequencyTextBox = ISTextEntryBox:new("", 0, UI_BORDER_SPACING + 1, self.width, BUTTON_HGT)
         self:addChild(self.frequencyTextBox)

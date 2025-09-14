@@ -3,3 +3,4 @@ id=EasyFrequencyPreset
 description=Adds a frequency text box and combo box to the radio preset editor.
 poster=poster.png
 icon=icon.png
+require=\RibsFramework
