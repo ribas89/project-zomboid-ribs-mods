@@ -4,8 +4,16 @@ Sandbox_EN = {
   Sandbox_EasyFrequencyPreset_EnableModOptions = "Enable Mod Options"
   Sandbox_EasyFrequencyPreset_EnableModOptions_tooltip = "Show or hide options in the mod settings."
 
-  Sandbox_EasyFrequencyPreset_ListRadios_mdesc1 = "Reload the game to update the list"
-  Sandbox_EasyFrequencyPreset_ListRadios = "List Radios"
+  Sandbox_EasyFrequencyPreset_EnableInputSelect_mdesc1 = "Reload the game for the changes to take effect"
+  Sandbox_EasyFrequencyPreset_EnableInputSelect = "Enable Select"
+  Sandbox_EasyFrequencyPreset_EnableInputSelect_tooltip = "Show or hide the combobox selection with the frequency list."
+
+  Sandbox_EasyFrequencyPreset_ListRadios = "Select Radios List"
   Sandbox_EasyFrequencyPreset_ListRadios_tooltip = "Select which radio categories are available (Radio, Amateur, Emergency, Military)."
+
+  Sandbox_EasyFrequencyPreset_EnableInputText = "Enable Text"
+  Sandbox_EasyFrequencyPreset_EnableInputText_tooltip = "Show or hide the text input to set the frequency."
+
+
 
 }

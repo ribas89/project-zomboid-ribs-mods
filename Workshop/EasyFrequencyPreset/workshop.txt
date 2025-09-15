@@ -1,13 +1,16 @@
 version=1
 id=3566943255
 title=Easy Frequency Preset
-description=Easy Frequency Preset improves the radio interface with extra ways to manage presets:
+description=Easy Frequency Preset enhances the radio interface with flexible preset management and customization:
 description=
-description=- Combo Box Presets: Quickly select radio stations from a dropdown list.
-description=- Text Entry: Type a frequency directly instead of dragging the slider.
-description=- Slider Sync: Slider, text box, and preset list stay in sync.
-description=- Vanilla Safe: Built as an extension of the existing radio window for maximum compatibility with other mods.
-description=- Midsave and mod safe
+description=- Combo Box Presets: Quickly select stations from a dropdown list.
+description=- Text Entry: Type a frequency directly instead of only using the slider.
+description=- Slider Sync: Slider, text input, and preset list stay in sync.
+description=- Midsave and Mod Safe: Works without breaking saves or other mods.
+description=
+description=- Enable Select: Toggle the dropdown list for frequency categories.
+description=- Select Radios List: Choose which radio types are shown (Radio, Amateur, Emergency, Military).
+description=- Enable Text: Toggle the text input field for frequency entry.
 description=
 description=Check out more of my QoL mods:
 description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600

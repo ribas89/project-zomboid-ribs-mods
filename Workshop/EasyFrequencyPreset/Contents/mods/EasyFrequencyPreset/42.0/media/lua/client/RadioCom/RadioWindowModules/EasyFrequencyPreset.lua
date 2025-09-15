@@ -26,53 +26,62 @@ Events.OnGameStart.Add(function()
 
     local originalCreateChildren = RWMSubEditPreset.createChildren
     function RWMSubEditPreset:createChildren(...)
-        self.comboBoxFrequency = ISComboBox:new(0, UI_BORDER_SPACING + 1, self.width, BUTTON_HGT, self, RWMSubEditPreset.comboChange)
-        self.comboBoxFrequency:initialise()
-        self:addChild(self.comboBoxFrequency)
-        self:addLinePair(getText("IGUI_RadioSelectChannel"), self.comboBoxFrequency)
+        if (EasyFrequencyPreset.sandbox:getValue("EnableInputSelect")) then
+            self.comboBoxFrequency = ISComboBox:new(0, UI_BORDER_SPACING + 1, self.width, BUTTON_HGT, self, RWMSubEditPreset.comboChange)
+            self.comboBoxFrequency:initialise()
 
-        local allowedStations = EasyFrequencyPreset.sandbox:getValue("ListRadios")
 
-        local stations = {}
-        for stationName in string.gmatch(allowedStations, "([^;]+)") do
-            local station = fullChannelList[stationName]
+            self:addChild(self.comboBoxFrequency)
+            self:addLinePair(getText("IGUI_RadioSelectChannel"), self.comboBoxFrequency)
 
-            if station then
-                for key, value in pairs(transformIntoKahluaTable(station)) do
-                    local numberFrequency = tonumber(tostring(key))
-                    local freq = numberFrequency / 1000
-                    local label = string.format("%.1f %s", freq, value)
-                    table.insert(stations, { label = label, freq = freq })
+
+            local allowedStations = EasyFrequencyPreset.sandbox:getValue("ListRadios")
+
+            local stations = {}
+            for stationName in string.gmatch(allowedStations, "([^;]+)") do
+                local station = fullChannelList[stationName]
+
+                if station then
+                    for key, value in pairs(transformIntoKahluaTable(station)) do
+                        local numberFrequency = tonumber(tostring(key))
+                        local freq = numberFrequency / 1000
+                        local label = string.format("%.1f %s", freq, value)
+                        table.insert(stations, { label = label, freq = freq })
+                    end
                 end
+            end
+
+            table.sort(stations, function(a, b) return a.freq < b.freq end)
+            for _, station in ipairs(stations) do
+                self.comboBoxFrequency:addOptionWithData(station.label, station.freq)
             end
         end
 
-        table.sort(stations, function(a, b) return a.freq < b.freq end)
-        for _, station in ipairs(stations) do
-            self.comboBoxFrequency:addOptionWithData(station.label, station.freq)
+        if (EasyFrequencyPreset.sandbox:getValue("EnableInputText")) then
+            self.frequencyTextBox = ISTextEntryBox:new("", 0, UI_BORDER_SPACING + 1, self.width, BUTTON_HGT)
+            self:addChild(self.frequencyTextBox)
+            self:addLinePair(getText("IGUI_RadioFrequency"), self.frequencyTextBox)
+
+            self.frequencyTextBox.onCommandEntered = function(textBox)
+                local textInputValue = textBox:getText()
+
+                if not textInputValue then return end
+
+                self:channelNameFromText(textInputValue)
+                self.frequencySlider:setCurrentValue(textInputValue)
+            end
         end
 
-        self.frequencyTextBox = ISTextEntryBox:new("", 0, UI_BORDER_SPACING + 1, self.width, BUTTON_HGT)
-        self:addChild(self.frequencyTextBox)
-        self:addLinePair(getText("IGUI_RadioFrequency"), self.frequencyTextBox)
         originalCreateChildren(self, ...)
-
-
-        self.frequencyTextBox.onCommandEntered = function(textBox)
-            local textInputValue = textBox:getText()
-
-            if not textInputValue then return end
-
-            self:channelNameFromText(textInputValue)
-            self.frequencySlider:setCurrentValue(textInputValue)
-        end
     end
 
     local originalSliderChange = RWMSubEditPreset.onSliderChange
     function RWMSubEditPreset:onSliderChange(...)
         originalSliderChange(self, ...)
 
-        self.frequencyTextBox:setText(tostring(...))
+        if (EasyFrequencyPreset.sandbox:getValue("EnableInputText")) then
+            self.frequencyTextBox:setText(tostring(...))
+        end
         self:channelNameFromText(tostring(...))
     end
 
@@ -82,7 +91,9 @@ Events.OnGameStart.Add(function()
         local frequency = comboBox:getOptionData(optionIndex)
 
         self.frequencySlider:setCurrentValue(frequency)
-        self.frequencyTextBox:setText(tostring(frequency))
+        if (EasyFrequencyPreset.sandbox:getValue("EnableInputText")) then
+            self.frequencyTextBox:setText(tostring(frequency))
+        end
         self:channelNameFromText(frequency)
     end
 end)

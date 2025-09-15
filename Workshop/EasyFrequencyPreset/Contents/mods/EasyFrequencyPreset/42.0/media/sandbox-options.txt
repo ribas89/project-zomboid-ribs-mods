@@ -8,6 +8,13 @@ option EasyFrequencyPreset.EnableModOptions
     translation = EasyFrequencyPreset_EnableModOptions,
 }
 
+option EasyFrequencyPreset.EnableInputSelect
+{
+    type = boolean,
+    default = true,
+    page = EasyFrequencyPreset,
+    translation = EasyFrequencyPreset_EnableInputSelect,
+}
 
 option EasyFrequencyPreset.ListRadios
 {
@@ -15,3 +22,10 @@ option EasyFrequencyPreset.ListRadios
     page = EasyFrequencyPreset, translation = EasyFrequencyPreset_ListRadios,
 }
 
+option EasyFrequencyPreset.EnableInputText
+{
+    type = boolean,
+    default = true,
+    page = EasyFrequencyPreset,
+    translation = EasyFrequencyPreset_EnableInputText,
+}
