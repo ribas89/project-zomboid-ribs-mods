@@ -1,0 +1,6 @@
+name=Radio TV - Core
+id=RadioTVCore
+description=Core mod for Radio and TV modules. Check the Steam Workshop page for setup instructions.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework

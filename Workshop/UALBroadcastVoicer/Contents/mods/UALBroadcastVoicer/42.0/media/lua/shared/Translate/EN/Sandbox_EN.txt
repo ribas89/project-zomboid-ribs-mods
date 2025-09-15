@@ -1,0 +1,6 @@
+Sandbox_EN = {
+  Sandbox_UALBroadcastVoicer = "UAL - Broadcast Voicer",
+
+  Sandbox_UALBroadcastVoicer_EnableModOptions = "Enable Mod Options"
+  Sandbox_UALBroadcastVoicer_EnableModOptions_tooltip = "Show or hide options in the mod settings."
+}

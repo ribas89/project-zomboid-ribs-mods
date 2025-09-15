@@ -1,0 +1,6 @@
+name=UAL - Unequip And Listen
+id=UALUnequipAndListen
+description=Lets you hear radio stations without equipping the radio. Options include toggling radio texts and sounds through mod settings.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework,\RadioTVCore,\KeepRadioOnVanillaFriendly

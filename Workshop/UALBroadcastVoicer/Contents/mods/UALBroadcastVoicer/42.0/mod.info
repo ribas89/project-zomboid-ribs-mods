@@ -1,0 +1,6 @@
+name=UAL - Broadcast Voicer
+id=UALBroadcastVoicer
+description=Patches the Broadcast Voicer mod so radios keep working when unequipped. Load this mod after the Broadcast Voicer.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework,\RadioTVCore,\UALUnequipAndListen,\VOICE_FRAMEWORK

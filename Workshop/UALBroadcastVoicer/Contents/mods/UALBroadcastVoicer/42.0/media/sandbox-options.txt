@@ -1,0 +1,9 @@
+VERSION = 1,
+
+option UALBroadcastVoicer.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = UALBroadcastVoicer,
+    translation = UALBroadcastVoicer_EnableModOptions,
+}

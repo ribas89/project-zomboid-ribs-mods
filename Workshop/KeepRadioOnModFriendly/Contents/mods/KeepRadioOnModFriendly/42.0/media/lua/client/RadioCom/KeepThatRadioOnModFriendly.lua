@@ -4,8 +4,11 @@ Events.OnGameStart.Add(function()
     local originalUpdate = ISRadioWindow.update
 
     function ISRadioWindow:update(...)
+        local deviceData = nil
 
-        local deviceData = (self and self.deviceType == "InventoryItem") and self.deviceData or nil
+        if (self.deviceData and self.deviceData.getIsTurnedOn and self.deviceData:getIsTurnedOn()) then
+            deviceData = self.deviceData
+        end
 
         originalUpdate(self, ...)
 

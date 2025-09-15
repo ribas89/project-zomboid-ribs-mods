@@ -1,0 +1,6 @@
+Sandbox_EN = {
+  Sandbox_RadioTVCore = "Radio TV - Core"
+
+  Sandbox_RadioTVCore_EnableModOptions = "Enable Mod Options"
+  Sandbox_RadioTVCore_EnableModOptions_tooltip = "Show or hide options in the mod settings."
+}

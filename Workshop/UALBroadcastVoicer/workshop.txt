@@ -1,0 +1,12 @@
+version=1
+id=3568467372
+title=UAL - Broadcast Voicer
+description=UAL - Broadcast Voicer patches the Broadcast Voicer mod so radios keep working when unequipped. Load this mod after Broadcast Voicer.
+description=
+description=Check out more of my QoL mods:
+description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600
+description=
+description=If you enjoy the mod, consider giving it a star on GitHub:
+description=https://github.com/ribas89/project-zomboid-ribs-mods/
+tags=Build 42;Audio;QoL
+visibility=public

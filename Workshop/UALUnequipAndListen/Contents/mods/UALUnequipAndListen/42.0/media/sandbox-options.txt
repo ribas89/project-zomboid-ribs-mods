@@ -1,0 +1,21 @@
+VERSION = 1,
+
+option UALUnequipAndListen.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = UALUnequipAndListen,
+    translation = UALUnequipAndListen_EnableModOptions,
+}
+
+option UALUnequipAndListen.EnableRadioSound
+{
+    type = boolean, default = true,
+    page = UALUnequipAndListen, translation = UALUnequipAndListen_EnableRadioSound,
+}
+
+option UALUnequipAndListen.EnableRadioText
+{
+    type = boolean, default = true,
+    page = UALUnequipAndListen, translation = UALUnequipAndListen_EnableRadioText,
+}

@@ -1,0 +1,13 @@
+Sandbox_EN = {
+  Sandbox_UALUnequipAndListen = "UAL - Unequip And Listen",
+
+  Sandbox_UALUnequipAndListen_EnableModOptions = "Enable Mod Options"
+  Sandbox_UALUnequipAndListen_EnableModOptions_tooltip = "Show or hide options in the mod settings."
+
+  Sandbox_UALUnequipAndListen_EnableRadioText = "Radio Texts"
+  Sandbox_UALUnequipAndListen_EnableRadioText_tooltip = "Display radio text even when the radio is not equipped"
+
+  Sandbox_UALUnequipAndListen_EnableRadioSound_mdesc1 = "Only play/stop sounds after the option is enabled/disabled"
+  Sandbox_UALUnequipAndListen_EnableRadioSound = "Radio Sound"
+  Sandbox_UALUnequipAndListen_EnableRadioSound_tooltip = "Play radio sound even when the radio is not equipped"
+}
