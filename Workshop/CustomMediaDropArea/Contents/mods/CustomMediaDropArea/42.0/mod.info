@@ -1,0 +1,6 @@
+name=Custom Media Drop Area
+id=CustomMediaDropArea
+description=Customize the drop zones for media devices for easier interaction.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework

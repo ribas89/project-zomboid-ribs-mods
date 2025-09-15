@@ -1,0 +1,10 @@
+Sandbox_EN = {
+  Sandbox_CustomMediaDropArea = "Custom Media Drop Area"
+
+  Sandbox_CustomMediaDropArea_EnableModOptions = "Enable Mod Options"
+  Sandbox_CustomMediaDropArea_EnableModOptions_tooltip = "Show or hide options in the mod settings."
+
+  Sandbox_EasyFrequencyPreset_CustomSize_mdesc1 = "Reload the game for the changes to take effect"
+  Sandbox_CustomMediaDropArea_CustomSize = "Custom Drop Area Size"
+  Sandbox_CustomMediaDropArea_CustomSize_tooltip = "Set the size of the media drop area. Higher values increase the insert zone."
+}

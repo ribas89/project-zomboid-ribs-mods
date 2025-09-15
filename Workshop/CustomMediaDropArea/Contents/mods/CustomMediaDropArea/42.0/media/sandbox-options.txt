@@ -1,0 +1,15 @@
+VERSION = 1,
+
+option CustomMediaDropArea.EnableModOptions
+{
+    type = boolean,
+    default = true,
+    page = CustomMediaDropArea,
+    translation = CustomMediaDropArea_EnableModOptions,
+}
+
+option CustomMediaDropArea.CustomSize
+{
+    type = integer, min = 0, max = 2147483647, default = 20,
+    page = CustomMediaDropArea, translation = CustomMediaDropArea_CustomSize,
+}
