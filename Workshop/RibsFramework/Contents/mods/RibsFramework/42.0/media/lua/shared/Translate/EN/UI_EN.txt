@@ -15,9 +15,8 @@ UI_EN = {
     UI_RibsFramework_Installation_Status_Outdated = "Outdated"
     UI_RibsFramework_OutdatedModVersion = "Mod Version: "
     UI_RibsFramework_OutdatedClassVersion = " Class Version: "
-    UI_RibsFramework_Outdated1 = "This class is outdated and will not work with the current version"
-    UI_RibsFramework_Outdated2 = "Dependent mods may fail to load or function"
-    UI_RibsFramework_Outdated3 = "Please visit the Steam Workshop page to read the instructions for installing the next update"
+    UI_RibsFramework_Outdated1 = "This class is outdated and dependent mods may fail to load or function"
+    UI_RibsFramework_Outdated2 = "Please visit the Steam Workshop page to read the instructions for installing the next update"
 
     UI_RibsFramework_Dependency_Missing_Title = "Dependency Missing: "
     UI_RibsFramework_Dependency_Missing1 = "A required Java class dependency is outdated / not installed"

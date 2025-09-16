@@ -238,13 +238,7 @@ function RibsFramework.Sandbox:generateModOptions()
 
     local options = self:getSandboxOptions()
 
-    if self.customOptions ~= "" then
-        self.modOptions:generateMixModOptions(options)
-    else
-        for i = 1, #options do
-            self.modOptions:createModOptionFromSandbox(options[i])
-        end
-    end
+    self.modOptions:generateModOptions(options)
 
     self.modOptions:addApplyHandler(function() self:autoModOptionsToSandbox() end)
 

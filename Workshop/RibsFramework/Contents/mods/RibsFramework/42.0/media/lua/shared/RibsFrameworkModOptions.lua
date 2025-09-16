@@ -11,6 +11,8 @@ function RibsFramework.ModOptions:new(args)
 
     instance.maxTitles = args.maxTitles or 10
 
+    instance.customOptions = args.customOptions or ""
+
     instance.applyHandlers = {}
 
     return instance
@@ -90,12 +92,12 @@ function RibsFramework.ModOptions:createModOptionFromSandbox(data)
 end
 
 function RibsFramework.ModOptions:generateMixModOptions(options)
-    local customOptions = {}
+    local customOptionsTable = {}
     local currentModOptions = {}
     for i = 1, #options do
         local option = options[i]
         if self.customOptions:find(option.name, 1, true) then
-            table.insert(customOptions, option)
+            table.insert(customOptionsTable, option)
         else
             table.insert(currentModOptions, option)
         end
@@ -103,13 +105,23 @@ function RibsFramework.ModOptions:generateMixModOptions(options)
 
     self.modOptions:addTitle("UI_RibsFramework_Custom_Vanilla_Options_title")
     self.modOptions:addDescription("UI_RibsFramework_Custom_Vanilla_Options_desc")
-    for i = 1, #customOptions do
-        self:createModOptionFromSandbox(customOptions[i])
+    for i = 1, #customOptionsTable do
+        self:createModOptionFromSandbox(customOptionsTable[i])
     end
 
     self.modOptions:addTitle("UI_RibsFramework_Custom_CurrentMod_Options_title")
     for i = 1, #currentModOptions do
         self:createModOptionFromSandbox(currentModOptions[i])
+    end
+end
+
+function RibsFramework.ModOptions:generateModOptions(options)
+    if self.customOptions ~= "" then
+        self:generateMixModOptions(options)
+    else
+        for i = 1, #options do
+            self:createModOptionFromSandbox(options[i])
+        end
     end
 end
 

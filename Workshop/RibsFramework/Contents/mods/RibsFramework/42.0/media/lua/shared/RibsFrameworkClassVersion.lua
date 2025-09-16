@@ -106,7 +106,6 @@ function RibsFramework.ClassVersion:modOptionsVersionCheck(pJavaClass, info)
         self.modOptions:addDescription(modVersion .. ribsVersion)
         self.modOptions:addDescription("UI_RibsFramework_Outdated1")
         self.modOptions:addDescription("UI_RibsFramework_Outdated2")
-        self.modOptions:addDescription("UI_RibsFramework_Outdated3")
         self.installed = false
         return false
     end
