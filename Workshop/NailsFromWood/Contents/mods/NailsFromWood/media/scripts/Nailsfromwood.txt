@@ -1,0 +1,17 @@
+module Base
+
+{
+	
+	recipe Make Nails From Log
+	{
+		Log=4,
+		keep [Recipe.GetItemTypes.Saw],	   
+		AnimNode:SawLog,
+		Sound:PZ_Saw,
+		CanBeDoneFromFloor:true,
+		Result:NailsBox,
+		Time:1000.0,
+		Category:Carpentry,	
+	}
+
+}

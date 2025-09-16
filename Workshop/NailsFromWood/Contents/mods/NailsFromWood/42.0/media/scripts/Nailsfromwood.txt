@@ -1,0 +1,20 @@
+module Base
+{
+  craftRecipe NailsFromWood
+  {
+    Time = 1000,
+    timedAction = SawLogs,
+    Tags = InHandCraft;CanBeDoneFromFloor,
+    category = Carpentry,
+    xpAward = Woodwork:15,
+    inputs
+    {
+      item 4 [Base.Log],
+      item 1 tags[Saw] mode:keep,
+    }
+    outputs
+    {
+        item 1 Base.NailsBox,
+    }
+  }
+}
