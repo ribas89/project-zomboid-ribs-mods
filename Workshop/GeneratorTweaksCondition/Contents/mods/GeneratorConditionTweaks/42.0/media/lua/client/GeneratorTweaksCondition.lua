@@ -2,5 +2,7 @@ GeneratorTweaksCondition = {}
 
 GeneratorTweaksCondition.sandbox = RibsFramework.Sandbox:new({
     ID = "GeneratorTweaksCondition",
-    autoModOptions = true
+    instances = {
+        classVersion = GeneratorTweaksCore.classVersion
+    }
 })

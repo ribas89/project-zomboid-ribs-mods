@@ -5,41 +5,39 @@ description=[b]How to install[/b]
 description=1. Subscribe to the mod
 description=2. Open the mod location
 description=   [code]SteamLibrary\steamapps\workshop\content\108600\3565376571\mods\GeneratorTweaksCore[/code]
-description=3. Copy [code]IsoGenerator.class[/code] from the mod
-description=4. Go to
-description=[code]SteamLibrary\steamapps\common\ProjectZomboid[/code]
-description=5. Enter
-description=[code]zombie\iso\objects[/code]
-description=6. Paste and replace [code]IsoGenerator.class[/code] there
-description=7. Launch the game
+description=3. Copy the [b]zombie[/b] folder from the mod
+description=4. Go to
+description=[code]SteamLibrary\steamapps\common\ProjectZomboid[/code]
+description=5. Paste the [b]zombie[/b] folder there. Overwrite the files.
+description=6. Launch the game
 description=
-description=[h2]Generator Tweaks Modules[/h2]  
-description=These are the modules that expand the Core mod with customizable generator features.  
-description=
-description=[b]Generator Tweaks - Condition[/b]  
-description=Control generator degradation, backfires, catastrophic failures, and repair options.  
-description=Link: https://steamcommunity.com/sharedfiles/filedetails/?id=3565384224  
-description=
-description=[b]Generator Tweaks - Fuel[/b]  
-description=Adjust fuel consumption rates, appliance usage, low-fuel alarms, and max fuel capacity.  
-description=Link: https://steamcommunity.com/sharedfiles/filedetails/?id=3565386560  
-description=
-description=[b]Generator Tweaks - Indoors[/b]  
-description=Allow generators indoors with customizable ventilation checks and safety rules.  
-description=Link: https://steamcommunity.com/sharedfiles/filedetails/?id=3565390473  
-description=
-description=[b]Generator Tweaks - Power[/b]  
-description=Set horizontal and vertical ranges for how far generators can supply power.  
-description=Link: https://steamcommunity.com/sharedfiles/filedetails/?id=3565393936  
-description=
-description=[b]Generator Tweaks - Sound[/b]  
-description=Customize generator sound volume, sound files, and zombie attraction ranges.  
-description=Link: https://steamcommunity.com/sharedfiles/filedetails/?id=3565395489  
+description=[h2]Generator Tweaks Modules[/h2]
+description=These are the modules that expand the Core mod with customizable generator features.
+description=
+description=[b]Generator Tweaks - Condition[/b]
+description=Control generator degradation, backfires, catastrophic failures, and repair options.
+description=Link: https://steamcommunity.com/sharedfiles/filedetails/?id=3565384224
+description=
+description=[b]Generator Tweaks - Fuel[/b]
+description=Adjust fuel consumption rates, appliance usage, low-fuel alarms, and max fuel capacity.
+description=Link: https://steamcommunity.com/sharedfiles/filedetails/?id=3565386560
+description=
+description=[b]Generator Tweaks - Indoors[/b]
+description=Allow generators indoors with customizable ventilation checks and safety rules.
+description=Link: https://steamcommunity.com/sharedfiles/filedetails/?id=3565390473
+description=
+description=[b]Generator Tweaks - Power[/b]
+description=Set horizontal and vertical ranges for how far generators can supply power.
+description=Link: https://steamcommunity.com/sharedfiles/filedetails/?id=3565393936
+description=
+description=[b]Generator Tweaks - Sound[/b]
+description=Customize generator sound volume, sound files, and zombie attraction ranges.
+description=Link: https://steamcommunity.com/sharedfiles/filedetails/?id=3565395489
 description=
 description=Check out more QoL mods:
 description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600
 description=
 description=If you enjoy the mod, consider giving it a star on GitHub:
 description=https://github.com/ribas89/project-zomboid-ribs-mods
-tags=Build 42;Framework;QoL
+tags=Build 42;Balance;Building;Misc;QoL
 visibility=public

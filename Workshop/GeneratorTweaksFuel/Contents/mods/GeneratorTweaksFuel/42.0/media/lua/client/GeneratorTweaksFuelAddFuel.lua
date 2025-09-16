@@ -1,6 +1,6 @@
 require "ISUI/ISWorldObjectContextMenu"
 require "TimedActions/ISBaseTimedAction"
-require "server/GeneratorTweaksFuel"
+require "GeneratorTweaksFuel"
 
 GeneratorTweaksFuelAddFuel = ISAddFuel:derive("GeneratorTweaksFuelAddFuel")
 

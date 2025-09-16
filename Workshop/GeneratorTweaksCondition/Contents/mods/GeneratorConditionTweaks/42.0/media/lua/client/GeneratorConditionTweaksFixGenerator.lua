@@ -1,11 +1,8 @@
 require "ISUI/ISWorldObjectContextMenu"
 require "TimedActions/ISBaseTimedAction"
-require "server/GeneratorTweaksCondition"
-
-
+require "GeneratorTweaksCondition"
 
 GeneratorTweaksConditionFixCondition = ISFixGenerator:derive("GeneratorTweaksCondition")
-
 
 local function getFixITem(inventory)
     local allowedItems = GeneratorTweaksCondition.sandbox:getValue("AllowedItems")

@@ -2,7 +2,9 @@ GeneratorTweaksPower = {}
 
 GeneratorTweaksPower.sandbox = RibsFramework.Sandbox:new({
     ID = "GeneratorTweaksPower",
-    autoModOptions = true,
+    instances = {
+        classVersion = GeneratorTweaksCore.classVersion
+    },
     customOptions =
     "AllowExteriorGenerator;ElecShutModifier;ElecShut;GeneratorSpawning;LightBulbLifespan;FridgeFactor;GeneratorFuelConsumption;MultiplierConfig.Electricity;"
 })
