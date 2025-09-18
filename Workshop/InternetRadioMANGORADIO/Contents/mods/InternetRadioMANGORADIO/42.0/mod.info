@@ -1,0 +1,6 @@
+name=Internet Radio - MANGORADIO
+id=InternetRadioMANGORADIO
+description=Wir senden für Mainz, Wiesbaden & Umgebung. Doch Musik ist überall. Daher sind wir auch in ganz Deutschland verteilt und sind für euch immer Up-to-Date.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework,\InternetRadio

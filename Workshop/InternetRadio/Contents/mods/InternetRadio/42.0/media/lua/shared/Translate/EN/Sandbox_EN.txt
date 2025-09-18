@@ -1,0 +1,7 @@
+Sandbox_EN = {
+  Sandbox_InternetRadio = "Internet Radio"
+
+  Sandbox_InternetRadio_CustomStations_mdesc1 = "FREQUENCY|NAME|URL;FREQUENCY|..."
+  Sandbox_InternetRadio_CustomStations = "Custom Stations"
+  Sandbox_InternetRadio_CustomStations_tooltip = "Enter custom radio stations in the format above. Each station is separated by a semicolon."
+}

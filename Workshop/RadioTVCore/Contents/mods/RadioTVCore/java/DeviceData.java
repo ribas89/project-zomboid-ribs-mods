@@ -103,7 +103,8 @@ public final class DeviceData
     protected float soundCounter = 0.0f;
     float minmod = 1.5f;
     float maxmod = 5.0f;
-    public static String ribsVersionDeviceData = "1.1.0";
+    public static String ribsVersionDeviceData = "1.1.1";
+    private static final ArrayList<DeviceData> activeDevices = new ArrayList<>();
 
     public DeviceData() {
         this(null);
@@ -114,6 +115,16 @@ public final class DeviceData
         this.presets = new DevicePresets();
         this.gameTime = GameTime.getInstance();
         this.parameterList.add(this.parameterDeviceVolume);
+    }
+
+    private void registerActive() {
+        if (!activeDevices.contains(this)) {
+            activeDevices.add(this);
+        }
+    }
+
+    private void unregisterActive() {
+        activeDevices.remove(this);
     }
 
     private <T> T getSandboxValue(String optionName, T defaultValue) {
@@ -644,8 +655,13 @@ public final class DeviceData
 
         boolean enabled = this.getSandboxValue("UALUnequipAndListen.EnableRadioSound", false);
         if (enabled && this.isPortable && this.isTurnedOn) {
+            // keep ticking while portable and on
+            this.registerActive();
             return;
         }
+
+        // otherwise unregister
+        this.unregisterActive();
 
         this.emitter.stopAll();
         BaseSoundEmitter baseSoundEmitter = this.emitter;
@@ -781,6 +797,15 @@ public final class DeviceData
 
     public BaseSoundEmitter getEmitter() {
         return this.emitter;
+    }
+
+    public static void updateAllEmitters() {
+        for (int i = 0; i < activeDevices.size(); i++) {
+            DeviceData dd = activeDevices.get(i);
+            if (dd != null && dd.isTurnedOn) {
+                dd.updateEmitter();
+            }
+        }
     }
 
     public void update(boolean bl, boolean bl2) {

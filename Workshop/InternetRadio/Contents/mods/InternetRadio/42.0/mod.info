@@ -1,0 +1,6 @@
+name=Internet Radio
+id=InternetRadio
+description=Adds support for real-world internet radio streams.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework

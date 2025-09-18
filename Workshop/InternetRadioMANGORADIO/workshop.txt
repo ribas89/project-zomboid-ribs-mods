@@ -1,0 +1,12 @@
+version=1
+id=3570239247
+title=Internet Radio - MANGORADIO
+description=MANGORADIO is an online radio station based in Germany. It is not just an ordinary radio but promotes itself as your radio, giving listeners the chance to interact and even influence what plays on the air. MANGORADIO broadcasts for Mainz, Wiesbaden, and the surrounding region, but its reach extends across all of Germany, keeping listeners up to date with music and local content.
+description=
+description=Check out more of my QoL mods:
+description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600
+description=
+description=If you enjoy the mod, consider giving it a star on GitHub:
+description=https://github.com/ribas89/project-zomboid-ribs-mods/
+tags=Build 42;Audio;Pop Culture;QoL
+visibility=public

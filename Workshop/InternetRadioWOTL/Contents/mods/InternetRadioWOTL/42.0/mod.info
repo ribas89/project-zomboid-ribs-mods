@@ -1,0 +1,6 @@
+name=Internet Radio - WTOL: Word of the Lord
+id=InternetRadioWOTL
+description=WTOL (Word of the Lord) is an online-only station dedicated to sharing Christian music and inspirational programming worldwide. Broadcasting exclusively over the internet, it is operated by Word of the Lord Media.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework,\InternetRadio
