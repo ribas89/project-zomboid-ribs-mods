@@ -1,0 +1,6 @@
+name=Internet Radio - Vocaloid
+id=InternetRadioVocaloid
+description=Fan ran, non-profit Vocaloid Radio station. Listen now! vocaloidradio.com
+poster=poster.png
+icon=icon.png
+require=\RibsFramework,\InternetRadio

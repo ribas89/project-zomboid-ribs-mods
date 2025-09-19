@@ -1,12 +1,19 @@
 version=1
 id=3570221068
 title=Internet Radio - WTOL: Word of the Lord
-description=WTOL (Word of the Lord) is an online-only station dedicated to sharing Christian music and inspirational programming worldwide. Broadcasting exclusively over the internet, it is operated by Word of the Lord Media.
-description=
-description=Check out more of my QoL mods:
-description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600
-description=
-description=If you enjoy the mod, consider giving it a star on GitHub:
-description=https://github.com/ribas89/project-zomboid-ribs-mods/
+description=WTOL is an online-only station dedicated to sharing Christian music and inspirational programming worldwide.  
+description=Broadcasting exclusively over the internet, it is operated by Word of the Lord Media.  
+description=Listen now at https://www.votlmedia.org/votlinternetradio.htm
+description=
+description=[h2]Frequency[/h2]  
+description=[b]102.6 MHz[/b] – Word of the Lord Radio.
+description=
+description=[hr]
+description=
+description=Check out more of my QoL mods:  
+description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600
+description=
+description=If you enjoy the mod, consider giving it a star on GitHub:  
+description=https://github.com/ribas89/project-zomboid-ribs-mods/
 tags=Build 42;Audio
 visibility=public

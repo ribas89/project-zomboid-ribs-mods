@@ -12,6 +12,7 @@ description=6. Launch the game
 description=
 description=[h2]What this mod does[/h2]
 description=This mod brings [b]real-world internet radio stations[/b] into Project Zomboid. You can tune in to live streams directly in-game, using custom frequencies.
+description=It also allows setting the [b]minimum and maximum frequencies[/b] available on radios.
 description=
 description=[h2]How to add new stations[/h2]
 description=There are two ways to add your own stations:
@@ -39,6 +40,7 @@ description=[h2]Important about frequencies[/h2]
 description=Project Zomboid radios only work on certain steps:
 description=- Frequencies increase in increments of [b]0.2[/b] (for example: 95.0 ? 95.2 ? 95.4).
 description=- This means you cannot set arbitrary numbers like [b]95.1[/b] or [b]95.3[/b].
+description=- In case two stations use the same frequency, the last one added will automatically shift up by [b]+0.2[/b].
 description=
 description=To help you quickly find valid stations, it is highly recommended to use this mod:
 description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3566943255]Easy Frequency Preset[/url]

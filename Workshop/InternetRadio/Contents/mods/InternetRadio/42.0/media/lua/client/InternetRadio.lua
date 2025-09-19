@@ -22,6 +22,13 @@ InternetRadio.sandbox = RibsFramework.Sandbox:new({
 
 function InternetRadio:addStation(frequencyMHz, name, url)
     local freq = math.floor((frequencyMHz * 1000) / 200 + 0.5) * 200
+
+    for _, station in ipairs(self.stations) do
+        if station.frequency == freq then
+            return self:addStation(frequencyMHz + 0.2, name, url)
+        end
+    end
+
     table.insert(self.stations, { frequency = freq, name = name, url = url })
 end
 
@@ -86,9 +93,9 @@ function ISTimedActionQueue:onCompleted(...)
 
     if currentMode == "SetChannel" then
         emitter:stopAll()
+        deviceData:setChannelRaw(secondaryItem)
         local url = InternetRadio:getUrlForFrequency(secondaryItem)
         if not url then return end
-
         return deviceData:playSound(url, deviceData:getDeviceVolume(), true)
     end
 
@@ -100,3 +107,34 @@ function ISTimedActionQueue:onCompleted(...)
         return emitter:setVolumeAll(secondaryItem)
     end
 end
+
+Events.OnGameStart.Add(function()
+    if not (ISRadioWindow and ISRadioWindow.readFromObject) then return end
+
+    local originalReadFromObject = ISRadioWindow.readFromObject
+    function ISRadioWindow:readFromObject(_player, _deviceObject)
+        local deviceData = _deviceObject and _deviceObject.getDeviceData and _deviceObject:getDeviceData();
+
+        if deviceData and deviceData.setMaxChannelRange then
+            local maxFrequency = InternetRadio.sandbox:getValue("MaxFrequency")
+            local minFrequency = InternetRadio.sandbox:getValue("MinFrequency")
+            deviceData:setMaxChannelRange(maxFrequency * 1000)
+            deviceData:setMinChannelRange(minFrequency * 1000)
+        end
+
+        originalReadFromObject(self, _player, _deviceObject)
+    end
+end)
+
+Events.OnGameStart.Add(function()
+    if not (RWMSubEditPreset and RWMSubEditPreset.createChildren) then return end
+
+    local originalSetValues = RWMSubEditPreset.setValues
+    function RWMSubEditPreset:setValues(...)
+        originalSetValues(self, ...)
+
+        if not self.frequencySlider then return end
+        self.frequencySlider.maxValue = InternetRadio.sandbox:getValue("MaxFrequency")
+        self.frequencySlider.minValue = InternetRadio.sandbox:getValue("MinFrequency")
+    end
+end)

@@ -1,0 +1,8 @@
+InternetRadio:addStation(190.0, "ABC", "https://live-radio01.mediahubaustralia.com/2RNW/mp3/")
+InternetRadio:addStation(190.2, "BBC", "http://stream.live.vc.bbcmedia.co.uk/bbc_world_service")
+InternetRadio:addStation(190.4, "KBC", "https://stream.zeno.fm/c0myzdb71s8uv")
+InternetRadio:addStation(190.6, "NPR", "https://npr-ice.streamguys1.com/live.mp3")
+InternetRadio:addStation(190.8, "RNZ", "https://radionz-ice.streamguys.com/national.mp3")
+InternetRadio:addStation(191.0, "RTE", "https://25683.live.streamtheworld.com/RTE_1_INT.mp3?tdsdk=rte")
+InternetRadio:addStation(191.2, "SAfm", "https://playerservices.streamtheworld.com/api/livestream-redirect/SAFM.mp3")
+InternetRadio:addStation(191.4, "ZNS", "https://radiostreams.streamcomedia.com:8008/zns1540am")

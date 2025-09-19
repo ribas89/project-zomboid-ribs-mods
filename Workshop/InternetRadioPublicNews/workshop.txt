@@ -1,0 +1,25 @@
+version=1
+id=3570521665
+title=Internet Radio - Public News
+description=Adds English-language news stations from around the world.  
+description=Each station comes from a national public or state broadcaster.
+description=
+description=[h2]Included Stations[/h2]  
+description=[b]ABC (Australia) – 190.0 MHz[/b] – Australian Broadcasting Corporation, public broadcaster with national and international news.  
+description=[b]BBC (UK) – 190.2 MHz[/b] – British Broadcasting Corporation World Service, global English news and analysis.  
+description=[b]KBC (Kenya) – 190.4 MHz[/b] – Kenya Broadcasting Corporation, state-owned broadcaster with national news.  
+description=[b]NPR (United States) – 190.6 MHz[/b] – National Public Radio, nonprofit public media network.  
+description=[b]RNZ (New Zealand) – 190.8 MHz[/b] – Radio New Zealand National, public broadcaster with news and talk.  
+description=[b]RTE (Ireland) – 191.0 MHz[/b] – Raidió Teilifís Éireann Radio 1, Ireland’s public service broadcaster.  
+description=[b]SAfm (South Africa) – 191.2 MHz[/b] – Part of South African Broadcasting Corporation, national news and current affairs.  
+description=[b]ZNS (Bahamas) – 191.4 MHz[/b] – Broadcasting Corporation of The Bahamas, state-owned English news and talk.
+description=
+description=[hr]
+description=
+description=Check out more of my QoL mods:  
+description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600
+description=
+description=If you enjoy the mod, consider giving it a star on GitHub:  
+description=https://github.com/ribas89/project-zomboid-ribs-mods/
+tags=Build 42;Audio;Pop Culture
+visibility=public

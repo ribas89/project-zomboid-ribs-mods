@@ -13,3 +13,15 @@ option InternetRadio.CustomStations
     type = string, default = 97.1|ARTxFM|https://patmos.cdnstream.com/proxy/artfmin1/?mp=/stream;95.9|KGVM|http://138.197.239.28:8000/kgvm_a,
     page = InternetRadio, translation = InternetRadio_CustomStations,
 }
+
+option InternetRadio.MinFrequency
+{
+    type = double, min = 0.0, max = 1000000000, default = 0.2,
+    page = InternetRadio, translation = InternetRadio_MinFrequency,
+}
+
+option InternetRadio.MaxFrequency
+{
+    type = double, min = 0.0, max = 1000000000, default = 999,
+    page = InternetRadio, translation = InternetRadio_MaxFrequency,
+}

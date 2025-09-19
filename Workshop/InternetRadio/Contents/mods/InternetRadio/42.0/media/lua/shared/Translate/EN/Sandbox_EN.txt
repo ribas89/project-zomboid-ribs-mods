@@ -4,4 +4,12 @@ Sandbox_EN = {
   Sandbox_InternetRadio_CustomStations_mdesc1 = "FREQUENCY|NAME|URL;FREQUENCY|..."
   Sandbox_InternetRadio_CustomStations = "Custom Stations"
   Sandbox_InternetRadio_CustomStations_tooltip = "Enter custom radio stations in the format above. Each station is separated by a semicolon."
+
+
+  Sandbox_InternetRadio_MinFrequency_mdesc1 = "Reload the game for the changes to take effect"
+  Sandbox_InternetRadio_MinFrequency = "Min Frequency"
+  Sandbox_InternetRadio_MinFrequency_tooltip = "Set the minimum frequency of a radio."
+
+  Sandbox_InternetRadio_MaxFrequency = "Max Frequency"
+  Sandbox_InternetRadio_MaxFrequency_tooltip = "Set the maximum frequency of a radio."
 }

@@ -1,0 +1,6 @@
+name=Internet Radio - Public News
+id=InternetRadioPublicNews
+description=English-language public news stations worldwide
+poster=poster.png
+icon=icon.png
+require=\RibsFramework,\InternetRadio
