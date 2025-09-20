@@ -1,16 +1,23 @@
 version=1
 id=3556857572
 title=Smart Hutch
-description=Smart Hutch adds automation and quality-of-life features for your chicken hutch:
-description=
-description=- Auto Close: Closes the hutch when it gets dirty and releases chickens so they don't get sick.
-description=- Auto Clean: Automatically cleans the hutch when the door is closed and opens it once cleaning is complete.
-description=- Auto Heal: Heals chickens inside the hutch with customizable health levels.
-description=- Passive Clean: Adds a passive reduction to dirtiness for balance.
-description=- Timed Door: Opens and closes the hutch automatically at configurable hours.
-description=
-description=All features and thresholds can be customized in both the mod settings and sandbox options.
-description=Mod options simply mirror sandbox settings and cannot override multiplayer server configurations.
+description=[b]Smart Hutch adds automation and quality-of-life features for your chicken hutch:[/b]
+description=
+description=[b]Auto Close[/b]: Closes the hutch when it gets dirty and releases chickens to prevent sickness.  
+description=[b]Auto Clean[/b]: Cleans the hutch automatically when the door is closed, then reopens once finished.  
+description=[b]Auto Heal[/b]: Heals chickens inside the hutch with customizable health levels.  
+description=[b]Passive Clean[/b]: Provides a steady reduction to dirtiness for balance.  
+description=[b]Timed Door[/b]: Opens and closes the hutch at configurable hours.  
+description=
+description=All features and thresholds are fully customizable in both [i]Mod Settings[/i] and [i]Sandbox Options[/i].  
+description=Mod settings mirror sandbox options and cannot override multiplayer server configurations.
+description=
+description=[hr][/hr]
+description=
+description=[h2]Translations:[/h2]  
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3570327535]Smart Hutch [B42] - ???????????[/url]
+description=
+description=[hr][/hr]
 description=
 description=Check out more of my QoL mods:
 description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600
