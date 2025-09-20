@@ -1,0 +1,26 @@
+Example data:
+
+Radio ID: InternetRadioCLNW
+Radio Name: Internet Radio - Country Live New York
+Radio Frequency: 92.2
+Radio url: https://streaming.radiostreamlive.com/radiocountrylive_devices
+
+Radio mod description: Country music only, 24 hours a day! Live from New York City.
+
+Steam workshop mod description:
+
+Internet Radio - Country Live New York
+
+Country music only, 24 hours a day! Live from New York City. 
+Listen now at https://www.radiocountrylive.com/  
+
+[h2]Frequency[/h2]  
+[b]92.2 MHz[/b]: Country Live New York  
+
+[hr]  
+
+Check out more of my QoL mods:  
+https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600  
+
+If you enjoy the mod, consider giving it a star on GitHub:  
+https://github.com/ribas89/project-zomboid-ribs-mods/  

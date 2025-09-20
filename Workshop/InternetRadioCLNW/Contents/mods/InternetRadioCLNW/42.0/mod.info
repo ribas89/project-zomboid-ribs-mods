@@ -1,0 +1,6 @@
+name=Internet Radio - Country Live New York
+id=InternetRadioCLNW
+description=Country music only, 24 hours a day! Live from New York City.
+poster=poster.png
+icon=icon.png
+require=\RibsFramework,\InternetRadio

@@ -1,0 +1,37 @@
+1 - Open the project zomboid directory
+
+You can paste this on the address bar to go directly to it:
+%userprofile%\Zomboid\Workshop
+
+2 - copy the directory InternetRadioTEMPLATE
+
+3 - paste the InternetRadioTEMPLATE
+
+4 - rename the directory and files to avoid conflict:
+
+Example: 
+from:
+%userprofile%\Zomboid\Workshop\InternetRadioTEMPLATE\Contents\mods\InternetRadioTEMPLATE\42.0\media\lua\client\InternetRadioTEMPLATE.lua
+%userprofile%\Zomboid\Workshop\InternetRadioTEMPLATE\Contents\mods\InternetRadioTEMPLATE
+%userprofile%\Zomboid\Workshop\InternetRadioTEMPLATE
+
+to:
+%userprofile%\Zomboid\Workshop\InternetRadioCLNW\Contents\mods\InternetRadioCLNW\42.0\media\lua\client\InternetRadioCLNW.lua
+%userprofile%\Zomboid\Workshop\InternetRadioCLNW\Contents\mods\InternetRadioCLNW
+%userprofile%\Zomboid\Workshop\InternetRadioCLNW
+
+5 - Edit the radio frequency, name and url on the lua file:
+%userprofile%\Zomboid\Workshop\InternetRadioCLNW\Contents\mods\InternetRadioCLNW\42.0\media\lua\client\InternetRadioCLNW.lua
+
+6 - Edit the project zomboid mod info
+%userprofile%\Zomboid\Workshop\InternetRadioCLNW\Contents\mods\InternetRadioCLNW\42.0\mod.info
+
+7 - Overwrite image files
+
+8 - Open the game
+
+9 - Test the mod
+
+10 - Go back to main menu
+
+11 - Workshop upload

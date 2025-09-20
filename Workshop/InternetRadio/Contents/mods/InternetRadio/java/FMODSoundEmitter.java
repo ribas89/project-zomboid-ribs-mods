@@ -37,6 +37,7 @@ import zombie.network.GameServer;
 import zombie.popman.ObjectPool;
 import zombie.scripting.ScriptManager;
 import zombie.scripting.objects.SoundTimelineScript;
+import zombie.SandboxOptions;
 
 public final class FMODSoundEmitter extends BaseSoundEmitter {
     private final ArrayList<Sound> ToStart = new ArrayList();
@@ -56,7 +57,7 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
     private final ArrayDeque<EventSound> eventSoundPool = new ArrayDeque();
     private final ArrayDeque<FileSound> fileSoundPool = new ArrayDeque();
     private static long CurrentTimeMS;
-    public static String ribsVersionFMODSoundEmitter = "1.1.1";
+    public static String ribsVersionFMODSoundEmitter = "1.2.0";
 
     public FMODSoundEmitter() {
         SoundManager.instance.registerEmitter(this);
@@ -890,32 +891,88 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
         return this.fileSoundPool.isEmpty() ? new FileSound(this) : this.fileSoundPool.pop();
     }
 
+    private <T> T getSandboxValue(String optionName, T defaultValue) {
+        SandboxOptions.SandboxOption opt = SandboxOptions.getInstance().getOptionByName(optionName);
+        if (opt == null) {
+            return defaultValue;
+        }
+        try {
+            Object objectValue = opt.asConfigOption().getValueAsObject();
+            if (objectValue == null) {
+                return defaultValue;
+            }
+            Number castedValue = null;
+            if (defaultValue instanceof Integer) {
+                castedValue = ((Number) objectValue).intValue();
+            }
+            if (defaultValue instanceof Double) {
+                castedValue = ((Number) objectValue).doubleValue();
+            }
+            if (defaultValue instanceof Float) {
+                castedValue = Float.valueOf(((Number) objectValue).floatValue());
+            }
+            if (defaultValue instanceof Long) {
+                castedValue = ((Number) objectValue).longValue();
+            }
+            if (objectValue instanceof Boolean) {
+                return (T) objectValue;
+            }
+            if (objectValue instanceof String) {
+                return (T) objectValue.toString();
+            }
+            return (T) castedValue;
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
     public long playStreamImpl(String url, IsoObject parent) {
+        DebugLog.log("Internet Radio - Trying to play the stream: " + url);
+
         long sound = javafmod.FMOD_System_CreateSound(url, FMODManager.FMOD_CREATESTREAM);
+        DebugLog.log("Internet Radio - FMOD_System_CreateSound returned handle: " + sound);
         if (sound == 0L) {
+            DebugLog.log("Internet Radio - Failed to create sound for: " + url);
             return 0L;
         }
 
         long channel = javafmod.FMOD_System_PlaySound(sound, true);
+        DebugLog.log("Internet Radio - FMOD_System_PlaySound returned channel: " + channel);
         if (channel == 0L) {
+            DebugLog.log("Internet Radio - Failed to play sound for: " + url);
             return 0L;
         }
 
         javafmod.FMOD_Channel_SetMode(channel, FMODManager.FMOD_3D);
+        DebugLog.log("Internet Radio - Set channel mode to FMOD_3D");
+
         javafmod.FMOD_Channel_Set3DAttributes(channel, this.x, this.y, this.z * 3.0f, 0.0f, 0.0f, 0.0f);
-        javafmod.FMOD_Channel_SetPaused(channel, true);
+        DebugLog.log("Internet Radio - Set 3D attributes: x=" + this.x + " y=" + this.y + " z=" + this.z);
+
+        Float minDistance = this.getSandboxValue("InternetRadio.MinDistance", 1.0f);
+        Float maxDistance = this.getSandboxValue("InternetRadio.MaxDistance", 30.0f);
+        DebugLog.log("Internet Radio - Loaded sandbox distances: min=" + minDistance + " max=" + maxDistance);
+
+        javafmod.FMOD_Channel_Set3DMinMaxDistance(channel, minDistance, maxDistance);
+        DebugLog.log("Internet Radio - Applied 3DMinMaxDistance: min=" + minDistance + " max=" + maxDistance);
+
         javafmod.FMOD_Channel_SetVolume(channel, 1.0f);
-        javafmod.FMOD_Channel_SetPaused(channel, false);
+        DebugLog.log("Internet Radio - Set volume to 1.0");
 
         GameSound dummyGameSound = new GameSound();
         dummyGameSound.name = "StreamSound";
         dummyGameSound.loop = true;
         dummyGameSound.is3D = true;
         dummyGameSound.maxInstancesPerEmitter = 1;
+        DebugLog.log("Internet Radio - Created dummy GameSound: " + dummyGameSound.name);
 
         GameSoundClip dummyClip = new GameSoundClip(dummyGameSound);
         dummyClip.file = url;
+        dummyClip.distanceMin = minDistance;
+        dummyClip.distanceMax = maxDistance;
         dummyGameSound.clips.add(dummyClip);
+        DebugLog.log("Internet Radio - Created dummy GameSoundClip with file: " + url);
+        DebugLog.log("Internet Radio - DummyClip distances set: min=" + dummyClip.distanceMin + " max=" + dummyClip.distanceMax);
 
         FileSound fileSound = this.allocFileSound();
         fileSound.clip = dummyClip;
@@ -926,10 +983,13 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
         fileSound.volume = 1.0f;
         fileSound.setVolume = 1.0f;
         fileSound.is3D = (byte) 1;
+        DebugLog.log("Internet Radio - Allocated FileSound with channel=" + channel + " sound=" + sound);
 
         this.ToStart.add(fileSound);
+        DebugLog.log("Internet Radio - Added FileSound to ToStart list, size now=" + this.ToStart.size());
 
         long reference = fileSound.getRef();
+        DebugLog.log("Internet Radio - Returning reference: " + reference);
 
         return reference;
     }

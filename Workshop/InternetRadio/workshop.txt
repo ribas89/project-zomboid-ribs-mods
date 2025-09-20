@@ -1,52 +1,75 @@
 version=1
 id=3570220139
 title=Internet Radio
-description=[b]How to install[/b]
-description=1. Subscribe to the mod
-description=2. Open the mod location
-description=   [code]SteamLibrary\steamapps\workshop\content\108600\3570220139\mods\InternetRadio[/code]
-description=3. Copy the [b]ProjectZomboid[/b] folder from the mod
-description=4. Go to [code]SteamLibrary\steamapps\common[/code]
-description=5. Paste the [b]ProjectZomboid[/b] folder there. Overwrite the files.
-description=6. Launch the game
-description=
-description=[h2]What this mod does[/h2]
-description=This mod brings [b]real-world internet radio stations[/b] into Project Zomboid. You can tune in to live streams directly in-game, using custom frequencies.
-description=It also allows setting the [b]minimum and maximum frequencies[/b] available on radios.
-description=
-description=[h2]How to add new stations[/h2]
-description=There are two ways to add your own stations:
-description=
-description=[b]1. Through Mod Options / Sandbox[/b]
-description=- Open Mod Options or Sandbox settings.
-description=- Add your custom station entries there.
-description=
-description=[b]2. Through Lua modding[/b]
-description=Use the Lua command:
-description=[code]InternetRadio:addStation(frequency, name, url)[/code]
-description=
-description=Example:
-description=[code]InternetRadio:addStation(102.6, "Word of the LORD", "https://listen.radioking.com/radio/299755/stream/346354")[/code]
-description=
-description=A working example can be found here:
-description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3570221068]Internet Radio - WTOL: Word of the Lord[/url]
-description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3570239247]MANGORADIO[/url]
-description=
-description=[h2]Important about stations[/h2]
-description=- [b]Not every internet radio will work[/b]. Stations that require you to press "Play" on a website usually won’t function in-game.
-description=- Stations that autoplay when opened in a browser have the best chance of working.
-description=
-description=[h2]Important about frequencies[/h2]
-description=Project Zomboid radios only work on certain steps:
-description=- Frequencies increase in increments of [b]0.2[/b] (for example: 95.0 ? 95.2 ? 95.4).
-description=- This means you cannot set arbitrary numbers like [b]95.1[/b] or [b]95.3[/b].
-description=- In case two stations use the same frequency, the last one added will automatically shift up by [b]+0.2[/b].
-description=
-description=To help you quickly find valid stations, it is highly recommended to use this mod:
-description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3566943255]Easy Frequency Preset[/url]
-description=
-description=[h2]Recommended mod[/h2]
-description=To listen to radios without equipping them:
-description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3568445867]UAL - Unequip And Listen[/url]
+description=[b]How to install[/b]
+description=1. Subscribe to the mod
+description=2. Open the mod location
+description=   [code]SteamLibrary\steamapps\workshop\content\108600\3570220139\mods\InternetRadio[/code]
+description=3. Copy the [b]ProjectZomboid[/b] folder from the mod
+description=4. Go to [code]SteamLibrary\steamapps\common[/code]
+description=5. Paste the [b]ProjectZomboid[/b] folder there. Overwrite the files.
+description=6. Launch the game
+description=
+description=[h2]What this mod does[/h2]
+description=This mod brings [b]real-world internet radio stations[/b] into Project Zomboid. You can tune in to live streams directly in-game using custom frequencies.  
+description=It also adds options to configure:  
+description=- [b]minimum and maximum frequencies[/b] available on radios  
+description=- [b]minimum and maximum distance[/b] the radio sound can be heard
+description=
+description=[h2]How to add new stations[/h2]
+description=There are two ways to add your own stations:
+description=
+description=[h3]1. Through Mod Options / Sandbox[/h3]
+description=- Open Mod Options or Sandbox settings.
+description=- Add your custom station entries there.
+description=
+description=[h3]2. Through Lua modding[/h3]
+description=[h2]Video tutorial on how to add stations:[/h2]
+description=https://www.youtube.com/watch?v=LRSQTiiZ7nA
+description=
+description=Use the Lua command:  
+description=[code]InternetRadio:addStation(frequency, name, url)[/code]  
+description=
+description=Example:  
+description=[code]InternetRadio:addStation(102.6, "Word of the LORD", "https://listen.radioking.com/radio/299755/stream/346354")[/code]  
+description=
+description=To add custom categories, use a fourth parameter:  
+description=[code]InternetRadio:addStation(frequency, name, url, category)[/code]  
+description=
+description=Example:  
+description=[code]InternetRadio:addStation(102.6, "Word of the LORD", "https://listen.radioking.com/radio/299755/stream/346354", "Christian")[/code]  
+description=
+description=Some examples can be found here:
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3570221068]WTOL: Word of the Lord[/url]  
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3570521665]Public News[/url]  
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3570239247]MANGORADIO[/url]  
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3570573606]Vocaloid[/url]
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3571153355]Country Live New York[/url]
+description=
+description=[h2]Important about stations[/h2]
+description=- [b]Not every internet radio will work[/b]. Stations that require you to press "Play" on a website usually won’t function in-game.  
+description=- Stations that autoplay when opened in a browser have the best chance of working.  
+description=
+description=[h2]Important about frequencies[/h2]
+description=Project Zomboid radios only work on certain steps:
+description=- Frequencies increase in increments of [b]0.2[/b] (for example: 95.0 ? 95.2 ? 95.4).  
+description=- This means you cannot set arbitrary numbers like [b]95.1[/b] or [b]95.3[/b].  
+description=- If you set an odd frequency, it will automatically try to adjust to the nearest valid even step.  
+description=- In case two stations use the same frequency, the last one added will automatically shift up by [b]+0.2[/b].  
+description=
+description=To help you quickly find valid stations, it is highly recommended to use this mod:  
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3566943255]Easy Frequency Preset[/url]  
+description=
+description=[h2]Recommended mod[/h2]
+description=To listen to radios without equipping them:  
+description=[url=https://steamcommunity.com/sharedfiles/filedetails/?id=3568445867]UAL - Unequip And Listen[/url]  
+description=
+description=
+description=Check out more of my QoL mods:  
+description=https://steamcommunity.com/profiles/76561198045899180/myworkshopfiles/?appid=108600
+description=
+description=If you enjoy the mod, consider giving it a star on GitHub:  
+description=https://github.com/ribas89/project-zomboid-ribs-mods/
+description=
 tags=Build 42;Audio;Balance;Framework;Interface;QoL
 visibility=public

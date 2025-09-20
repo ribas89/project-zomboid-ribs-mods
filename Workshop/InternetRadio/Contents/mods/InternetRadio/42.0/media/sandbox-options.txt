@@ -25,3 +25,15 @@ option InternetRadio.MaxFrequency
     type = double, min = 0.0, max = 1000000000, default = 999,
     page = InternetRadio, translation = InternetRadio_MaxFrequency,
 }
+
+option InternetRadio.MinDistance
+{
+    type = double, min = 0.0, max = 1000000000, default = 1.0,
+    page = InternetRadio, translation = InternetRadio_MinDistance,
+}
+
+option InternetRadio.MaxDistance
+{
+    type = double, min = 0.0, max = 1000000000, default = 30,
+    page = InternetRadio, translation = InternetRadio_MaxDistance,
+}

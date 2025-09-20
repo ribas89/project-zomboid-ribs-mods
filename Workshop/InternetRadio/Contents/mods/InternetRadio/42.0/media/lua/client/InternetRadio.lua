@@ -10,7 +10,7 @@ InternetRadio.classVersion = RibsFramework.ClassVersion:new({
     ID = "InternetRadio",
     instances = InternetRadio,
     classesData = {
-        FMODSoundEmitter = { name = "ribsVersionFMODSoundEmitter", version = "1.0.1" }
+        FMODSoundEmitter = { name = "ribsVersionFMODSoundEmitter", version = "1.2.0" }
     }
 })
 
@@ -20,16 +20,11 @@ InternetRadio.sandbox = RibsFramework.Sandbox:new({
 })
 
 
-function InternetRadio:addStation(frequencyMHz, name, url)
+function InternetRadio:addStation(frequencyMHz, name, url, pCategory)
+    local category = pCategory or "Radio"
     local freq = math.floor((frequencyMHz * 1000) / 200 + 0.5) * 200
 
-    for _, station in ipairs(self.stations) do
-        if station.frequency == freq then
-            return self:addStation(frequencyMHz + 0.2, name, url)
-        end
-    end
-
-    table.insert(self.stations, { frequency = freq, name = name, url = url })
+    table.insert(self.stations, { frequency = freq, name = name, url = url, category = category })
 end
 
 function InternetRadio:getUrlForFrequency(freqKHz)
@@ -61,7 +56,13 @@ function InternetRadio:OnGameTimeLoaded()
     self:loadFromString(stationsString)
 
     for _, station in ipairs(InternetRadio.stations) do
-        zomboidRadio:addChannelName(station.name, station.frequency, "Radio", true)
+        local frequency = station.frequency
+
+        while zomboidRadio:getChannelName(frequency) do
+            frequency = frequency + 200
+        end
+
+        zomboidRadio:addChannelName(station.name, frequency, station.category, true)
     end
 end
 
