@@ -14,14 +14,13 @@ It includes **only the files provided by those mods**, exactly as they appear in
 ## Notes
 
 * Files here are provided **as-is** for convenience, backup, and development reference.
-* Some mods may include modified `.class` files from the game, but only as released on **Steam Workshop**.
-* If a mod includes a `workshopID`, you can find the original Workshop page using that ID.
+* Some mods may include modified `.class` or `.java` files from the game, but only as released on **Steam Workshop**.
 
 ## License
 
 * **Mod code in this repository:** [MIT License](https://opensource.org/licenses/MIT)
 * **Lua stubs:** [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)
-* **Original Project Zomboid code:** © The Indie Stone. Any modified game files remain under their copyright.
+* **Project Zomboid code:** © The Indie Stone. Any modified game files remain under their copyright.
 
 ## Disclaimer
 
