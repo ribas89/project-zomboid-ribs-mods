@@ -12,8 +12,11 @@ import fmod.javafmodJNI;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.BitSet;
+import java.util.List;
 import zombie.GameSounds;
+import zombie.SandboxOptions;
 import zombie.SoundManager;
+import zombie.UsedFromLua;
 import zombie.audio.BaseSoundEmitter;
 import zombie.audio.FMODParameter;
 import zombie.audio.GameSound;
@@ -34,15 +37,19 @@ import zombie.iso.objects.IsoDoor;
 import zombie.iso.objects.IsoWindow;
 import zombie.network.GameClient;
 import zombie.network.GameServer;
+import zombie.network.PacketTypes;
+import zombie.network.packets.INetworkPacket;
 import zombie.popman.ObjectPool;
 import zombie.scripting.ScriptManager;
+import zombie.scripting.objects.CharacterTrait;
 import zombie.scripting.objects.SoundTimelineScript;
-import zombie.SandboxOptions;
 
+@UsedFromLua
 public final class FMODSoundEmitter extends BaseSoundEmitter {
-    private final ArrayList<Sound> ToStart = new ArrayList();
-    private final ArrayList<Sound> Instances = new ArrayList();
-    private final ArrayList<Sound> Stopped = new ArrayList();
+
+    private final ArrayList<Sound> toStart = new ArrayList();
+    private final ArrayList<Sound> instances = new ArrayList();
+    private final ArrayList<Sound> stopped = new ArrayList();
     public float x;
     public float y;
     public float z;
@@ -52,12 +59,13 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
     private final ArrayList<FMODParameter> parameters = new ArrayList();
     public IFMODParameterUpdater parameterUpdater;
     private final ArrayList<ParameterValue> parameterValues = new ArrayList();
-    private static final ObjectPool<ParameterValue> parameterValuePool = new ObjectPool<ParameterValue>(ParameterValue::new);
+    private static final ObjectPool<ParameterValue> parameterValuePool =
+        new ObjectPool<ParameterValue>(ParameterValue::new);
     private static BitSet parameterSet;
     private final ArrayDeque<EventSound> eventSoundPool = new ArrayDeque();
     private final ArrayDeque<FileSound> fileSoundPool = new ArrayDeque();
-    private static long CurrentTimeMS;
-    public static String ribsVersionFMODSoundEmitter = "1.2.0";
+    private static long currentTimeMs;
+    public static String ribsVersionFMODSoundEmitter = "2.0.0";
 
     public FMODSoundEmitter() {
         SoundManager.instance.registerEmitter(this);
@@ -67,735 +75,801 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
     }
 
     @Override
-    public void randomStart() {
+    public void randomStart() {}
+
+    @Override
+    public void setPos(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     @Override
-    public void setPos(float f, float f2, float f3) {
-        this.x = f;
-        this.y = f2;
-        this.z = f3;
+    public int stopSound(long soundRef) {
+        return this.stopSound(soundRef, true);
     }
 
     @Override
-    public int stopSound(long l) {
-        Sound sound;
-        int n;
-        for (n = 0; n < this.ToStart.size(); ++n) {
-            sound = this.ToStart.get(n);
-            if (sound.getRef() != l)
-                continue;
-            this.sendStopSound(sound.name, false);
-            sound.release();
-            this.ToStart.remove(n--);
+    public int stopSoundDelayRelease(long soundRef) {
+        return this.stopSound(soundRef, false);
+    }
+
+    private int stopSound(long soundRef, boolean bReleaseEvent) {
+        Sound s;
+        int i;
+        for (i = 0; i < this.toStart.size(); ++i) {
+            s = this.toStart.get(i);
+            if (s.getRef() != soundRef) continue;
+            this.sendStopSound(s.name, false);
+            s.release(s.clip.isStopImmediate());
+            this.toStart.remove(i--);
         }
-        for (n = 0; n < this.Instances.size(); ++n) {
-            sound = this.Instances.get(n);
-            if (sound.getRef() != l)
-                continue;
-            sound.stop();
-            this.sendStopSound(sound.name, false);
-            this.Stopped.add(sound);
-            this.Instances.remove(n--);
+        for (i = 0; i < this.instances.size(); ++i) {
+            s = this.instances.get(i);
+            if (s.getRef() != soundRef) continue;
+            s.stop(bReleaseEvent, s.clip.isStopImmediate());
+            this.sendStopSound(s.name, false);
+            if (bReleaseEvent) {
+                s.release(s.clip.isStopImmediate());
+            } else {
+                this.stopped.add(s);
+            }
+            this.instances.remove(i--);
         }
         return 0;
     }
 
     @Override
-    public void stopSoundLocal(long l) {
-        Sound sound;
-        int n;
-        for (n = 0; n < this.ToStart.size(); ++n) {
-            sound = this.ToStart.get(n);
-            if (sound.getRef() != l)
-                continue;
-            sound.release();
-            this.ToStart.remove(n--);
+    public void stopSoundLocal(long soundRef) {
+        Sound s;
+        int i;
+        for (i = 0; i < this.toStart.size(); ++i) {
+            s = this.toStart.get(i);
+            if (s.getRef() != soundRef) continue;
+            s.release(s.clip.isStopImmediate());
+            this.toStart.remove(i--);
         }
-        for (n = 0; n < this.Instances.size(); ++n) {
-            sound = this.Instances.get(n);
-            if (sound.getRef() != l)
-                continue;
-            sound.stop();
-            sound.release();
-            this.Instances.remove(n--);
+        for (i = 0; i < this.instances.size(); ++i) {
+            s = this.instances.get(i);
+            if (s.getRef() != soundRef) continue;
+            s.stop(true, s.clip.isStopImmediate());
+            s.release(s.clip.isStopImmediate());
+            this.instances.remove(i--);
         }
     }
 
     @Override
-    public void stopOrTriggerSoundLocal(long l) {
-        Sound sound;
-        int n;
-        for (n = 0; n < this.ToStart.size(); ++n) {
-            sound = this.ToStart.get(n);
-            if (sound.getRef() != l)
-                continue;
-            sound.release();
-            this.ToStart.remove(n--);
+    public void stopOrTriggerSoundLocal(long soundRef) {
+        Sound s;
+        int i;
+        for (i = 0; i < this.toStart.size(); ++i) {
+            s = this.toStart.get(i);
+            if (s.getRef() != soundRef) continue;
+            s.release(s.clip.isStopImmediate());
+            this.toStart.remove(i--);
         }
-        for (n = 0; n < this.Instances.size(); ++n) {
-            sound = this.Instances.get(n);
-            if (sound.getRef() != l)
-                continue;
-            if (sound.clip.hasSustainPoints()) {
-                sound.triggerCue();
+        for (i = 0; i < this.instances.size(); ++i) {
+            s = this.instances.get(i);
+            if (s.getRef() != soundRef) continue;
+            if (s.clip.hasSustainPoints()) {
+                s.triggerCue();
                 continue;
             }
-            sound.stop();
-            sound.release();
-            this.Instances.remove(n--);
+            s.stop(true, s.clip.isStopImmediate());
+            s.release(s.clip.isStopImmediate());
+            this.instances.remove(i--);
         }
     }
 
     @Override
-    public int stopSoundByName(String string) {
-        Sound sound;
-        int n;
-        GameSound gameSound = GameSounds.getSound(string);
+    public int stopSoundByName(String name) {
+        Sound s;
+        int i;
+        GameSound gameSound = GameSounds.getSound(name);
         if (gameSound == null) {
             return 0;
         }
-        for (n = 0; n < this.ToStart.size(); ++n) {
-            sound = this.ToStart.get(n);
-            if (!gameSound.clips.contains(sound.clip))
-                continue;
-            sound.release();
-            this.ToStart.remove(n--);
+        for (i = 0; i < this.toStart.size(); ++i) {
+            s = this.toStart.get(i);
+            if (!gameSound.clips.contains(s.clip)) continue;
+            s.release(s.clip.isStopImmediate());
+            this.toStart.remove(i--);
         }
-        for (n = 0; n < this.Instances.size(); ++n) {
-            sound = this.Instances.get(n);
-            if (!gameSound.clips.contains(sound.clip))
-                continue;
-            sound.stop();
-            sound.release();
-            this.Instances.remove(n--);
+        for (i = 0; i < this.instances.size(); ++i) {
+            s = this.instances.get(i);
+            if (!gameSound.clips.contains(s.clip)) continue;
+            s.stop(true, s.clip.isStopImmediate());
+            s.release(s.clip.isStopImmediate());
+            this.instances.remove(i--);
         }
         return 0;
     }
 
     @Override
-    public void stopOrTriggerSound(long l) {
-        int n = this.findToStart(l);
-        if (n != -1) {
-            Sound sound = this.ToStart.remove(n);
-            this.sendStopSound(sound.name, true);
-            sound.release();
+    public void stopOrTriggerSound(long handle) {
+        int index = this.findToStart(handle);
+        if (index != -1) {
+            Sound s = this.toStart.remove(index);
+            this.sendStopSound(s.name, true);
+            s.release(s.clip.isStopImmediate());
             return;
         }
-        n = this.findInstance(l);
-        if (n != -1) {
-            Sound sound = this.Instances.get(n);
-            this.sendStopSound(sound.name, true);
-            if (sound instanceof EventSound) {
-                EventSound eventSound = (EventSound) sound;
-                FMOD_STUDIO_PARAMETER_DESCRIPTION fMOD_STUDIO_PARAMETER_DESCRIPTION = FMODManager.instance.getParameterDescription("ActionProgressPercent");
-                if (eventSound.clip.eventDescription.hasParameter(fMOD_STUDIO_PARAMETER_DESCRIPTION)) {
-                    eventSound.setParameterValue(fMOD_STUDIO_PARAMETER_DESCRIPTION, 100.0f);
-                    eventSound.bTriggeredCue = true;
-                    eventSound.checkTimeMS = CurrentTimeMS;
+        index = this.findInstance(handle);
+        if (index != -1) {
+            Sound s = this.instances.get(index);
+            this.sendStopSound(s.name, true);
+            if (s instanceof EventSound) {
+                EventSound eventSound = (EventSound) s;
+                FMOD_STUDIO_PARAMETER_DESCRIPTION parameterDescription =
+                    FMODManager.instance.getParameterDescription(
+                        "ActionProgressPercent"
+                    );
+                if (
+                    eventSound.clip.eventDescription.hasParameter(
+                        parameterDescription
+                    )
+                ) {
+                    eventSound.setParameterValue(parameterDescription, 100.0f);
+                    eventSound.triggeredCue = true;
+                    eventSound.checkTimeMs = currentTimeMs;
                     return;
                 }
             }
-            if (sound.clip.hasSustainPoints()) {
-                sound.triggerCue();
+            if (s.clip.hasSustainPoints()) {
+                s.triggerCue();
             } else {
-                this.Instances.remove(n);
-                sound.stop();
-                sound.release();
+                this.instances.remove(index);
+                s.stop(true, s.clip.isStopImmediate());
+                s.release(s.clip.isStopImmediate());
             }
         }
     }
 
     @Override
-    public void stopOrTriggerSoundByName(String string) {
-        Sound sound;
-        int n;
-        GameSound gameSound = GameSounds.getSound(string);
+    public void stopOrTriggerSoundByName(String name) {
+        Sound s;
+        int i;
+        GameSound gameSound = GameSounds.getSound(name);
         if (gameSound == null) {
             return;
         }
-        for (n = 0; n < this.ToStart.size(); ++n) {
-            sound = this.ToStart.get(n);
-            if (!gameSound.clips.contains(sound.clip))
-                continue;
-            this.ToStart.remove(n--);
-            sound.release();
+        for (i = 0; i < this.toStart.size(); ++i) {
+            s = this.toStart.get(i);
+            if (!gameSound.clips.contains(s.clip)) continue;
+            this.toStart.remove(i--);
+            s.release(s.clip.isStopImmediate());
         }
-        for (n = 0; n < this.Instances.size(); ++n) {
-            sound = this.Instances.get(n);
-            if (!gameSound.clips.contains(sound.clip))
-                continue;
-            if (sound.clip.hasSustainPoints()) {
-                sound.triggerCue();
+        for (i = 0; i < this.instances.size(); ++i) {
+            s = this.instances.get(i);
+            if (!gameSound.clips.contains(s.clip)) continue;
+            if (s.clip.hasSustainPoints()) {
+                s.triggerCue();
                 continue;
             }
-            sound.stop();
-            sound.release();
-            this.Instances.remove(n--);
+            s.stop(true, s.clip.isStopImmediate());
+            s.release(s.clip.isStopImmediate());
+            this.instances.remove(i--);
         }
     }
 
-    private void limitSound(GameSound gameSound, int n) {
-        Sound sound;
-        int n2;
-        int n3 = this.countToStart(gameSound) + this.countInstances(gameSound);
-        if (n3 <= n) {
+    private void limitSound(GameSound gameSound, int maxInstances) {
+        Sound s;
+        int i;
+        int total =
+            this.countToStart(gameSound) + this.countInstances(gameSound);
+        if (total <= maxInstances) {
             return;
         }
-        for (n2 = 0; n2 < this.ToStart.size(); ++n2) {
-            sound = this.ToStart.get(n2);
-            if (!gameSound.clips.contains(sound.clip))
-                continue;
-            this.ToStart.remove(n2--);
-            sound.release();
-            if (--n3 > n)
-                continue;
+        for (i = 0; i < this.toStart.size(); ++i) {
+            s = this.toStart.get(i);
+            if (!gameSound.clips.contains(s.clip)) continue;
+            this.toStart.remove(i--);
+            s.release(s.clip.isStopImmediate());
+            if (--total > maxInstances) continue;
             return;
         }
-        for (n2 = 0; n2 < this.Instances.size(); ++n2) {
-            sound = this.Instances.get(n2);
-            if (!gameSound.clips.contains(sound.clip))
-                continue;
-            if (sound.clip.hasSustainPoints()) {
-                if (sound.isTriggeredCue())
-                    continue;
-                sound.triggerCue();
+        for (i = 0; i < this.instances.size(); ++i) {
+            s = this.instances.get(i);
+            if (!gameSound.clips.contains(s.clip)) continue;
+            if (s.clip.hasSustainPoints()) {
+                if (s.isTriggeredCue()) continue;
+                s.triggerCue();
                 continue;
             }
-            sound.stop();
-            sound.release();
-            this.Instances.remove(n2--);
-            if (--n3 > n)
-                continue;
+            s.stop(true, s.clip.isStopImmediate());
+            s.release(s.clip.isStopImmediate());
+            this.instances.remove(i--);
+            if (--total > maxInstances) continue;
             return;
         }
     }
 
     @Override
-    public void setVolume(long l, float f) {
-        Sound sound;
-        int n;
-        for (n = 0; n < this.ToStart.size(); ++n) {
-            sound = this.ToStart.get(n);
-            if (sound.getRef() != l)
-                continue;
-            sound.volume = f;
+    public void setVolume(long soundRef, float volume) {
+        Sound s;
+        int i;
+        for (i = 0; i < this.toStart.size(); ++i) {
+            s = this.toStart.get(i);
+            if (s.getRef() != soundRef) continue;
+            s.volume = volume;
         }
-        for (n = 0; n < this.Instances.size(); ++n) {
-            sound = this.Instances.get(n);
-            if (sound.getRef() != l)
-                continue;
-            sound.volume = f;
+        for (i = 0; i < this.instances.size(); ++i) {
+            s = this.instances.get(i);
+            if (s.getRef() != soundRef) continue;
+            s.volume = volume;
         }
     }
 
     @Override
-    public void setPitch(long l, float f) {
-        Sound sound;
-        int n;
-        for (n = 0; n < this.ToStart.size(); ++n) {
-            sound = this.ToStart.get(n);
-            if (sound.getRef() == l) {
+    public void setPitch(long soundRef, float pitch) {
+        Sound s;
+        int i;
+        for (i = 0; i < this.toStart.size(); ++i) {
+            s = this.toStart.get(i);
+            if (s.getRef() == soundRef) {
                 DebugLog.log("Set pitch for ToStart");
             }
-            sound.pitch = f;
+            s.pitch = pitch;
         }
-        for (n = 0; n < this.Instances.size(); ++n) {
-            sound = this.Instances.get(n);
-            if (sound.getRef() == l) {
+        for (i = 0; i < this.instances.size(); ++i) {
+            s = this.instances.get(i);
+            if (s.getRef() == soundRef) {
                 DebugLog.log("Set pitch for Instance");
             }
-            sound.pitch = f;
+            s.pitch = pitch;
         }
     }
 
     @Override
-    public boolean hasSustainPoints(long l) {
-        Sound sound;
-        int n;
-        for (n = 0; n < this.ToStart.size(); ++n) {
-            sound = this.ToStart.get(n);
-            if (sound.getRef() != l)
-                continue;
-            if (sound.clip.eventDescription == null) {
+    public boolean hasSustainPoints(long soundRef) {
+        Sound s;
+        int i;
+        for (i = 0; i < this.toStart.size(); ++i) {
+            s = this.toStart.get(i);
+            if (s.getRef() != soundRef) continue;
+            if (s.clip.eventDescription == null) {
                 return false;
             }
-            return sound.clip.eventDescription.bHasSustainPoints;
+            return s.clip.eventDescription.hasSustainPoints;
         }
-        for (n = 0; n < this.Instances.size(); ++n) {
-            sound = this.Instances.get(n);
-            if (sound.getRef() != l)
-                continue;
-            if (sound.clip.eventDescription == null) {
+        for (i = 0; i < this.instances.size(); ++i) {
+            s = this.instances.get(i);
+            if (s.getRef() != soundRef) continue;
+            if (s.clip.eventDescription == null) {
                 return false;
             }
-            return sound.clip.eventDescription.bHasSustainPoints;
+            return s.clip.eventDescription.hasSustainPoints;
         }
         return false;
     }
 
     @Override
-    public void triggerCue(long l) {
-        for (int i = 0; i < this.Instances.size(); ++i) {
-            Sound sound = this.Instances.get(i);
-            if (sound.getRef() != l)
-                continue;
-            sound.triggerCue();
+    public void triggerCue(long soundRef) {
+        for (int i = 0; i < this.instances.size(); ++i) {
+            Sound s = this.instances.get(i);
+            if (s.getRef() != soundRef) continue;
+            s.triggerCue();
         }
     }
 
     @Override
-    public void setVolumeAll(float f) {
-        Sound sound;
-        int n;
-        for (n = 0; n < this.ToStart.size(); ++n) {
-            sound = this.ToStart.get(n);
-            sound.volume = f;
+    public void setVolumeAll(float volume) {
+        Sound s;
+        int i;
+        for (i = 0; i < this.toStart.size(); ++i) {
+            s = this.toStart.get(i);
+            s.volume = volume;
         }
-        for (n = 0; n < this.Instances.size(); ++n) {
-            sound = this.Instances.get(n);
-            sound.volume = f;
+        for (i = 0; i < this.instances.size(); ++i) {
+            s = this.instances.get(i);
+            s.volume = volume;
         }
     }
 
     @Override
     public void stopAll() {
-        Sound sound;
-        int n;
-        for (n = 0; n < this.ToStart.size(); ++n) {
-            sound = this.ToStart.get(n);
-            sound.release();
+        Sound s;
+        int i;
+        for (i = 0; i < this.toStart.size(); ++i) {
+            s = this.toStart.get(i);
+            s.release(s.clip.isStopImmediate());
         }
-        for (n = 0; n < this.Instances.size(); ++n) {
-            sound = this.Instances.get(n);
-            sound.stop();
-            sound.release();
+        for (i = 0; i < this.instances.size(); ++i) {
+            s = this.instances.get(i);
+            s.stop(true, s.clip.isStopImmediate());
+            s.release(s.clip.isStopImmediate());
         }
-        this.ToStart.clear();
-        this.Instances.clear();
+        this.toStart.clear();
+        this.instances.clear();
     }
 
     @Override
-    public long playSound(String string) {
-        if (GameClient.bClient) {
-            if (this.parent instanceof IsoMovingObject) {
-                if (!(this.parent instanceof IsoPlayer) || !((IsoPlayer) this.parent).isInvisible()) {
-                    GameClient.instance.PlaySound(string, false, (IsoMovingObject) this.parent);
+    public long playSound(String file) {
+        if (GameClient.client) {
+            IsoObject isoObject = this.parent;
+            if (isoObject instanceof IsoMovingObject) {
+                IsoPlayer player;
+                IsoMovingObject movingObject = (IsoMovingObject) isoObject;
+                IsoObject isoObject2 = this.parent;
+                if (
+                    !(isoObject2 instanceof IsoPlayer) ||
+                    !(player = (IsoPlayer) isoObject2).isInvisible()
+                ) {
+                    INetworkPacket.send(
+                        PacketTypes.PacketType.PlaySound,
+                        file,
+                        false,
+                        movingObject
+                    );
                 }
             } else {
-                GameClient.instance.PlayWorldSound(string, (int) this.x, (int) this.y, (byte) this.z);
+                GameClient.instance.PlayWorldSound(
+                    file,
+                    PZMath.fastfloor(this.x),
+                    PZMath.fastfloor(this.y),
+                    (byte) PZMath.fastfloor(this.z)
+                );
             }
         }
-        if (GameServer.bServer) {
+        if (GameServer.server) {
             return 0L;
         }
 
-        if (string != null && string.startsWith("http")) {
-            return this.playStreamImpl(string, this.parent);
+        if (file != null && file.startsWith("http")) {
+            return this.playStreamImpl(file, this.parent);
         }
-
-        return this.playSoundImpl(string, (IsoObject) null);
+        return this.playSoundImpl(file, (IsoObject) null);
     }
 
     @Override
-    public long playSound(String string, IsoGameCharacter isoGameCharacter) {
-        if (GameClient.bClient) {
-            if (!isoGameCharacter.isInvisible()) {
-                GameClient.instance.PlaySound(string, false, isoGameCharacter);
+    public long playSound(String file, IsoGameCharacter character) {
+        if (GameClient.client) {
+            if (!character.isInvisible()) {
+                INetworkPacket.send(
+                    PacketTypes.PacketType.PlaySound,
+                    file,
+                    false,
+                    character
+                );
             }
-            return !isoGameCharacter.isInvisible() || DebugOptions.instance.Character.Debug.PlaySoundWhenInvisible.getValue() ? this.playSoundImpl(string, (IsoObject) null) : 0L;
+            return !character.isInvisible() ||
+                DebugOptions.instance.character.debug.playSoundWhenInvisible.getValue()
+                ? this.playSoundImpl(file, (IsoObject) null)
+                : 0L;
         }
-        if (GameServer.bServer) {
+        if (GameServer.server) {
             return 0L;
         }
-        return this.playSoundImpl(string, (IsoObject) null);
+        return this.playSoundImpl(file, (IsoObject) null);
     }
 
     @Override
-    public long playSound(String string, int n, int n2, int n3) {
-        this.x = n;
-        this.y = n2;
-        this.z = n3;
-        return this.playSound(string);
+    public long playSound(String file, int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        return this.playSound(file);
     }
 
     @Override
-    public long playSound(String string, IsoGridSquare isoGridSquare) {
-        this.x = (float) isoGridSquare.x + 0.5f;
-        this.y = (float) isoGridSquare.y + 0.5f;
-        this.z = isoGridSquare.z;
-        return this.playSound(string);
+    public long playSound(String file, IsoGridSquare square) {
+        this.x = (float) square.x + 0.5f;
+        this.y = (float) square.y + 0.5f;
+        this.z = square.z;
+        return this.playSound(file);
     }
 
     @Override
-    public long playSoundImpl(String string, IsoGridSquare isoGridSquare) {
-        this.x = (float) isoGridSquare.x + 0.5f;
-        this.y = (float) isoGridSquare.y + 0.5f;
-        this.z = (float) isoGridSquare.z + 0.5f;
-        return this.playSoundImpl(string, (IsoObject) null);
+    public long playSoundImpl(String file, IsoGridSquare square) {
+        this.x = (float) square.x + 0.5f;
+        this.y = (float) square.y + 0.5f;
+        this.z = (float) square.z + 0.5f;
+        return this.playSoundImpl(file, (IsoObject) null);
     }
 
     @Override
-    public long playSound(String string, boolean bl) {
-        return this.playSound(string);
+    public long playSound(String file, boolean doWorldSound) {
+        return this.playSound(file);
     }
 
     @Override
-    public long playSoundImpl(String string, boolean bl, IsoObject isoObject) {
-        return this.playSoundImpl(string, isoObject);
+    public long playSoundImpl(
+        String file,
+        boolean doWorldSound,
+        IsoObject parent
+    ) {
+        return this.playSoundImpl(file, parent);
     }
 
     @Override
-    public long playSoundLooped(String string) {
-        if (GameClient.bClient) {
-            if (this.parent instanceof IsoMovingObject) {
-                GameClient.instance.PlaySound(string, true, (IsoMovingObject) this.parent);
-            } else {
-                GameClient.instance.PlayWorldSound(string, (int) this.x, (int) this.y, (byte) this.z);
-            }
-        }
-        return this.playSoundLoopedImpl(string);
-    }
-
-    @Override
-    public long playSoundLoopedImpl(String string) {
-        return this.playSoundImpl(string, false, null);
-    }
-
-    @Override
-    public long playSound(String string, IsoObject isoObject) {
-        if (GameClient.bClient) {
+    public long playSoundLooped(String file) {
+        if (GameClient.client) {
+            IsoObject isoObject = this.parent;
             if (isoObject instanceof IsoMovingObject) {
-                GameClient.instance.PlaySound(string, false, (IsoMovingObject) this.parent);
+                IsoMovingObject isoMovingObject = (IsoMovingObject) isoObject;
+                INetworkPacket.send(
+                    PacketTypes.PacketType.PlaySound,
+                    file,
+                    true,
+                    isoMovingObject
+                );
             } else {
-                GameClient.instance.PlayWorldSound(string, (int) this.x, (int) this.y, (byte) this.z);
+                GameClient.instance.PlayWorldSound(
+                    file,
+                    PZMath.fastfloor(this.x),
+                    PZMath.fastfloor(this.y),
+                    (byte) PZMath.fastfloor(this.z)
+                );
             }
         }
-        if (GameServer.bServer) {
-            return 0L;
-        }
-        return this.playSoundImpl(string, isoObject);
+        return this.playSoundLoopedImpl(file);
     }
 
     @Override
-    public long playSoundImpl(String string, IsoObject isoObject) {
-        if (string != null && string.startsWith("http")) {
-            return this.playStreamImpl(string, isoObject);
+    public long playSoundLoopedImpl(String file) {
+        return this.playSoundImpl(file, false, null);
+    }
+
+    @Override
+    public long playSound(String file, IsoObject parent) {
+        if (GameClient.client) {
+            if (parent instanceof IsoMovingObject) {
+                IsoMovingObject isoMovingObject = (IsoMovingObject) parent;
+                INetworkPacket.send(
+                    PacketTypes.PacketType.PlaySound,
+                    file,
+                    false,
+                    isoMovingObject
+                );
+            } else {
+                GameClient.instance.PlayWorldSound(
+                    file,
+                    PZMath.fastfloor(this.x),
+                    PZMath.fastfloor(this.y),
+                    (byte) PZMath.fastfloor(this.z)
+                );
+            }
+        }
+        if (GameServer.server) {
+            return 0L;
+        }
+        return this.playSoundImpl(file, parent);
+    }
+
+    @Override
+    public long playSoundImpl(String file, IsoObject parent) {
+        if (file != null && file.startsWith("http")) {
+            return this.playStreamImpl(file, parent);
         }
 
-        if (string.startsWith("Radio") || string.startsWith("VehicleRadio")) {
+        if (file.startsWith("Radio") || file.startsWith("VehicleRadio")) {
             return 0L;
         }
 
-        GameSound gameSound = GameSounds.getSound(string);
+        GameSound gameSound = GameSounds.getSound(file);
         if (gameSound == null) {
             return 0L;
         }
-        GameSoundClip gameSoundClip = gameSound.getRandomClip();
-        return this.playClip(gameSoundClip, isoObject);
+        GameSoundClip clip = gameSound.getRandomClip();
+        return this.playClip(clip, parent);
     }
 
     @Override
-    public long playClip(GameSoundClip gameSoundClip, IsoObject isoObject) {
-        Sound sound = this.addSound(gameSoundClip, 1.0f, isoObject);
-        return sound == null ? 0L : sound.getRef();
+    public long playClip(GameSoundClip clip, IsoObject parent) {
+        Sound s = this.addSound(clip, 1.0f, parent);
+        return s == null ? 0L : s.getRef();
     }
 
     @Override
-    public long playAmbientSound(String string) {
-        if (GameServer.bServer) {
+    public long playAmbientSound(String name) {
+        if (GameServer.server) {
             return 0L;
         }
-        GameSound gameSound = GameSounds.getSound(string);
+        GameSound gameSound = GameSounds.getSound(name);
         if (gameSound == null) {
             return 0L;
         }
-        GameSoundClip gameSoundClip = gameSound.getRandomClip();
-        Sound sound = this.addSound(gameSoundClip, 1.0f, null);
-        if (sound instanceof FileSound) {
-            ((FileSound) sound).ambient = true;
+        GameSoundClip clip = gameSound.getRandomClip();
+        Sound s = this.addSound(clip, 1.0f, null);
+        if (s instanceof FileSound) {
+            FileSound fileSound = (FileSound) s;
+            fileSound.ambient = true;
         }
-        return sound == null ? 0L : sound.getRef();
+        return s == null ? 0L : s.getRef();
     }
 
     @Override
-    public long playAmbientLoopedImpl(String string) {
-        if (GameServer.bServer) {
+    public long playAmbientLoopedImpl(String file) {
+        if (GameServer.server) {
             return 0L;
         }
-        GameSound gameSound = GameSounds.getSound(string);
+        GameSound gameSound = GameSounds.getSound(file);
         if (gameSound == null) {
             return 0L;
         }
-        GameSoundClip gameSoundClip = gameSound.getRandomClip();
-        Sound sound = this.addSound(gameSoundClip, 1.0f, null);
-        return sound == null ? 0L : sound.getRef();
+        GameSoundClip clip = gameSound.getRandomClip();
+        Sound s = this.addSound(clip, 1.0f, null);
+        return s == null ? 0L : s.getRef();
     }
 
     @Override
-    public void set3D(long l, boolean bl) {
-        Sound sound;
-        int n;
-        for (n = 0; n < this.ToStart.size(); ++n) {
-            sound = this.ToStart.get(n);
-            if (sound.getRef() != l)
-                continue;
-            sound.set3D(bl);
+    public void set3D(long soundRef, boolean is3D) {
+        Sound s;
+        int i;
+        for (i = 0; i < this.toStart.size(); ++i) {
+            s = this.toStart.get(i);
+            if (s.getRef() != soundRef) continue;
+            s.set3D(is3D);
         }
-        for (n = 0; n < this.Instances.size(); ++n) {
-            sound = this.Instances.get(n);
-            if (sound.getRef() != l)
-                continue;
-            sound.set3D(bl);
+        for (i = 0; i < this.instances.size(); ++i) {
+            s = this.instances.get(i);
+            if (s.getRef() != soundRef) continue;
+            s.set3D(is3D);
         }
     }
 
     @Override
     public void tick() {
-        Object object;
-        int n;
+        Sound s;
+        int i;
         if (!this.isEmpty()) {
             this.occlusion.update();
-            for (n = 0; n < this.parameters.size(); ++n) {
-                object = this.parameters.get(n);
-                ((FMODParameter) object).update();
+            for (i = 0; i < this.parameters.size(); ++i) {
+                FMODParameter parameter = this.parameters.get(i);
+                parameter.update();
             }
         }
-        for (n = 0; n < this.ToStart.size(); ++n) {
-            object = this.ToStart.get(n);
-            this.Instances.add((Sound) object);
+        for (i = 0; i < this.toStart.size(); ++i) {
+            Sound sound = this.toStart.get(i);
+            this.instances.add(sound);
         }
-        for (n = 0; n < this.Instances.size(); ++n) {
-            boolean bl;
-            object = this.Instances.get(n);
-            if (!((Sound) object).tick(bl = this.ToStart.contains(object)))
-                continue;
-            this.Instances.remove(n--);
-            ((Sound) object).release();
+        for (i = 0; i < this.instances.size(); ++i) {
+            boolean isStarting;
+            s = this.instances.get(i);
+            if (!s.tick(isStarting = this.toStart.contains(s))) continue;
+            this.instances.remove(i--);
+            s.release(s.clip.isStopImmediate());
         }
-        this.ToStart.clear();
-        for (n = 0; n < this.Stopped.size(); ++n) {
-            object = this.Stopped.get(n);
-            if (!((Sound) object).tickWhileStopped())
-                continue;
-            this.Stopped.remove(n--);
-            ((Sound) object).release();
+        this.toStart.clear();
+        for (i = 0; i < this.stopped.size(); ++i) {
+            s = this.stopped.get(i);
+            if (!s.tickWhileStopped()) continue;
+            this.stopped.remove(i--);
+            s.release(s.clip.isStopImmediate());
         }
     }
 
     @Override
     public boolean hasSoundsToStart() {
-        return !this.ToStart.isEmpty();
+        return !this.toStart.isEmpty();
     }
 
     @Override
     public boolean isEmpty() {
-        return this.ToStart.isEmpty() && this.Instances.isEmpty();
+        return (
+            this.toStart.isEmpty() &&
+            this.instances.isEmpty() &&
+            this.stopped.isEmpty()
+        );
     }
 
     @Override
-    public boolean isPlaying(long l) {
-        int n;
-        for (n = 0; n < this.ToStart.size(); ++n) {
-            if (this.ToStart.get(n).getRef() != l)
-                continue;
+    public boolean isPlaying(long soundRef) {
+        int i;
+        for (i = 0; i < this.toStart.size(); ++i) {
+            if (this.toStart.get(i).getRef() != soundRef) continue;
             return true;
         }
-        for (n = 0; n < this.Instances.size(); ++n) {
-            if (this.Instances.get(n).getRef() != l)
-                continue;
+        for (i = 0; i < this.instances.size(); ++i) {
+            if (this.instances.get(i).getRef() != soundRef) continue;
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean isPlaying(String string) {
-        int n;
-        for (n = 0; n < this.ToStart.size(); ++n) {
-            if (!string.equals(this.ToStart.get((int) n).name))
-                continue;
+    public boolean isPlaying(String alias) {
+        int i;
+        for (i = 0; i < this.toStart.size(); ++i) {
+            if (!alias.equals(this.toStart.get((int) i).name)) continue;
             return true;
         }
-        for (n = 0; n < this.Instances.size(); ++n) {
-            if (!string.equals(this.Instances.get((int) n).name))
-                continue;
+        for (i = 0; i < this.instances.size(); ++i) {
+            if (!alias.equals(this.instances.get((int) i).name)) continue;
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean restart(long l) {
-        int n = this.findToStart(l);
-        if (n != -1) {
+    public boolean restart(long handle) {
+        int index = this.findToStart(handle);
+        if (index != -1) {
             return true;
         }
-        n = this.findInstance(l);
-        return n != -1 && this.Instances.get(n).restart();
+        index = this.findInstance(handle);
+        return index != -1 && this.instances.get(index).restart();
     }
 
-    private int findInstance(long l) {
-        for (int i = 0; i < this.Instances.size(); ++i) {
-            Sound sound = this.Instances.get(i);
-            if (sound.getRef() != l)
-                continue;
+    private int findInstance(long soundRef) {
+        for (int i = 0; i < this.instances.size(); ++i) {
+            Sound sound = this.instances.get(i);
+            if (sound.getRef() != soundRef) continue;
             return i;
         }
         return -1;
     }
 
-    private int findInstance(String string) {
-        GameSound gameSound = GameSounds.getSound(string);
+    private int findInstance(String name) {
+        GameSound gameSound = GameSounds.getSound(name);
         if (gameSound == null) {
             return -1;
         }
-        for (int i = 0; i < this.Instances.size(); ++i) {
-            Sound sound = this.Instances.get(i);
-            if (!gameSound.clips.contains(sound.clip))
-                continue;
+        for (int i = 0; i < this.instances.size(); ++i) {
+            Sound sound = this.instances.get(i);
+            if (!gameSound.clips.contains(sound.clip)) continue;
             return i;
         }
         return -1;
     }
 
-    private int findToStart(long l) {
-        for (int i = 0; i < this.ToStart.size(); ++i) {
-            Sound sound = this.ToStart.get(i);
-            if (sound.getRef() != l)
-                continue;
+    private int findToStart(long soundRef) {
+        for (int i = 0; i < this.toStart.size(); ++i) {
+            Sound sound = this.toStart.get(i);
+            if (sound.getRef() != soundRef) continue;
             return i;
         }
         return -1;
     }
 
-    private int findToStart(String string) {
-        GameSound gameSound = GameSounds.getSound(string);
+    private int findToStart(String name) {
+        GameSound gameSound = GameSounds.getSound(name);
         if (gameSound == null) {
             return -1;
         }
-        for (int i = 0; i < this.ToStart.size(); ++i) {
-            Sound sound = this.ToStart.get(i);
-            if (!gameSound.clips.contains(sound.clip))
-                continue;
+        for (int i = 0; i < this.toStart.size(); ++i) {
+            Sound sound = this.toStart.get(i);
+            if (!gameSound.clips.contains(sound.clip)) continue;
             return i;
         }
         return -1;
     }
 
-    private int findStopped(long l) {
-        for (int i = 0; i < this.Stopped.size(); ++i) {
-            Sound sound = this.Stopped.get(i);
-            if (!(sound instanceof EventSound))
-                continue;
+    private int findStopped(long soundRef) {
+        for (int i = 0; i < this.stopped.size(); ++i) {
+            Sound sound = this.stopped.get(i);
+            if (!(sound instanceof EventSound)) continue;
             EventSound eventSound = (EventSound) sound;
-            if (eventSound.eventInstanceStopped != l)
-                continue;
+            if (eventSound.eventInstanceStopped != soundRef) continue;
             return i;
         }
         return -1;
     }
 
     private int countToStart(GameSound gameSound) {
-        int n = 0;
-        for (int i = 0; i < this.ToStart.size(); ++i) {
-            Sound sound = this.ToStart.get(i);
-            if (!gameSound.clips.contains(sound.clip))
-                continue;
-            ++n;
+        int count = 0;
+        for (int i = 0; i < this.toStart.size(); ++i) {
+            Sound sound = this.toStart.get(i);
+            if (!gameSound.clips.contains(sound.clip)) continue;
+            ++count;
         }
-        return n;
+        return count;
     }
 
     private int countInstances(GameSound gameSound) {
-        int n = 0;
-        for (int i = 0; i < this.Instances.size(); ++i) {
-            Sound sound = this.Instances.get(i);
-            if (!gameSound.clips.contains(sound.clip))
-                continue;
-            ++n;
+        int count = 0;
+        for (int i = 0; i < this.instances.size(); ++i) {
+            Sound sound = this.instances.get(i);
+            if (!gameSound.clips.contains(sound.clip)) continue;
+            ++count;
         }
-        return n;
+        return count;
     }
 
-    public void addParameter(FMODParameter fMODParameter) {
-        this.parameters.add(fMODParameter);
+    public void addParameter(FMODParameter parameter) {
+        this.parameters.add(parameter);
     }
 
     @Override
-    public void setParameterValue(long l, FMOD_STUDIO_PARAMETER_DESCRIPTION fMOD_STUDIO_PARAMETER_DESCRIPTION, float f) {
-        if (l == 0L || fMOD_STUDIO_PARAMETER_DESCRIPTION == null) {
+    public void setParameterValue(
+        long soundRef,
+        FMOD_STUDIO_PARAMETER_DESCRIPTION parameterDescription,
+        float value
+    ) {
+        if (soundRef == 0L || parameterDescription == null) {
             return;
         }
-        int n = this.findInstance(l);
-        if (n != -1) {
-            Sound sound = this.Instances.get(n);
-            sound.setParameterValue(fMOD_STUDIO_PARAMETER_DESCRIPTION, f);
+        int index = this.findInstance(soundRef);
+        if (index != -1) {
+            Sound sound = this.instances.get(index);
+            sound.setParameterValue(parameterDescription, value);
             return;
         }
-        n = this.findParameterValue(l, fMOD_STUDIO_PARAMETER_DESCRIPTION);
-        if (n != -1) {
-            this.parameterValues.get((int) n).value = f;
+        index = this.findParameterValue(soundRef, parameterDescription);
+        if (index != -1) {
+            this.parameterValues.get((int) index).value = value;
             return;
         }
-        n = this.findStopped(l);
-        if (n != -1) {
-            javafmod.FMOD_Studio_EventInstance_SetParameterByID(l, fMOD_STUDIO_PARAMETER_DESCRIPTION.id, f, false);
+        index = this.findStopped(soundRef);
+        if (index != -1) {
+            javafmod.FMOD_Studio_EventInstance_SetParameterByID(
+                soundRef,
+                parameterDescription.id,
+                value,
+                false
+            );
             return;
         }
-        n = this.findToStart(l);
-        if (n == -1) {
+        index = this.findToStart(soundRef);
+        if (index == -1) {
             return;
         }
         ParameterValue parameterValue = parameterValuePool.alloc();
-        parameterValue.eventInstance = l;
-        parameterValue.parameterDescription = fMOD_STUDIO_PARAMETER_DESCRIPTION;
-        parameterValue.value = f;
+        parameterValue.eventInstance = soundRef;
+        parameterValue.parameterDescription = parameterDescription;
+        parameterValue.value = value;
         this.parameterValues.add(parameterValue);
     }
 
     @Override
-    public void setParameterValueByName(long l, String string, float f) {
-        FMOD_STUDIO_PARAMETER_DESCRIPTION fMOD_STUDIO_PARAMETER_DESCRIPTION = FMODManager.instance.getParameterDescription(string);
-        this.setParameterValue(l, fMOD_STUDIO_PARAMETER_DESCRIPTION, f);
+    public void setParameterValueByName(
+        long soundRef,
+        String parameterName,
+        float value
+    ) {
+        FMOD_STUDIO_PARAMETER_DESCRIPTION parameterDescription =
+            FMODManager.instance.getParameterDescription(parameterName);
+        this.setParameterValue(soundRef, parameterDescription, value);
     }
 
     @Override
-    public boolean isUsingParameter(long l, String string) {
-        FMOD_STUDIO_PARAMETER_DESCRIPTION fMOD_STUDIO_PARAMETER_DESCRIPTION = FMODManager.instance.getParameterDescription(string);
-        if (fMOD_STUDIO_PARAMETER_DESCRIPTION == null) {
+    public boolean isUsingParameter(long handle, String parameterName) {
+        FMOD_STUDIO_PARAMETER_DESCRIPTION parameterDescription =
+            FMODManager.instance.getParameterDescription(parameterName);
+        if (parameterDescription == null) {
             return false;
         }
-        int n = this.findToStart(l);
-        if (n != -1) {
-            Sound sound = this.ToStart.get(n);
-            return sound.clip.eventDescription != null && sound.clip.hasParameter(fMOD_STUDIO_PARAMETER_DESCRIPTION);
+        int index = this.findToStart(handle);
+        if (index != -1) {
+            Sound sound = this.toStart.get(index);
+            return (
+                sound.clip.eventDescription != null &&
+                sound.clip.hasParameter(parameterDescription)
+            );
         }
-        n = this.findInstance(l);
-        if (n != -1) {
-            Sound sound = this.Instances.get(n);
-            return sound.clip.eventDescription != null && sound.clip.hasParameter(fMOD_STUDIO_PARAMETER_DESCRIPTION);
+        index = this.findInstance(handle);
+        if (index != -1) {
+            Sound sound = this.instances.get(index);
+            return (
+                sound.clip.eventDescription != null &&
+                sound.clip.hasParameter(parameterDescription)
+            );
         }
         return false;
     }
 
     @Override
-    public void setTimelinePosition(long l, String string) {
-        if (l == 0L) {
+    public void setTimelinePosition(long soundRef, String positionName) {
+        if (soundRef == 0L) {
             return;
         }
-        int n = this.findToStart(l);
-        if (n != -1) {
-            Sound sound = this.ToStart.get(n);
-            sound.setTimelinePosition(string);
+        int index = this.findToStart(soundRef);
+        if (index != -1) {
+            Sound sound = this.toStart.get(index);
+            sound.setTimelinePosition(positionName);
         }
     }
 
-    private int findParameterValue(long l, FMOD_STUDIO_PARAMETER_DESCRIPTION fMOD_STUDIO_PARAMETER_DESCRIPTION) {
+    private int findParameterValue(
+        long soundRef,
+        FMOD_STUDIO_PARAMETER_DESCRIPTION parameterDescription
+    ) {
         for (int i = 0; i < this.parameterValues.size(); ++i) {
             ParameterValue parameterValue = this.parameterValues.get(i);
-            if (parameterValue.eventInstance != l || parameterValue.parameterDescription != fMOD_STUDIO_PARAMETER_DESCRIPTION)
-                continue;
+            if (
+                parameterValue.eventInstance != soundRef ||
+                parameterValue.parameterDescription != parameterDescription
+            ) continue;
             return i;
         }
         return -1;
@@ -804,95 +878,104 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
     public void clearParameters() {
         this.occlusion.resetToDefault();
         this.parameters.clear();
-        parameterValuePool.releaseAll(this.parameterValues);
+        parameterValuePool.releaseAll(
+            (List<ParameterValue>) this.parameterValues
+        );
         this.parameterValues.clear();
     }
 
-    private void startEvent(long l, GameSoundClip gameSoundClip) {
+    private void startEvent(long eventInstance, GameSoundClip clip) {
         parameterSet.clear();
-        ArrayList<FMODParameter> arrayList = this.parameters;
-        ArrayList<FMOD_STUDIO_PARAMETER_DESCRIPTION> arrayList2 = gameSoundClip.eventDescription.parameters;
-        block0: for (int i = 0; i < arrayList2.size(); ++i) {
-            FMOD_STUDIO_PARAMETER_DESCRIPTION fMOD_STUDIO_PARAMETER_DESCRIPTION = arrayList2.get(i);
-            int n = this.findParameterValue(l, fMOD_STUDIO_PARAMETER_DESCRIPTION);
-            if (n != -1) {
-                ParameterValue parameterValue = this.parameterValues.get(n);
-                javafmod.FMOD_Studio_EventInstance_SetParameterByID(l, fMOD_STUDIO_PARAMETER_DESCRIPTION.id, parameterValue.value, false);
-                parameterSet.set(fMOD_STUDIO_PARAMETER_DESCRIPTION.globalIndex, true);
+        ArrayList<FMODParameter> myParameters = this.parameters;
+        ArrayList<FMOD_STUDIO_PARAMETER_DESCRIPTION> eventParameters =
+            clip.eventDescription.parameters;
+        block0: for (int i = 0; i < eventParameters.size(); ++i) {
+            FMOD_STUDIO_PARAMETER_DESCRIPTION eventParameter =
+                eventParameters.get(i);
+            int index = this.findParameterValue(eventInstance, eventParameter);
+            if (index != -1) {
+                ParameterValue parameterValue = this.parameterValues.get(index);
+                javafmod.FMOD_Studio_EventInstance_SetParameterByID(
+                    eventInstance,
+                    eventParameter.id,
+                    parameterValue.value,
+                    false
+                );
+                parameterSet.set(eventParameter.globalIndex, true);
                 continue;
             }
-            if (fMOD_STUDIO_PARAMETER_DESCRIPTION == this.occlusion.getParameterDescription()) {
-                this.occlusion.startEventInstance(l);
-                parameterSet.set(fMOD_STUDIO_PARAMETER_DESCRIPTION.globalIndex, true);
+            if (eventParameter == this.occlusion.getParameterDescription()) {
+                this.occlusion.startEventInstance(eventInstance);
+                parameterSet.set(eventParameter.globalIndex, true);
                 continue;
             }
-            for (int j = 0; j < arrayList.size(); ++j) {
-                FMODParameter fMODParameter = arrayList.get(j);
-                if (fMODParameter.getParameterDescription() != fMOD_STUDIO_PARAMETER_DESCRIPTION)
-                    continue;
-                fMODParameter.startEventInstance(l);
-                parameterSet.set(fMOD_STUDIO_PARAMETER_DESCRIPTION.globalIndex, true);
+            for (int j = 0; j < myParameters.size(); ++j) {
+                FMODParameter fmodParameter = myParameters.get(j);
+                if (
+                    fmodParameter.getParameterDescription() != eventParameter
+                ) continue;
+                fmodParameter.startEventInstance(eventInstance);
+                parameterSet.set(eventParameter.globalIndex, true);
                 continue block0;
             }
         }
         if (this.parameterUpdater != null) {
-            this.parameterUpdater.startEvent(l, gameSoundClip, parameterSet);
+            this.parameterUpdater.startEvent(eventInstance, clip, parameterSet);
         }
     }
 
-    private void updateEvent(long l, GameSoundClip gameSoundClip) {
+    private void updateEvent(long eventInstance, GameSoundClip clip) {
         if (this.parameterUpdater != null) {
-            this.parameterUpdater.updateEvent(l, gameSoundClip);
+            this.parameterUpdater.updateEvent(eventInstance, clip);
         }
     }
 
-    private void stopEvent(long l, GameSoundClip gameSoundClip) {
+    private void stopEvent(long eventInstance, GameSoundClip clip) {
         parameterSet.clear();
-        ArrayList<FMODParameter> arrayList = this.parameters;
-        ArrayList<FMOD_STUDIO_PARAMETER_DESCRIPTION> arrayList2 = gameSoundClip.eventDescription.parameters;
-        block0: for (int i = 0; i < arrayList2.size(); ++i) {
-            FMOD_STUDIO_PARAMETER_DESCRIPTION fMOD_STUDIO_PARAMETER_DESCRIPTION = arrayList2.get(i);
-            int n = this.findParameterValue(l, fMOD_STUDIO_PARAMETER_DESCRIPTION);
-            if (n != -1) {
-                ParameterValue parameterValue = this.parameterValues.remove(n);
+        ArrayList<FMODParameter> myParameters = this.parameters;
+        ArrayList<FMOD_STUDIO_PARAMETER_DESCRIPTION> eventParameters =
+            clip.eventDescription.parameters;
+        block0: for (int i = 0; i < eventParameters.size(); ++i) {
+            FMOD_STUDIO_PARAMETER_DESCRIPTION eventParameter =
+                eventParameters.get(i);
+            int index = this.findParameterValue(eventInstance, eventParameter);
+            if (index != -1) {
+                ParameterValue parameterValue = this.parameterValues.remove(
+                    index
+                );
                 parameterValuePool.release(parameterValue);
-                parameterSet.set(fMOD_STUDIO_PARAMETER_DESCRIPTION.globalIndex, true);
+                parameterSet.set(eventParameter.globalIndex, true);
                 continue;
             }
-            if (fMOD_STUDIO_PARAMETER_DESCRIPTION == this.occlusion.getParameterDescription()) {
-                this.occlusion.stopEventInstance(l);
-                parameterSet.set(fMOD_STUDIO_PARAMETER_DESCRIPTION.globalIndex, true);
+            if (eventParameter == this.occlusion.getParameterDescription()) {
+                this.occlusion.stopEventInstance(eventInstance);
+                parameterSet.set(eventParameter.globalIndex, true);
                 continue;
             }
-            for (int j = 0; j < arrayList.size(); ++j) {
-                FMODParameter fMODParameter = arrayList.get(j);
-                if (fMODParameter.getParameterDescription() != fMOD_STUDIO_PARAMETER_DESCRIPTION)
-                    continue;
-                fMODParameter.stopEventInstance(l);
-                parameterSet.set(fMOD_STUDIO_PARAMETER_DESCRIPTION.globalIndex, true);
+            for (int j = 0; j < myParameters.size(); ++j) {
+                FMODParameter fmodParameter = myParameters.get(j);
+                if (
+                    fmodParameter.getParameterDescription() != eventParameter
+                ) continue;
+                fmodParameter.stopEventInstance(eventInstance);
+                parameterSet.set(eventParameter.globalIndex, true);
                 continue block0;
             }
         }
         if (this.parameterUpdater != null) {
-            this.parameterUpdater.stopEvent(l, gameSoundClip, parameterSet);
+            this.parameterUpdater.stopEvent(eventInstance, clip, parameterSet);
         }
     }
 
     private EventSound allocEventSound() {
-        return this.eventSoundPool.isEmpty() ? new EventSound(this) : this.eventSoundPool.pop();
-    }
-
-    private void releaseEventSound(EventSound eventSound) {
-        assert (!this.eventSoundPool.contains(eventSound));
-        this.eventSoundPool.push(eventSound);
-    }
-
-    private FileSound allocFileSound() {
-        return this.fileSoundPool.isEmpty() ? new FileSound(this) : this.fileSoundPool.pop();
+        return this.eventSoundPool.isEmpty()
+            ? new EventSound(this)
+            : this.eventSoundPool.pop();
     }
 
     private <T> T getSandboxValue(String optionName, T defaultValue) {
-        SandboxOptions.SandboxOption opt = SandboxOptions.getInstance().getOptionByName(optionName);
+        SandboxOptions.SandboxOption opt =
+            SandboxOptions.getInstance().getOptionByName(optionName);
         if (opt == null) {
             return defaultValue;
         }
@@ -909,7 +992,9 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
                 castedValue = ((Number) objectValue).doubleValue();
             }
             if (defaultValue instanceof Float) {
-                castedValue = Float.valueOf(((Number) objectValue).floatValue());
+                castedValue = Float.valueOf(
+                    ((Number) objectValue).floatValue()
+                );
             }
             if (defaultValue instanceof Long) {
                 castedValue = ((Number) objectValue).longValue();
@@ -929,15 +1014,23 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
     public long playStreamImpl(String url, IsoObject parent) {
         DebugLog.log("Internet Radio - Trying to play the stream: " + url);
 
-        long sound = javafmod.FMOD_System_CreateSound(url, FMODManager.FMOD_CREATESTREAM);
-        DebugLog.log("Internet Radio - FMOD_System_CreateSound returned handle: " + sound);
+        long sound = javafmod.FMOD_System_CreateSound(
+            url,
+            FMODManager.FMOD_CREATESTREAM
+        );
+        DebugLog.log(
+            "Internet Radio - FMOD_System_CreateSound returned handle: " + sound
+        );
         if (sound == 0L) {
             DebugLog.log("Internet Radio - Failed to create sound for: " + url);
             return 0L;
         }
 
         long channel = javafmod.FMOD_System_PlaySound(sound, true);
-        DebugLog.log("Internet Radio - FMOD_System_PlaySound returned channel: " + channel);
+        DebugLog.log(
+            "Internet Radio - FMOD_System_PlaySound returned channel: " +
+                channel
+        );
         if (channel == 0L) {
             DebugLog.log("Internet Radio - Failed to play sound for: " + url);
             return 0L;
@@ -946,15 +1039,50 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
         javafmod.FMOD_Channel_SetMode(channel, FMODManager.FMOD_3D);
         DebugLog.log("Internet Radio - Set channel mode to FMOD_3D");
 
-        javafmod.FMOD_Channel_Set3DAttributes(channel, this.x, this.y, this.z * 3.0f, 0.0f, 0.0f, 0.0f);
-        DebugLog.log("Internet Radio - Set 3D attributes: x=" + this.x + " y=" + this.y + " z=" + this.z);
+        javafmod.FMOD_Channel_Set3DAttributes(
+            channel,
+            this.x,
+            this.y,
+            this.z * 3.0f,
+            0.0f,
+            0.0f,
+            0.0f
+        );
+        DebugLog.log(
+            "Internet Radio - Set 3D attributes: x=" +
+                this.x +
+                " y=" +
+                this.y +
+                " z=" +
+                this.z
+        );
 
-        Float minDistance = this.getSandboxValue("InternetRadio.MinDistance", 1.0f);
-        Float maxDistance = this.getSandboxValue("InternetRadio.MaxDistance", 30.0f);
-        DebugLog.log("Internet Radio - Loaded sandbox distances: min=" + minDistance + " max=" + maxDistance);
+        Float minDistance = this.getSandboxValue(
+            "InternetRadio.MinDistance",
+            1.0f
+        );
+        Float maxDistance = this.getSandboxValue(
+            "InternetRadio.MaxDistance",
+            30.0f
+        );
+        DebugLog.log(
+            "Internet Radio - Loaded sandbox distances: min=" +
+                minDistance +
+                " max=" +
+                maxDistance
+        );
 
-        javafmod.FMOD_Channel_Set3DMinMaxDistance(channel, minDistance, maxDistance);
-        DebugLog.log("Internet Radio - Applied 3DMinMaxDistance: min=" + minDistance + " max=" + maxDistance);
+        javafmod.FMOD_Channel_Set3DMinMaxDistance(
+            channel,
+            minDistance,
+            maxDistance
+        );
+        DebugLog.log(
+            "Internet Radio - Applied 3DMinMaxDistance: min=" +
+                minDistance +
+                " max=" +
+                maxDistance
+        );
 
         javafmod.FMOD_Channel_SetVolume(channel, 1.0f);
         DebugLog.log("Internet Radio - Set volume to 1.0");
@@ -962,17 +1090,25 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
         GameSound dummyGameSound = new GameSound();
         dummyGameSound.name = "StreamSound";
         dummyGameSound.loop = true;
-        dummyGameSound.is3D = true;
         dummyGameSound.maxInstancesPerEmitter = 1;
-        DebugLog.log("Internet Radio - Created dummy GameSound: " + dummyGameSound.name);
+        DebugLog.log(
+            "Internet Radio - Created dummy GameSound: " + dummyGameSound.name
+        );
 
         GameSoundClip dummyClip = new GameSoundClip(dummyGameSound);
         dummyClip.file = url;
         dummyClip.distanceMin = minDistance;
         dummyClip.distanceMax = maxDistance;
         dummyGameSound.clips.add(dummyClip);
-        DebugLog.log("Internet Radio - Created dummy GameSoundClip with file: " + url);
-        DebugLog.log("Internet Radio - DummyClip distances set: min=" + dummyClip.distanceMin + " max=" + dummyClip.distanceMax);
+        DebugLog.log(
+            "Internet Radio - Created dummy GameSoundClip with file: " + url
+        );
+        DebugLog.log(
+            "Internet Radio - DummyClip distances set: min=" +
+                dummyClip.distanceMin +
+                " max=" +
+                dummyClip.distanceMax
+        );
 
         FileSound fileSound = this.allocFileSound();
         fileSound.clip = dummyClip;
@@ -982,11 +1118,19 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
         fileSound.parent = parent;
         fileSound.volume = 1.0f;
         fileSound.setVolume = 1.0f;
-        fileSound.is3D = (byte) 1;
-        DebugLog.log("Internet Radio - Allocated FileSound with channel=" + channel + " sound=" + sound);
+        fileSound.is3d = (byte) 1;
+        DebugLog.log(
+            "Internet Radio - Allocated FileSound with channel=" +
+                channel +
+                " sound=" +
+                sound
+        );
 
-        this.ToStart.add(fileSound);
-        DebugLog.log("Internet Radio - Added FileSound to ToStart list, size now=" + this.ToStart.size());
+        this.toStart.add(fileSound);
+        DebugLog.log(
+            "Internet Radio - Added FileSound to ToStart list, size now=" +
+                this.toStart.size()
+        );
 
         long reference = fileSound.getRef();
         DebugLog.log("Internet Radio - Returning reference: " + reference);
@@ -994,97 +1138,144 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
         return reference;
     }
 
-    private void releaseFileSound(FileSound fileSound) {
-        assert (!this.fileSoundPool.contains(fileSound));
-        this.fileSoundPool.push(fileSound);
+    private void releaseEventSound(EventSound sound) {
+        assert (!this.eventSoundPool.contains(sound));
+        this.eventSoundPool.push(sound);
     }
 
-    private Sound addSound(GameSoundClip gameSoundClip, float f, IsoObject isoObject) {
-        if (gameSoundClip == null) {
+    private FileSound allocFileSound() {
+        return this.fileSoundPool.isEmpty()
+            ? new FileSound(this)
+            : this.fileSoundPool.pop();
+    }
+
+    private void releaseFileSound(FileSound sound) {
+        assert (!this.fileSoundPool.contains(sound));
+        this.fileSoundPool.push(sound);
+    }
+
+    private Sound addSound(GameSoundClip clip, float volume, IsoObject parent) {
+        if (clip == null) {
             DebugLog.log("null sound passed to SoundEmitter.playSoundImpl");
             return null;
         }
-        if (gameSoundClip.gameSound.maxInstancesPerEmitter > 0) {
-            this.limitSound(gameSoundClip.gameSound, gameSoundClip.gameSound.maxInstancesPerEmitter - 1);
+        if (clip.gameSound.maxInstancesPerEmitter > 0) {
+            this.limitSound(
+                clip.gameSound,
+                clip.gameSound.maxInstancesPerEmitter - 1
+            );
         }
-        if (gameSoundClip.event != null && !gameSoundClip.event.isEmpty()) {
-            long l;
-            if (gameSoundClip.eventDescription == null) {
+        if (clip.event != null && !clip.event.isEmpty()) {
+            long eventInstance;
+            IsoPlayer isoPlayer;
+            IsoObject isoObject;
+            if (clip.eventDescription == null) {
                 return null;
             }
-            FMOD_STUDIO_EVENT_DESCRIPTION fMOD_STUDIO_EVENT_DESCRIPTION = gameSoundClip.eventDescription;
-            if (gameSoundClip.eventDescriptionMP != null && this.parent instanceof IsoPlayer && !((IsoPlayer) this.parent).isLocalPlayer()) {
-                fMOD_STUDIO_EVENT_DESCRIPTION = gameSoundClip.eventDescriptionMP;
+            FMOD_STUDIO_EVENT_DESCRIPTION eventDescription =
+                clip.eventDescription;
+            if (
+                clip.eventDescriptionMp != null &&
+                (isoObject = this.parent) instanceof IsoPlayer &&
+                !(isoPlayer = (IsoPlayer) isoObject).isLocalPlayer()
+            ) {
+                eventDescription = clip.eventDescriptionMp;
             }
-            if ((l = javafmod.FMOD_Studio_System_CreateEventInstance(fMOD_STUDIO_EVENT_DESCRIPTION.address)) < 0L) {
+            if (
+                (eventInstance =
+                        javafmod.FMOD_Studio_System_CreateEventInstance(
+                            eventDescription.address
+                        )) <
+                0L
+            ) {
                 return null;
             }
-            if (gameSoundClip.hasMinDistance()) {
-                javafmodJNI.FMOD_Studio_EventInstance_SetProperty(l, FMOD_STUDIO_EVENT_PROPERTY.FMOD_STUDIO_EVENT_PROPERTY_MINIMUM_DISTANCE.ordinal(), gameSoundClip.getMinDistance());
+            if (clip.hasMinDistance()) {
+                javafmodJNI.FMOD_Studio_EventInstance_SetProperty(
+                    eventInstance,
+                    FMOD_STUDIO_EVENT_PROPERTY.FMOD_STUDIO_EVENT_PROPERTY_MINIMUM_DISTANCE.ordinal(),
+                    clip.getMinDistance()
+                );
             }
-            if (gameSoundClip.hasMaxDistance()) {
-                javafmodJNI.FMOD_Studio_EventInstance_SetProperty(l, FMOD_STUDIO_EVENT_PROPERTY.FMOD_STUDIO_EVENT_PROPERTY_MAXIMUM_DISTANCE.ordinal(), gameSoundClip.getMaxDistance());
+            if (clip.hasMaxDistance()) {
+                javafmodJNI.FMOD_Studio_EventInstance_SetProperty(
+                    eventInstance,
+                    FMOD_STUDIO_EVENT_PROPERTY.FMOD_STUDIO_EVENT_PROPERTY_MAXIMUM_DISTANCE.ordinal(),
+                    clip.getMaxDistance()
+                );
             }
-            EventSound eventSound = this.allocEventSound();
-            eventSound.clip = gameSoundClip;
-            eventSound.name = gameSoundClip.gameSound.getName();
-            eventSound.eventInstance = l;
-            eventSound.volume = f;
-            eventSound.parent = isoObject;
-            eventSound.setVolume = 1.0f;
-            eventSound.setZ = 0.0f;
-            eventSound.setY = 0.0f;
-            eventSound.setX = 0.0f;
-            this.ToStart.add(eventSound);
-            return eventSound;
+            EventSound s = this.allocEventSound();
+            s.clip = clip;
+            s.name = clip.gameSound.getName();
+            s.eventInstance = eventInstance;
+            s.eventInstanceStopped = 0L;
+            s.volume = volume;
+            s.parent = parent;
+            s.setVolume = 1.0f;
+            s.setZ = 0.0f;
+            s.setY = 0.0f;
+            s.setX = 0.0f;
+            this.toStart.add(s);
+            return s;
         }
-        if (gameSoundClip.file != null && !gameSoundClip.file.isEmpty()) {
-            long l = FMODManager.instance.loadSound(gameSoundClip.file);
-            if (l == 0L) {
+        if (clip.file != null && !clip.file.isEmpty()) {
+            long sound = FMODManager.instance.loadSound(clip.file);
+            if (sound == 0L) {
                 return null;
             }
-            long l2 = javafmod.FMOD_System_PlaySound(l, true);
-            javafmod.FMOD_Channel_SetVolume(l2, 0.0f);
-            javafmod.FMOD_Channel_SetPriority(l2, 9 - gameSoundClip.priority);
-            javafmod.FMOD_Channel_SetChannelGroup(l2, FMODManager.instance.channelGroupInGameNonBankSounds);
-            if (gameSoundClip.distanceMax == 0.0f || this.x == 0.0f && this.y == 0.0f) {
-                javafmod.FMOD_Channel_SetMode(l2, FMODManager.FMOD_2D);
+            long channel = javafmod.FMOD_System_PlaySound(sound, true);
+            javafmod.FMOD_Channel_SetVolume(channel, 0.0f);
+            javafmod.FMOD_Channel_SetPriority(channel, 9 - clip.priority);
+            javafmod.FMOD_Channel_SetChannelGroup(
+                channel,
+                FMODManager.instance.channelGroupInGameNonBankSounds
+            );
+            if (
+                clip.distanceMax == 0.0f || (this.x == 0.0f && this.y == 0.0f)
+            ) {
+                javafmod.FMOD_Channel_SetMode(channel, 8L);
             }
-            FileSound fileSound = this.allocFileSound();
-            fileSound.clip = gameSoundClip;
-            fileSound.name = gameSoundClip.gameSound.getName();
-            fileSound.sound = l;
-            fileSound.pitch = gameSoundClip.pitch;
-            fileSound.channel = l2;
-            fileSound.parent = isoObject;
-            fileSound.volume = f;
-            fileSound.setVolume = 1.0f;
-            fileSound.setZ = 0.0f;
-            fileSound.setY = 0.0f;
-            fileSound.setX = 0.0f;
-            fileSound.is3D = (byte) -1;
-            fileSound.ambient = false;
-            this.ToStart.add(fileSound);
-            return fileSound;
+            FileSound s = this.allocFileSound();
+            s.clip = clip;
+            s.name = clip.gameSound.getName();
+            s.sound = sound;
+            s.pitch = clip.pitch;
+            s.channel = channel;
+            s.parent = parent;
+            s.volume = volume;
+            s.setVolume = 1.0f;
+            s.setZ = 0.0f;
+            s.setY = 0.0f;
+            s.setX = 0.0f;
+            s.is3d = (byte) -1;
+            s.ambient = false;
+            this.toStart.add(s);
+            return s;
         }
         return null;
     }
 
-    private void sendStopSound(String string, boolean bl) {
-        if (GameClient.bClient && this.parent instanceof IsoMovingObject) {
-            GameClient.instance.StopSound((IsoMovingObject) this.parent, string, bl);
+    private void sendStopSound(String soundName, boolean triggerCue) {
+        IsoObject isoObject;
+        if (
+            GameClient.client &&
+            (isoObject = this.parent) instanceof IsoMovingObject
+        ) {
+            IsoMovingObject isoMovingObject = (IsoMovingObject) isoObject;
+            GameClient.instance.StopSound(
+                isoMovingObject,
+                soundName,
+                triggerCue
+            );
         }
     }
 
     public static void update() {
-        CurrentTimeMS = System.currentTimeMillis();
+        currentTimeMs = System.currentTimeMillis();
     }
 
-    static {
-        CurrentTimeMS = 0L;
-    }
+    private abstract static class Sound {
 
-    private static abstract class Sound {
         public final FMODSoundEmitter emitter;
         public GameSoundClip clip;
         public String name;
@@ -1092,21 +1283,21 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
         public float pitch = 1.0f;
         public IsoObject parent;
         public float setVolume = 1.0f;
-        public float setX = 0.0f;
-        public float setY = 0.0f;
-        public float setZ = 0.0f;
+        public float setX;
+        public float setY;
+        public float setZ;
 
-        public Sound(FMODSoundEmitter fMODSoundEmitter) {
-            this.emitter = fMODSoundEmitter;
+        public Sound(FMODSoundEmitter emitter) {
+            this.emitter = emitter;
         }
 
         abstract long getRef();
 
-        abstract void stop();
+        abstract void stop(boolean var1, boolean var2);
 
         abstract void set3D(boolean var1);
 
-        abstract void release();
+        abstract void release(boolean var1);
 
         abstract boolean tick(boolean var1);
 
@@ -1117,7 +1308,10 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
             return this.volume * this.clip.getEffectiveVolume();
         }
 
-        abstract void setParameterValue(FMOD_STUDIO_PARAMETER_DESCRIPTION var1, float var2);
+        abstract void setParameterValue(
+            FMOD_STUDIO_PARAMETER_DESCRIPTION var1,
+            float var2
+        );
 
         abstract void setTimelinePosition(String var1);
 
@@ -1128,15 +1322,15 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
         abstract boolean restart();
     }
 
-    private static final class EventSound
-            extends Sound {
+    private static final class EventSound extends Sound {
+
         private long eventInstance;
         private long eventInstanceStopped;
-        private boolean bTriggeredCue = false;
-        private long checkTimeMS = 0L;
+        private boolean triggeredCue;
+        private long checkTimeMs;
 
-        public EventSound(FMODSoundEmitter fMODSoundEmitter) {
-            super(fMODSoundEmitter);
+        public EventSound(FMODSoundEmitter emitter) {
+            super(emitter);
         }
 
         @Override
@@ -1145,70 +1339,112 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
         }
 
         @Override
-        public void stop() {
+        public void stop(boolean bReleaseEvent, boolean bImmediate) {
             if (this.eventInstance == 0L) {
                 return;
             }
             this.emitter.stopEvent(this.eventInstance, this.clip);
-            javafmod.FMOD_Studio_EventInstance_Stop(this.eventInstance, false);
+            javafmod.FMOD_Studio_EventInstance_Stop(
+                this.eventInstance,
+                bImmediate
+            );
+            if (bReleaseEvent) {
+                javafmod.FMOD_Studio_ReleaseEventInstance(this.eventInstance);
+            }
             this.eventInstanceStopped = this.eventInstance;
             this.eventInstance = 0L;
         }
 
         @Override
-        public void set3D(boolean bl) {
-        }
+        public void set3D(boolean is3D) {}
 
         @Override
-        public void release() {
-            this.stop();
-            this.checkTimeMS = 0L;
-            this.bTriggeredCue = false;
+        public void release(boolean bImmediate) {
+            this.stop(true, bImmediate);
+            this.checkTimeMs = 0L;
+            this.triggeredCue = false;
             this.emitter.releaseEventSound(this);
         }
 
         @Override
-        public boolean tick(boolean bl) {
-            float f;
-            int n;
-            IsoPlayer isoPlayer = IsoPlayer.getInstance();
+        public boolean tick(boolean isStarting) {
+            float volume;
+            boolean bPositionChanged;
+            IsoPlayer player = IsoPlayer.getInstance();
             if (IsoPlayer.numPlayers > 1) {
-                isoPlayer = null;
+                player = null;
             }
-            if (!bl) {
-                n = javafmod.FMOD_Studio_GetPlaybackState(this.eventInstance);
-                if (n == FMOD_STUDIO_PLAYBACK_STATE.FMOD_STUDIO_PLAYBACK_STOPPING.index) {
+            if (!isStarting) {
+                int state = javafmod.FMOD_Studio_GetPlaybackState(
+                    this.eventInstance
+                );
+                if (
+                    state ==
+                    FMOD_STUDIO_PLAYBACK_STATE.FMOD_STUDIO_PLAYBACK_STOPPING.index
+                ) {
                     return false;
                 }
-                if (n == FMOD_STUDIO_PLAYBACK_STATE.FMOD_STUDIO_PLAYBACK_STOPPED.index) {
-                    javafmod.FMOD_Studio_ReleaseEventInstance(this.eventInstance);
+                if (
+                    state ==
+                    FMOD_STUDIO_PLAYBACK_STATE.FMOD_STUDIO_PLAYBACK_STOPPED.index
+                ) {
+                    javafmod.FMOD_Studio_ReleaseEventInstance(
+                        this.eventInstance
+                    );
                     this.emitter.stopEvent(this.eventInstance, this.clip);
                     this.eventInstance = 0L;
                     return true;
                 }
-                if (this.bTriggeredCue && CurrentTimeMS - this.checkTimeMS > 250L && n == FMOD_STUDIO_PLAYBACK_STATE.FMOD_STUDIO_PLAYBACK_SUSTAINING.index) {
-                    javafmodJNI.FMOD_Studio_EventInstance_KeyOff(this.eventInstance);
+                if (
+                    this.triggeredCue &&
+                    currentTimeMs - this.checkTimeMs > 250L &&
+                    state ==
+                    FMOD_STUDIO_PLAYBACK_STATE.FMOD_STUDIO_PLAYBACK_SUSTAINING.index
+                ) {
+                    javafmodJNI.FMOD_Studio_EventInstance_KeyOff(
+                        this.eventInstance
+                    );
                 }
-                if (this.bTriggeredCue && this.clip.eventDescription.length > 0L && CurrentTimeMS - this.checkTimeMS > 1500L) {
-                    long l = javafmodJNI.FMOD_Studio_GetTimelinePosition(this.eventInstance);
-                    if (l > this.clip.eventDescription.length + 1000L) {
-                        javafmod.FMOD_Studio_EventInstance_Stop(this.eventInstance, false);
+                if (
+                    this.triggeredCue &&
+                    this.clip.eventDescription.length > 0L &&
+                    currentTimeMs - this.checkTimeMs > 1500L
+                ) {
+                    long position = javafmodJNI.FMOD_Studio_GetTimelinePosition(
+                        this.eventInstance
+                    );
+                    if (position > this.clip.eventDescription.length + 1000L) {
+                        javafmod.FMOD_Studio_EventInstance_Stop(
+                            this.eventInstance,
+                            false
+                        );
                     }
-                    this.checkTimeMS = CurrentTimeMS;
+                    this.checkTimeMs = currentTimeMs;
                 }
             }
-            int n2 = n = Float.compare(this.emitter.x, this.setX) != 0 || Float.compare(this.emitter.y, this.setY) != 0 || Float.compare(this.emitter.z, this.setZ) != 0 ? 1 : 0;
-            if (n != 0) {
+            boolean bl = bPositionChanged =
+                Float.compare(this.emitter.x, this.setX) != 0 ||
+                Float.compare(this.emitter.y, this.setY) != 0 ||
+                Float.compare(this.emitter.z, this.setZ) != 0;
+            if (bPositionChanged) {
                 this.setX = this.emitter.x;
                 this.setY = this.emitter.y;
                 this.setZ = this.emitter.z;
-                javafmod.FMOD_Studio_EventInstance3D(this.eventInstance, this.emitter.x, this.emitter.y, this.emitter.z * 3.0f);
+                javafmod.FMOD_Studio_EventInstance3D(
+                    this.eventInstance,
+                    this.emitter.x,
+                    this.emitter.y,
+                    this.emitter.z * 3.0f
+                );
             }
-            if (Float.compare(f = this.getVolume(), this.setVolume) != 0) {
-                this.setVolume = f;
-                javafmod.FMOD_Studio_EventInstance_SetVolume(this.eventInstance, f);
+            if (Float.compare(volume = this.getVolume(), this.setVolume) != 0) {
+                this.setVolume = volume;
+                javafmod.FMOD_Studio_EventInstance_SetVolume(
+                    this.eventInstance,
+                    volume
+                );
             }
-            if (bl) {
+            if (isStarting) {
                 this.emitter.startEvent(this.eventInstance, this.clip);
                 javafmod.FMOD_Studio_StartEvent(this.eventInstance);
             } else {
@@ -1219,9 +1455,22 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
 
         @Override
         public boolean tickWhileStopped() {
-            int n = javafmod.FMOD_Studio_GetPlaybackState(this.eventInstanceStopped);
-            if (n == FMOD_STUDIO_PLAYBACK_STATE.FMOD_STUDIO_PLAYBACK_STOPPED.index) {
-                javafmod.FMOD_Studio_ReleaseEventInstance(this.eventInstanceStopped);
+            int state = javafmod.FMOD_Studio_GetPlaybackState(
+                this.eventInstanceStopped
+            );
+            if (
+                state ==
+                FMOD_STUDIO_PLAYBACK_STATE.FMOD_STUDIO_PLAYBACK_STOPPING.index
+            ) {
+                boolean bl = true;
+            }
+            if (
+                state ==
+                FMOD_STUDIO_PLAYBACK_STATE.FMOD_STUDIO_PLAYBACK_STOPPED.index
+            ) {
+                javafmod.FMOD_Studio_ReleaseEventInstance(
+                    this.eventInstanceStopped
+                );
                 this.eventInstanceStopped = 0L;
                 return true;
             }
@@ -1229,27 +1478,43 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
         }
 
         @Override
-        public void setParameterValue(FMOD_STUDIO_PARAMETER_DESCRIPTION fMOD_STUDIO_PARAMETER_DESCRIPTION, float f) {
+        public void setParameterValue(
+            FMOD_STUDIO_PARAMETER_DESCRIPTION parameterDescription,
+            float value
+        ) {
             if (this.eventInstance == 0L) {
                 return;
             }
-            javafmod.FMOD_Studio_EventInstance_SetParameterByID(this.eventInstance, fMOD_STUDIO_PARAMETER_DESCRIPTION.id, f, false);
+            javafmod.FMOD_Studio_EventInstance_SetParameterByID(
+                this.eventInstance,
+                parameterDescription.id,
+                value,
+                false
+            );
         }
 
         @Override
-        public void setTimelinePosition(String string) {
-            if (this.eventInstance == 0L || this.clip == null || this.clip.event == null) {
+        public void setTimelinePosition(String positionName) {
+            if (
+                this.eventInstance == 0L ||
+                this.clip == null ||
+                this.clip.event == null
+            ) {
                 return;
             }
-            SoundTimelineScript soundTimelineScript = ScriptManager.instance.getSoundTimeline(this.clip.event);
-            if (soundTimelineScript == null) {
+            SoundTimelineScript script =
+                ScriptManager.instance.getSoundTimeline(this.clip.event);
+            if (script == null) {
                 return;
             }
-            int n = soundTimelineScript.getPosition(string);
-            if (n == -1) {
+            int position = script.getPosition(positionName);
+            if (position == -1) {
                 return;
             }
-            javafmodJNI.FMOD_Studio_EventInstance_SetTimelinePosition(this.eventInstance, n);
+            javafmodJNI.FMOD_Studio_EventInstance_SetTimelinePosition(
+                this.eventInstance,
+                position
+            );
         }
 
         @Override
@@ -1261,13 +1526,13 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
                 return;
             }
             javafmodJNI.FMOD_Studio_EventInstance_KeyOff(this.eventInstance);
-            this.bTriggeredCue = true;
-            this.checkTimeMS = CurrentTimeMS;
+            this.triggeredCue = true;
+            this.checkTimeMs = currentTimeMs;
         }
 
         @Override
         public boolean isTriggeredCue() {
-            return this.bTriggeredCue;
+            return this.triggeredCue;
         }
 
         @Override
@@ -1280,18 +1545,18 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
         }
     }
 
-    private static final class FileSound
-            extends Sound {
+    private static final class FileSound extends Sound {
+
         private long sound;
         private long channel;
-        private byte is3D = (byte) -1;
+        private byte is3d = (byte) -1;
         boolean ambient;
         private float lx;
         private float ly;
         private float lz;
 
-        private FileSound(FMODSoundEmitter fMODSoundEmitter) {
-            super(fMODSoundEmitter);
+        private FileSound(FMODSoundEmitter emitter) {
+            super(emitter);
         }
 
         @Override
@@ -1300,7 +1565,7 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
         }
 
         @Override
-        public void stop() {
+        public void stop(boolean bReleaseEvent, boolean bImmediate) {
             if (this.channel == 0L) {
                 return;
             }
@@ -1310,239 +1575,411 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
         }
 
         @Override
-        public void set3D(boolean bl) {
-            if (this.is3D != (byte) (bl ? 1 : 0)) {
-                javafmod.FMOD_Channel_SetMode(this.channel, bl ? (long) FMODManager.FMOD_3D : (long) FMODManager.FMOD_2D);
-                if (bl) {
-                    javafmod.FMOD_Channel_Set3DAttributes(this.channel, this.emitter.x, this.emitter.y, this.emitter.z * 3.0f, 0.0f, 0.0f, 0.0f);
+        public void set3D(boolean is3D) {
+            if (this.is3d != (byte) (is3D ? 1 : 0)) {
+                javafmod.FMOD_Channel_SetMode(this.channel, is3D ? 16L : 8L);
+                if (is3D) {
+                    javafmod.FMOD_Channel_Set3DAttributes(
+                        this.channel,
+                        this.emitter.x,
+                        this.emitter.y,
+                        this.emitter.z * 3.0f,
+                        0.0f,
+                        0.0f,
+                        0.0f
+                    );
                 }
-                this.is3D = (byte) (bl ? 1 : 0);
+                this.is3d = (byte) (is3D ? 1 : 0);
             }
         }
 
         @Override
-        public void release() {
-            this.stop();
+        public void release(boolean bImmediate) {
+            this.stop(true, bImmediate);
             this.emitter.releaseFileSound(this);
         }
 
         @Override
-        public boolean tick(boolean bl) {
-            int n;
-            int n2;
-            int n3;
-            float f;
-            if (bl && this.clip.gameSound.isLooped()) {
-                javafmod.FMOD_Channel_SetMode(this.channel, FMODManager.FMOD_LOOP_NORMAL);
+        public boolean tick(boolean isStarting) {
+            int presetOffB;
+            int presetOffA;
+            int preset;
+            if (isStarting && this.clip.gameSound.isLooped()) {
+                javafmod.FMOD_Channel_SetMode(this.channel, 2L);
             }
-            float f2 = this.clip.distanceMin;
-            if (!bl && !javafmod.FMOD_Channel_IsPlaying(this.channel)) {
+            float range = this.clip.distanceMin;
+            if (!isStarting && !javafmod.FMOD_Channel_IsPlaying(this.channel)) {
                 return true;
             }
-            float f3 = this.emitter.x;
-            float f4 = this.emitter.y;
-            float f5 = this.emitter.z;
-            if (!this.clip.gameSound.is3D || f3 == 0.0f && f4 == 0.0f) {
-                if (!(f3 == 0.0f && f4 == 0.0f || !bl && f3 == this.lx && f4 == this.ly || this.is3D != 1)) {
-                    javafmod.FMOD_Channel_Set3DAttributes(this.channel, f3, f4, f5 * 3.0f, 0.0f, 0.0f, 0.0f);
+            float x = this.emitter.x;
+            float y = this.emitter.y;
+            float z = this.emitter.z;
+            if (!this.clip.gameSound.is3d || (x == 0.0f && y == 0.0f)) {
+                if (
+                    !((x == 0.0f && y == 0.0f) ||
+                        (!isStarting && x == this.lx && y == this.ly) ||
+                        this.is3d != 1)
+                ) {
+                    javafmod.FMOD_Channel_Set3DAttributes(
+                        this.channel,
+                        x,
+                        y,
+                        z * 3.0f,
+                        0.0f,
+                        0.0f,
+                        0.0f
+                    );
                 }
                 javafmod.FMOD_Channel_SetVolume(this.channel, this.getVolume());
                 javafmod.FMOD_Channel_SetPitch(this.channel, this.pitch);
-                if (bl) {
+                if (isStarting) {
                     javafmod.FMOD_Channel_SetPaused(this.channel, false);
                 }
                 return false;
             }
-            this.lx = f3;
-            this.ly = f4;
-            this.lz = f5;
-            javafmod.FMOD_Channel_Set3DAttributes(this.channel, f3, f4, f5 * 3.0f, f3 - this.lx, f4 - this.ly, f5 * 3.0f - this.lz * 3.0f);
-            float f6 = Float.MAX_VALUE;
+            this.lx = x;
+            this.ly = y;
+            this.lz = z;
+            javafmod.FMOD_Channel_Set3DAttributes(
+                this.channel,
+                x,
+                y,
+                z * 3.0f,
+                x - this.lx,
+                y - this.ly,
+                z * 3.0f - this.lz * 3.0f
+            );
+            float minDistFromListener = Float.MAX_VALUE;
             for (int i = 0; i < IsoPlayer.numPlayers; ++i) {
-                IsoPlayer isoPlayer = IsoPlayer.players[i];
-                if (isoPlayer == null || isoPlayer.isDeaf())
-                    continue;
-                f = IsoUtils.DistanceTo(f3, f4, f5 * 3.0f, isoPlayer.getX(), isoPlayer.getY(), isoPlayer.getZ() * 3.0f);
-                f6 = PZMath.min(f6, f);
+                IsoPlayer player = IsoPlayer.players[i];
+                if (
+                    player == null || player.hasTrait(CharacterTrait.DEAF)
+                ) continue;
+                float dist = IsoUtils.DistanceTo(
+                    x,
+                    y,
+                    z * 3.0f,
+                    player.getX(),
+                    player.getY(),
+                    player.getZ() * 3.0f
+                );
+                minDistFromListener = PZMath.min(minDistFromListener, dist);
             }
-            float f7 = 2.0f;
-            float f8 = f6 >= f7 ? 1.0f : 1.0f - (f7 - f6) / f7;
-            javafmodJNI.FMOD_Channel_Set3DLevel(this.channel, f8);
+            float soundSize = 2.0f;
+            float level = minDistFromListener >= 2.0f
+                ? 1.0f
+                : 1.0f - (2.0f - minDistFromListener) / 2.0f;
+            javafmodJNI.FMOD_Channel_Set3DLevel(this.channel, level);
             if (IsoPlayer.numPlayers > 1) {
-                if (bl) {
-                    javafmod.FMOD_System_SetReverbDefault(0, FMODManager.FMOD_PRESET_OFF);
-                    javafmod.FMOD_Channel_Set3DMinMaxDistance(this.channel, this.clip.distanceMin, this.clip.distanceMax);
-                    javafmod.FMOD_Channel_Set3DOcclusion(this.channel, 0.0f, 0.0f);
+                if (isStarting) {
+                    javafmod.FMOD_System_SetReverbDefault(0, 0);
+                    javafmod.FMOD_Channel_Set3DMinMaxDistance(
+                        this.channel,
+                        this.clip.distanceMin,
+                        this.clip.distanceMax
+                    );
+                    javafmod.FMOD_Channel_Set3DOcclusion(
+                        this.channel,
+                        0.0f,
+                        0.0f
+                    );
                 }
                 javafmod.FMOD_Channel_SetVolume(this.channel, this.getVolume());
-                if (bl) {
+                if (isStarting) {
                     javafmod.FMOD_Channel_SetPaused(this.channel, false);
                 }
-                javafmod.FMOD_Channel_SetReverbProperties(this.channel, 0, 0.0f);
-                javafmod.FMOD_Channel_SetReverbProperties(this.channel, 1, 0.0f);
-                javafmod.FMOD_System_SetReverbDefault(1, FMODManager.FMOD_PRESET_OFF);
+                javafmod.FMOD_Channel_SetReverbProperties(
+                    this.channel,
+                    0,
+                    0.0f
+                );
+                javafmod.FMOD_Channel_SetReverbProperties(
+                    this.channel,
+                    1,
+                    0.0f
+                );
+                javafmod.FMOD_System_SetReverbDefault(1, 0);
                 javafmod.FMOD_Channel_Set3DOcclusion(this.channel, 0.0f, 0.0f);
                 return false;
             }
-            f6 = this.clip.reverbMaxRange;
-            f7 = IsoUtils.DistanceManhatten(f3, f4, IsoPlayer.getInstance().getX(), IsoPlayer.getInstance().getY(), f5, IsoPlayer.getInstance().getZ()) / f6;
-            IsoGridSquare isoGridSquare = IsoPlayer.getInstance().getCurrentSquare();
-            if (isoGridSquare == null) {
-                javafmod.FMOD_Channel_Set3DMinMaxDistance(this.channel, f2, this.clip.distanceMax);
+            float maxrange = this.clip.reverbMaxRange;
+            float reverb =
+                IsoUtils.DistanceManhatten(
+                    x,
+                    y,
+                    IsoPlayer.getInstance().getX(),
+                    IsoPlayer.getInstance().getY(),
+                    z,
+                    IsoPlayer.getInstance().getZ()
+                ) /
+                maxrange;
+            IsoGridSquare current = IsoPlayer.getInstance().getCurrentSquare();
+            if (current == null) {
+                javafmod.FMOD_Channel_Set3DMinMaxDistance(
+                    this.channel,
+                    range,
+                    this.clip.distanceMax
+                );
                 javafmod.FMOD_Channel_SetVolume(this.channel, this.getVolume());
-                if (bl) {
+                if (isStarting) {
                     javafmod.FMOD_Channel_SetPaused(this.channel, false);
                 }
                 return false;
             }
-            if (isoGridSquare.getRoom() == null) {
+            if (current.getRoom() == null) {
                 if (!this.ambient) {
-                    f7 += IsoPlayer.getInstance().numNearbyBuildingsRooms / 32.0f;
+                    reverb +=
+                        IsoPlayer.getInstance().numNearbyBuildingsRooms / 32.0f;
                 }
                 if (!this.ambient) {
-                    f7 += 0.08f;
+                    reverb += 0.08f;
                 }
             } else {
-                f = isoGridSquare.getRoom().Squares.size();
+                float numTiles = current.getRoom().squares.size();
                 if (!this.ambient) {
-                    f7 += f / 500.0f;
+                    reverb += numTiles / 500.0f;
                 }
             }
-            if (f7 > 1.0f) {
-                f7 = 1.0f;
+            if (reverb > 1.0f) {
+                reverb = 1.0f;
             }
-            f7 *= f7;
-            f7 *= f7;
-            f7 *= this.clip.reverbFactor;
-            f7 *= 10.0f;
-            if (IsoPlayer.getInstance().getCurrentSquare().getRoom() == null && f7 < 0.1f) {
-                f7 = 0.1f;
+            reverb *= reverb;
+            reverb *= reverb;
+            reverb *= this.clip.reverbFactor;
+            reverb *= 10.0f;
+            if (
+                IsoPlayer.getInstance().getCurrentSquare().getRoom() == null &&
+                reverb < 0.1f
+            ) {
+                reverb = 0.1f;
             }
             if (!this.ambient) {
-                if (isoGridSquare.getRoom() != null) {
-                    n3 = 0;
-                    n2 = 1;
-                    n = 2;
+                if (current.getRoom() != null) {
+                    preset = 0;
+                    presetOffA = 1;
+                    presetOffB = 2;
                 } else {
-                    n3 = 2;
-                    n2 = 0;
-                    n = 1;
+                    preset = 2;
+                    presetOffA = 0;
+                    presetOffB = 1;
                 }
             } else {
-                n3 = 2;
-                n2 = 0;
-                n = 1;
+                preset = 2;
+                presetOffA = 0;
+                presetOffB = 1;
             }
-            Object object = IsoWorld.instance.CurrentCell.getGridSquare(f3, f4, f5);
-            if (object != null && ((IsoGridSquare) object).getZone() != null
-                    && (((IsoGridSquare) object).getZone().getType().equals("Forest") || ((IsoGridSquare) object).getZone().getType().equals("DeepForest"))) {
-                n3 = 1;
-                n2 = 0;
-                n = 2;
+            IsoGridSquare sq = IsoWorld.instance.currentCell.getGridSquare(
+                x,
+                y,
+                z
+            );
+            if (
+                sq != null &&
+                sq.getZone() != null &&
+                (sq.getZone().getType().equals("Forest") ||
+                    sq.getZone().getType().equals("DeepForest"))
+            ) {
+                preset = 1;
+                presetOffA = 0;
+                presetOffB = 2;
             }
-            javafmod.FMOD_Channel_SetReverbProperties(this.channel, n3, 0.0f);
-            javafmod.FMOD_Channel_SetReverbProperties(this.channel, n2, 0.0f);
-            javafmod.FMOD_Channel_SetReverbProperties(this.channel, n, 0.0f);
-            javafmod.FMOD_Channel_Set3DMinMaxDistance(this.channel, f2, this.clip.distanceMax);
-            IsoGridSquare isoGridSquare2 = IsoWorld.instance.CurrentCell.getGridSquare(f3, f4, f5);
-            float f9 = 0.0f;
-            float f10 = 0.0f;
-            if (isoGridSquare2 != null) {
-                if (this.emitter.parent instanceof IsoWindow || this.emitter.parent instanceof IsoDoor) {
-                    object = IsoPlayer.getInstance().getCurrentSquare().getRoom();
-                    if (object != this.emitter.parent.square.getRoom()) {
-                        if (object != null && ((IsoRoom) object).getBuilding() == this.emitter.parent.square.getBuilding()) {
-                            f9 = 0.33f;
-                            f10 = 0.33f;
+            javafmod.FMOD_Channel_SetReverbProperties(
+                this.channel,
+                preset,
+                0.0f
+            );
+            javafmod.FMOD_Channel_SetReverbProperties(
+                this.channel,
+                presetOffA,
+                0.0f
+            );
+            javafmod.FMOD_Channel_SetReverbProperties(
+                this.channel,
+                presetOffB,
+                0.0f
+            );
+            javafmod.FMOD_Channel_Set3DMinMaxDistance(
+                this.channel,
+                range,
+                this.clip.distanceMax
+            );
+            IsoGridSquare sq2 = IsoWorld.instance.currentCell.getGridSquare(
+                x,
+                y,
+                z
+            );
+            float directOcclude = 0.0f;
+            float reverbOcclude = 0.0f;
+            if (sq2 != null) {
+                if (
+                    this.emitter.parent instanceof IsoWindow ||
+                    this.emitter.parent instanceof IsoDoor
+                ) {
+                    IsoRoom r = IsoPlayer.getInstance()
+                        .getCurrentSquare()
+                        .getRoom();
+                    if (r != this.emitter.parent.square.getRoom()) {
+                        if (
+                            r != null &&
+                            r.getBuilding() ==
+                            this.emitter.parent.square.getBuilding()
+                        ) {
+                            directOcclude = 0.33f;
+                            reverbOcclude = 0.33f;
                         } else {
-                            IsoGridSquare isoGridSquare3 = null;
-                            if (this.emitter.parent instanceof IsoDoor) {
-                                IsoDoor isoDoor = (IsoDoor) this.emitter.parent;
-                                isoGridSquare3 = isoDoor.north ? IsoWorld.instance.CurrentCell.getGridSquare(isoDoor.getX(), isoDoor.getY() - 1.0f, isoDoor.getZ())
-                                        : IsoWorld.instance.CurrentCell.getGridSquare(isoDoor.getX() - 1.0f, isoDoor.getY(), isoDoor.getZ());
+                            IsoGridSquare doorother = null;
+                            IsoObject isoObject = this.emitter.parent;
+                            if (isoObject instanceof IsoDoor) {
+                                IsoDoor door = (IsoDoor) isoObject;
+                                doorother = door.north
+                                    ? IsoWorld.instance.currentCell.getGridSquare(
+                                          door.getX(),
+                                          door.getY() - 1.0f,
+                                          door.getZ()
+                                      )
+                                    : IsoWorld.instance.currentCell.getGridSquare(
+                                          door.getX() - 1.0f,
+                                          door.getY(),
+                                          door.getZ()
+                                      );
                             } else {
-                                IsoWindow isoWindow = (IsoWindow) this.emitter.parent;
-                                isoGridSquare3 = isoWindow.isNorth() ? IsoWorld.instance.CurrentCell.getGridSquare(isoWindow.getX(), isoWindow.getY() - 1.0f, isoWindow.getZ())
-                                        : IsoWorld.instance.CurrentCell.getGridSquare(isoWindow.getX() - 1.0f, isoWindow.getY(), isoWindow.getZ());
+                                IsoWindow door =
+                                    (IsoWindow) this.emitter.parent;
+                                doorother = door.isNorth()
+                                    ? IsoWorld.instance.currentCell.getGridSquare(
+                                          door.getX(),
+                                          door.getY() - 1.0f,
+                                          door.getZ()
+                                      )
+                                    : IsoWorld.instance.currentCell.getGridSquare(
+                                          door.getX() - 1.0f,
+                                          door.getY(),
+                                          door.getZ()
+                                      );
                             }
-                            if (isoGridSquare3 != null && ((object = IsoPlayer.getInstance().getCurrentSquare().getRoom()) != null || isoGridSquare3.getRoom() == null)) {
-                                if (object != null && isoGridSquare3.getRoom() != null && ((IsoRoom) object).building == isoGridSquare3.getBuilding()) {
-                                    if (object != isoGridSquare3.getRoom()) {
-                                        if (((IsoRoom) object).def.level == isoGridSquare3.getZ()) {
-                                            f9 = 0.33f;
-                                            f10 = 0.33f;
+                            if (
+                                doorother != null &&
+                                ((r = IsoPlayer.getInstance()
+                                                .getCurrentSquare()
+                                                .getRoom()) !=
+                                        null ||
+                                    doorother.getRoom() == null)
+                            ) {
+                                if (
+                                    r != null &&
+                                    doorother.getRoom() != null &&
+                                    r.building == doorother.getBuilding()
+                                ) {
+                                    if (r != doorother.getRoom()) {
+                                        if (r.def.level == doorother.getZ()) {
+                                            directOcclude = 0.33f;
+                                            reverbOcclude = 0.33f;
                                         } else {
-                                            f9 = 0.6f;
-                                            f10 = 0.6f;
+                                            directOcclude = 0.6f;
+                                            reverbOcclude = 0.6f;
                                         }
                                     }
                                 } else {
-                                    f9 = 0.33f;
-                                    f10 = 0.33f;
+                                    directOcclude = 0.33f;
+                                    reverbOcclude = 0.33f;
                                 }
                             }
                         }
                     }
-                } else if (isoGridSquare2.getRoom() != null) {
-                    object = IsoPlayer.getInstance().getCurrentSquare().getRoom();
-                    if (object == null) {
-                        f9 = 0.33f;
-                        f10 = 0.23f;
-                    } else if (object != isoGridSquare2.getRoom()) {
-                        f9 = 0.24f;
-                        f10 = 0.24f;
+                } else if (sq2.getRoom() != null) {
+                    IsoRoom r = IsoPlayer.getInstance()
+                        .getCurrentSquare()
+                        .getRoom();
+                    if (r == null) {
+                        directOcclude = 0.33f;
+                        reverbOcclude = 0.23f;
+                    } else if (r != sq2.getRoom()) {
+                        directOcclude = 0.24f;
+                        reverbOcclude = 0.24f;
                     }
-                    if (object != null && isoGridSquare2.getRoom().getBuilding() != ((IsoRoom) object).getBuilding()) {
-                        f9 = 1.0f;
-                        f10 = 0.8f;
+                    if (
+                        r != null &&
+                        sq2.getRoom().getBuilding() != r.getBuilding()
+                    ) {
+                        directOcclude = 1.0f;
+                        reverbOcclude = 0.8f;
                     }
-                    if (object != null && isoGridSquare2.getRoom().def.level != (int) IsoPlayer.getInstance().getZ()) {
-                        f9 = 0.6f;
-                        f10 = 0.6f;
+                    if (
+                        r != null &&
+                        sq2.getRoom().def.level !=
+                        IsoPlayer.getInstance().getZi()
+                    ) {
+                        directOcclude = 0.6f;
+                        reverbOcclude = 0.6f;
                     }
                 } else {
-                    object = IsoPlayer.getInstance().getCurrentSquare().getRoom();
-                    if (object != null) {
-                        f9 = 0.79f;
-                        f10 = 0.59f;
+                    IsoRoom r = IsoPlayer.getInstance()
+                        .getCurrentSquare()
+                        .getRoom();
+                    if (r != null) {
+                        directOcclude = 0.79f;
+                        reverbOcclude = 0.59f;
                     }
                 }
-                if (!isoGridSquare2.isCouldSee(IsoPlayer.getPlayerIndex()) && isoGridSquare2 != IsoPlayer.getInstance().getCurrentSquare()) {
-                    f9 += 0.4f;
+                if (
+                    !sq2.isCouldSee(IsoPlayer.getPlayerIndex()) &&
+                    sq2 != IsoPlayer.getInstance().getCurrentSquare()
+                ) {
+                    directOcclude += 0.4f;
                 }
             } else {
-                if (IsoWorld.instance.MetaGrid.getRoomAt((int) Math.floor(f3), PZMath.fastfloor(f4), (int) Math.floor(f5)) != null) {
-                    f9 = 1.0f;
-                    f10 = 1.0f;
+                if (
+                    IsoWorld.instance.metaGrid.getRoomAt(
+                        (int) Math.floor(x),
+                        PZMath.fastfloor(y),
+                        (int) Math.floor(z)
+                    ) !=
+                    null
+                ) {
+                    directOcclude = 1.0f;
+                    reverbOcclude = 1.0f;
                 }
-                f9 = (object = IsoPlayer.getInstance().getCurrentSquare().getRoom()) != null ? (f9 += 0.94f) : (f9 += 0.6f);
+                IsoRoom r = IsoPlayer.getInstance()
+                    .getCurrentSquare()
+                    .getRoom();
+                directOcclude = r != null
+                    ? (directOcclude += 0.94f)
+                    : (directOcclude += 0.6f);
             }
-            if (isoGridSquare2 != null && (int) IsoPlayer.getInstance().getZ() != isoGridSquare2.getZ()) {
-                f9 *= 1.3f;
+            if (sq2 != null && IsoPlayer.getInstance().getZi() != sq2.getZ()) {
+                directOcclude *= 1.3f;
             }
-            if (f9 > 0.9f) {
-                f9 = 0.9f;
+            if (directOcclude > 0.9f) {
+                directOcclude = 0.9f;
             }
-            if (f10 > 0.9f) {
-                f10 = 0.9f;
+            if (reverbOcclude > 0.9f) {
+                reverbOcclude = 0.9f;
             }
-            if (this.emitter.emitterType == EmitterType.Footstep && f5 > IsoPlayer.getInstance().getZ() && isoGridSquare2.getBuilding() == IsoPlayer.getInstance().getBuilding()) {
-                f9 = 0.0f;
-                f10 = 0.0f;
+            if (
+                this.emitter.emitterType == EmitterType.Footstep &&
+                z > IsoPlayer.getInstance().getZ() &&
+                sq2.getBuilding() == IsoPlayer.getInstance().getBuilding()
+            ) {
+                directOcclude = 0.0f;
+                reverbOcclude = 0.0f;
             }
             if ("HouseAlarm".equals(this.name)) {
-                f9 = 0.0f;
-                f10 = 0.0f;
+                directOcclude = 0.0f;
+                reverbOcclude = 0.0f;
             }
-            javafmod.FMOD_Channel_Set3DOcclusion(this.channel, f9, f10);
+            javafmod.FMOD_Channel_Set3DOcclusion(
+                this.channel,
+                directOcclude,
+                reverbOcclude
+            );
             javafmod.FMOD_Channel_SetVolume(this.channel, this.getVolume());
             javafmod.FMOD_Channel_SetPitch(this.channel, this.pitch);
-            if (bl) {
+            if (isStarting) {
                 javafmod.FMOD_Channel_SetPaused(this.channel, false);
             }
-            this.lx = f3;
-            this.ly = f4;
-            this.lz = f5;
+            this.lx = x;
+            this.ly = y;
+            this.lz = z;
             return false;
         }
 
@@ -1552,16 +1989,16 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
         }
 
         @Override
-        void setParameterValue(FMOD_STUDIO_PARAMETER_DESCRIPTION fMOD_STUDIO_PARAMETER_DESCRIPTION, float f) {
-        }
+        void setParameterValue(
+            FMOD_STUDIO_PARAMETER_DESCRIPTION parameterDescription,
+            float value
+        ) {}
 
         @Override
-        void setTimelinePosition(String string) {
-        }
+        void setTimelinePosition(String positionName) {}
 
         @Override
-        void triggerCue() {
-        }
+        void triggerCue() {}
 
         @Override
         boolean isTriggeredCue() {
@@ -1575,11 +2012,11 @@ public final class FMODSoundEmitter extends BaseSoundEmitter {
     }
 
     private static final class ParameterValue {
+
         private long eventInstance;
         private FMOD_STUDIO_PARAMETER_DESCRIPTION parameterDescription;
         private float value;
 
-        private ParameterValue() {
-        }
+        private ParameterValue() {}
     }
 }
