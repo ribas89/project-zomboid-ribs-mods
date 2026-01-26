@@ -1,0 +1,6 @@
+name=Internet Radio - Lofi
+id=InternetRadioLofi
+description=Lofi
+poster=poster.png
+icon=icon.png
+require=\RibsFramework,\InternetRadio
