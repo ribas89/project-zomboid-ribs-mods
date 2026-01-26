@@ -20,6 +20,7 @@ Events.OnGameStart.Add(function()
         if not textValue then return end
 
         local frequencyInt = math.floor(tonumber(textValue) * 1000 + 0.5)
+        self.selectedFrequencyInt = frequencyInt
         local channelName = zomboidRadio:getChannelName(frequencyInt) or unknownChannel
         self.entryName:setText(channelName)
     end
@@ -27,7 +28,8 @@ Events.OnGameStart.Add(function()
     local originalCreateChildren = RWMSubEditPreset.createChildren
     function RWMSubEditPreset:createChildren(...)
         if (EasyFrequencyPreset.sandbox:getValue("EnableInputSelect")) then
-            self.comboBoxFrequency = ISComboBox:new(0, UI_BORDER_SPACING + 1, self.width, BUTTON_HGT, self, RWMSubEditPreset.comboChange)
+            self.comboBoxFrequency = ISComboBox:new(0, UI_BORDER_SPACING + 1, self.width, BUTTON_HGT, self,
+                RWMSubEditPreset.comboChange)
             self.comboBoxFrequency:initialise()
 
 
@@ -72,6 +74,18 @@ Events.OnGameStart.Add(function()
             end
         end
 
+        if (EasyFrequencyPreset.sandbox:getValue("EnableTuneIn")) then
+            self.tuneIn = ISButton:new(0, 0, self.width, BUTTON_HGT, getText("IGUI_RadioTuneIn"), self,
+                RWMSubEditPreset.doTuneInButton);
+            self.tuneIn:initialise();
+            self.tuneIn.backgroundColor = { r = 0, g = 0, b = 0, a = 0.0 };
+            self.tuneIn.backgroundColorMouseOver = { r = 1.0, g = 1.0, b = 1.0, a = 0.1 };
+            self.tuneIn.borderColor = { r = 1.0, g = 1.0, b = 1.0, a = 0.3 };
+            self:addChild(self.tuneIn);
+            self:addLinePair(getText("IGUI_RadioTuneIn"), self.tuneIn)
+        end
+
+
         originalCreateChildren(self, ...)
     end
 
@@ -95,5 +109,21 @@ Events.OnGameStart.Add(function()
             self.frequencyTextBox:setText(tostring(frequency))
         end
         self:channelNameFromText(frequency)
+    end
+
+    function RWMSubEditPreset:doTuneInButton()
+        if ISTimedActionQueue.hasActionType(ISRadioAction) then
+            return
+        end
+
+        if (self.parent.player and self.parent.deviceData:canPlayerRemoteInteract(self.parent.player))
+            or self.parent:doWalkTo() then
+            ISTimedActionQueue.add(ISRadioAction:new(
+                "SetChannel",
+                self.parent.player,
+                self.parent.device,
+                self.selectedFrequencyInt
+            ))
+        end
     end
 end)

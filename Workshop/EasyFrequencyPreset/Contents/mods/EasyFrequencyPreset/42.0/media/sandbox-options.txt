@@ -29,3 +29,11 @@ option EasyFrequencyPreset.EnableInputText
     page = EasyFrequencyPreset,
     translation = EasyFrequencyPreset_EnableInputText,
 }
+
+option EasyFrequencyPreset.EnableTuneIn
+{
+    type = boolean,
+    default = true,
+    page = EasyFrequencyPreset,
+    translation = EasyFrequencyPreset_EnableTuneIn,
+}
