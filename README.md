@@ -1,3 +1,12 @@
+# GitHub repositories are now mirror only
+
+Due to recent changes in GitHub's direction, development has migrated to: https://git.ribas89.co.uk/
+
+Have a issue/question? https://link.ribas89.co.uk/ask
+
+
+Thank you for your support ❤️!
+
 # Project Zomboid - ribs mods
 
 This repository is a **mirror** of several *Project Zomboid* mods already published on **Steam Workshop**.
